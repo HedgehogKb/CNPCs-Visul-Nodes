@@ -58,7 +58,6 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     public void mouseClicked(MouseEvent e) {
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
-            System.err.println("is touching" + curVisualNode.isTouchingMouse(e.getX(), e.getY()));
         }
     }
 
