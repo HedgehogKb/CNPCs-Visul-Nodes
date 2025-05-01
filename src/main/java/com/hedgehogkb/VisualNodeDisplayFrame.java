@@ -64,7 +64,7 @@ public class VisualNodeDisplayFrame {
     }
 
     private void drawVisualNodeShells(Graphics g) {
-        for(int i = 0; i < visualNodeShells.size(); i++) {
+        for(int i = visualNodeShells.size()-1; i >=0 ; i--) {
             VisualNodeShell curNodeShell = visualNodeShells.get(i);
             if (curNodeShell != null) {
                 int offsetX = mouseInputDetector.getMouseOffsetX();

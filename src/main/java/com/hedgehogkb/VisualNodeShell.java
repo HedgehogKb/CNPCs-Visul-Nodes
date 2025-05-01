@@ -1,5 +1,6 @@
 package com.hedgehogkb;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -68,6 +69,9 @@ public class VisualNodeShell {
 
         g2d.setColor(Color.DARK_GRAY);
         g2d.fillRect(posX+offsetX, posY+offsetY, width, height);
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(4));
+        g2d.drawRect(posX+offsetX, posY+offsetY, width, height);
     }
 
     public boolean isTouchingMouse(int mouseX, int mouseY) {
