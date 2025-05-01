@@ -16,6 +16,7 @@ public class JFrameVisualNodes {
     private Graphics g;
     private final int WIDTH = 800;
     private final int HEIGHT = 500;
+    private Color color = Color.RED;
 
     public JFrameVisualNodes() {
         initialize();
@@ -30,12 +31,15 @@ public class JFrameVisualNodes {
         this.frame.setLayout(new BorderLayout(10,5));
 
         this.panel = new JPanel() {
-            @Override
 
+            @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(Color.red);
+                g.setColor(color);
                 g.fillRect(0, 0, 800, 500 );
+
+                VisualNodeShell node = new VisualNodeShell();
+                node.draw(g);
             }
         };
 
@@ -48,6 +52,14 @@ public class JFrameVisualNodes {
 
 
 
+    }
+
+    public void repaint() {
+        this.panel.repaint();
+    }
+
+    public void changeColor() {
+        this.color = new Color((int) (Math.random() * 255),(int) (Math.random() * 255),(int) (Math.random() * 255));
     }
 
 }
