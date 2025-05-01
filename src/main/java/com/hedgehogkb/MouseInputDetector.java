@@ -10,6 +10,8 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     private int mouseY;
     private int offsetX;
     private int offsetY;
+
+    @SuppressWarnings("FieldMayBeFinal")
     private ArrayList<VisualNodeShell> visualNodeShells;
     private boolean isDraggingBackground;
 
@@ -56,9 +58,6 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        for (int i = 0; i < visualNodeShells.size(); i++) {
-            VisualNodeShell curVisualNode = visualNodeShells.get(i);
-        }
     }
 
     @Override
@@ -92,6 +91,5 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     public int getMouseOffsetY() {
         return this.offsetY;
     }
-    
-    
+
 }

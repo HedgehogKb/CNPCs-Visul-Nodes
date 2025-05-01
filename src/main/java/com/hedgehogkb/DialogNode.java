@@ -2,8 +2,6 @@ package com.hedgehogkb;
 
 import java.util.ArrayList;
 
-import javax.print.DocFlavor.READER;
-
 import org.json.JSONObject;
 
 public class DialogNode {
@@ -93,7 +91,7 @@ public class DialogNode {
         this.optionFactionPoints = new int[2];
         this.decreaseOptionFactionPoints = new boolean[2];
 
-        this.options = new ArrayList<DialogOption>();
+        this.options = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             options.add(new DialogOption());
         }
@@ -146,7 +144,7 @@ public class DialogNode {
     }
 
     public ArrayList<JSONObject> buildOptionsJson() {
-        ArrayList<JSONObject> optionsJson = new ArrayList<JSONObject>();
+        ArrayList<JSONObject> optionsJson = new ArrayList<>();
         for (DialogOption option : options) {
             optionsJson.add(option.buildJson());
         }

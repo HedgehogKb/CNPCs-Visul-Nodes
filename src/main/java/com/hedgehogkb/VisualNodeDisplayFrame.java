@@ -61,6 +61,20 @@ public class VisualNodeDisplayFrame {
         int height = panel.getHeight();
         g.setColor(Color.gray);
         g.fillRect(0, 0, width, height);
+        int gridSize = 30;
+        int offsetX = mouseInputDetector.getMouseOffsetX();
+        int offsetY = mouseInputDetector.getMouseOffsetY();
+        int x = (offsetX%gridSize)-gridSize; 
+        int y = (offsetY%gridSize)-gridSize;
+        g.setColor(new Color(50, 50, 50));
+        while (y < panel.getHeight() + gridSize) {
+            while (x < panel.getWidth() + gridSize) {
+                g.fillOval(x, y, 5, 5);
+                x += gridSize;
+            }
+            x = (offsetX%gridSize)-gridSize; 
+            y+= gridSize;
+        }
     }
 
     private void drawVisualNodeShells(Graphics g) {
