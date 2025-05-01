@@ -37,4 +37,12 @@ public class DialogOption {
         //optionJsonString.put
         return optionJsonWrapper;
     }
+
+    public int getOptionType() {
+        return this.optionType;
+    }
+
+    public void setOptionType(int optionType) {
+        this.optionType = optionType;
+    }
 }

@@ -92,8 +92,11 @@ public class DialogNode {
         this.decreaseOptionFactionPoints = new boolean[2];
 
         this.options = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 6; i++) {
             options.add(new DialogOption());
+            if (Math.random() < 0.5) {
+                options.get(i).setOptionType(1);
+            }
         }
     }
 
@@ -230,4 +233,17 @@ public class DialogNode {
 
         }
     }
+    
+    public ArrayList<DialogOption> getOptions() {
+        return this.options;
+    }
+
+    public String getTitle() {
+        return this.dialogTitle;
+    }
+
+    public int getDialogId() {
+        return this.dialogId;
+    }
+
 }

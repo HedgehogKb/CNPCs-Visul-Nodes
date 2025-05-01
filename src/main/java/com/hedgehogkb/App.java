@@ -12,7 +12,7 @@ public class App
     {
         VisualNodeDisplayFrame frame = new VisualNodeDisplayFrame();
 
-        Timer timer = new Timer(10, (e) -> {
+        Timer timer = new Timer(5, (e) -> {
             frame.repaint();
         });
 
@@ -23,7 +23,5 @@ public class App
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //timer.stop();
     }
 }

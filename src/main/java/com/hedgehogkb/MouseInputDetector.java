@@ -30,7 +30,6 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseDragged(java.awt.event.MouseEvent e) {
-        System.out.println(isDraggingBackground);
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
             if ((curVisualNode.isTouchingMouse(e.getX(), e.getY()) || curVisualNode.getIsBeingDragged()) && !isDraggingBackground) {
@@ -58,6 +57,12 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        for (int i = 0; i < visualNodeShells.size(); i++) {
+            VisualNodeShell curVisualNode = visualNodeShells.get(i);
+            if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground) {
+                System.err.println("just clicked on node, no movement");
+            }
+        }
     }
 
     @Override

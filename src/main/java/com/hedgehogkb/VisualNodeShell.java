@@ -56,7 +56,7 @@ public class VisualNodeShell {
     public VisualNodeShell(int posX, int posY, int offsetX, int offsetY, DialogNode dialogNode) {
         this.dialogNode = dialogNode;
         this.width = 100;
-        this.height = 75;
+        this.height = 80;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.posX = posX;
@@ -66,12 +66,22 @@ public class VisualNodeShell {
 
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        int xScreenPos = posX + offsetX;;
+        int yScreenPos = posY + offsetY;
 
         g2d.setColor(Color.DARK_GRAY);
-        g2d.fillRect(posX+offsetX, posY+offsetY, width, height);
+        g2d.fillRect(xScreenPos, yScreenPos, width, height);
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(4));
-        g2d.drawRect(posX+offsetX, posY+offsetY, width, height);
+        g2d.drawRect(xScreenPos, yScreenPos, width, height);
+
+        g2d.setStroke(new BasicStroke(3));
+
+        for(int i = 0 ; i < 6; i++) {
+            if (dialogNode.getOptions().get(i).getOptionType() == 1) {
+                g2d.drawRect(xScreenPos + 90, yScreenPos + 5 + i*12, 7, 7);
+            }
+        }
     }
 
     public boolean isTouchingMouse(int mouseX, int mouseY) {
