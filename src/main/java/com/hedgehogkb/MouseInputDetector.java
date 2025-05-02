@@ -5,6 +5,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 public class MouseInputDetector implements MouseMotionListener, MouseListener {
     private int mouseX;
     private int mouseY;
@@ -60,6 +62,10 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
             if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground) {
+                SwingUtilities.invokeLater(() -> {
+                    DialogNodeEditorFrame dialogNodeEditorFrame = new DialogNodeEditorFrame(curVisualNode.getDialogNode());
+                });
+                
                 System.err.println("just clicked on node, no movement");
             }
         }

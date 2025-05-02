@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
+import java.awt.Label;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,7 +17,7 @@ public class DialogNodeEditorFrame {
         this.dialogNode = dialogNode;
 
         this.frame = new JFrame("Dialog "+dialogNode.getTitle() + " - Id:" + dialogNode.getDialogId());
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.frame.setSize(800, 500);
         this.frame.setResizable(false);
         this.frame.setLayout(new BorderLayout());
@@ -35,7 +35,12 @@ public class DialogNodeEditorFrame {
         
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.YELLOW);
+        topPanel.setLayout(new GridLayout(0, 2));
         topPanel.setPreferredSize(new Dimension(800, 50));
+        topPanel.add(new Label("Title: " + dialogNode.getTitle()), BorderLayout.WEST);
+        topPanel.add(new Label(dialogNode.getTitle() + "Title: "), BorderLayout.AFTER_LINE_ENDS);
+
+        
         //rightPanel.setLayout();
 
 
