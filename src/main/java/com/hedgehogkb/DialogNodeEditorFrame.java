@@ -85,6 +85,7 @@ public class DialogNodeEditorFrame {
         leftPanel.add(new JLabel("Dialog Text: "), c);
 
         dialogTextBox = new JTextArea("testing Text:");
+        dialogTextBox.setLineWrap(true);
         c.gridx = 0;
         c.gridy = 1;
         c.weighty = 0.5;
