@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -45,6 +46,7 @@ public class VisualNodeDisplayFrame {
         
         panel.addMouseMotionListener(mouseInputDetector);
         panel.addMouseListener(mouseInputDetector);
+        panel.setBorder(BorderFactory.createEtchedBorder());
         //frame.addMouseMotionListener(mouseInputDetector);
         //frame.addMouseListener(mouseInputDetector);
         frame.setVisible(true);

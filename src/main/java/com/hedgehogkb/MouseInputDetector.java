@@ -66,7 +66,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                     DialogNodeEditorFrame dialogNodeEditorFrame = new DialogNodeEditorFrame(curVisualNode.getDialogNode());
                 });
                 
-                System.err.println("just clicked on node, no movement");
+                return;
             }
         }
     }
