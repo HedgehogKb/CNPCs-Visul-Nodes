@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -15,6 +16,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerDateModel;
+import javax.swing.Spring;
+import javax.swing.SpringLayout;
+import javax.tools.ToolProvider;
 
 
 public class DialogNodeEditorFrame {
@@ -34,14 +39,16 @@ public class DialogNodeEditorFrame {
     //top panel components
     private JPanel topPanel;
     private JTextArea titleTextBox;
+    private JButton confirmTitleButton;
+    private JButton cancelTitleButton;
 
     
-    private JButton changeColorButton;
 
     public DialogNodeEditorFrame(DialogNode dialogNode) {
         this.dialogNode = dialogNode;
         initializeComponents();
         buildLayout();
+        handleInputs();
     }
 
     private void initializeComponents() {
@@ -60,13 +67,47 @@ public class DialogNodeEditorFrame {
 
         // Initialize top panel for dialog node properties
         this.topPanel = new JPanel();
-        topPanel.setLayout(new BorderLayout());
+        SpringLayout springLayout = new SpringLayout();
+        topPanel.setLayout(springLayout);
         topPanel.setBorder(BorderFactory.createEtchedBorder());
-        topPanel.add(new JLabel("Dialog Title: "), BorderLayout.WEST);
+        topPanel.setPreferredSize(new Dimension(350, 40));
+
+        JLabel titleLabel = new JLabel("Dialog Title: ");
+        topPanel.add(titleLabel);
+
         titleTextBox = new JTextArea(dialogNode.getTitle());
-        topPanel.add(titleTextBox, BorderLayout.CENTER);
         titleTextBox.setBorder(BorderFactory.createLineBorder(Color.darkGray));
-        topPanel.add(new JLabel("Dialog Id: "+dialogNode.getDialogId()), BorderLayout.EAST);
+        
+        titleTextBox.setPreferredSize(new Dimension(200, 25));
+        topPanel.add(titleTextBox);
+        
+        confirmTitleButton = new JButton("Confirm Title"); 
+        topPanel.add(confirmTitleButton);
+
+        cancelTitleButton = new JButton("Cancel Title");
+        topPanel.add(cancelTitleButton);
+
+        JTextArea dialogIdLabel = new JTextArea("Dialog Id: " + dialogNode.getDialogId());
+        topPanel.add(dialogIdLabel);
+
+        springLayout.putConstraint(springLayout.WEST, titleLabel, 5, springLayout.WEST, topPanel);
+        springLayout.putConstraint(springLayout.NORTH, titleLabel, 5, springLayout.NORTH, topPanel);
+
+        springLayout.putConstraint(springLayout.WEST, titleTextBox, 5, springLayout.EAST, titleLabel);
+        springLayout.putConstraint(springLayout.NORTH, titleTextBox, 5, springLayout.NORTH, topPanel);
+
+
+        springLayout.putConstraint(springLayout.WEST, confirmTitleButton, 5, springLayout.EAST, titleTextBox);
+        springLayout.putConstraint(springLayout.NORTH, confirmTitleButton, 5, springLayout.NORTH, topPanel);
+
+        springLayout.putConstraint(springLayout.WEST, cancelTitleButton, 5, springLayout.EAST, confirmTitleButton);
+        springLayout.putConstraint(springLayout.NORTH, cancelTitleButton, 5, springLayout.NORTH, topPanel);
+        //springLayout.putConstraint(springLayout.EAST, cancelTitleButton, 100, springLayout.EAST, topPanel);
+
+
+        springLayout.putConstraint(springLayout.WEST, dialogIdLabel, 20, springLayout.EAST, cancelTitleButton);
+        springLayout.putConstraint(springLayout.NORTH, dialogIdLabel, 5, springLayout.NORTH, topPanel);
+        springLayout.putConstraint(springLayout.EAST, topPanel, 5, springLayout.EAST, dialogIdLabel);
 
 
 
@@ -150,5 +191,9 @@ public class DialogNodeEditorFrame {
         //this.frame.pack();
 
         this.frame.setVisible(true);
+    }
+
+    public void handleInputs() {
+        //titleTextBox.gette
     }
 }

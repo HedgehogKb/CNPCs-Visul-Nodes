@@ -81,9 +81,9 @@ public class VisualNodeShell {
 
         for(int i = 0 ; i < 6; i++) {
             if (dialogNode.getOptions().get(i).getOptionType() == 1) {
-                g2d.fillRect(xScreenPos + 135, yScreenPos + 5 + i*15, 11, 11);
+                g2d.fillRect(xScreenPos + 133, yScreenPos + 5 + i*15, 11, 11);
             } else {
-                g2d.drawRect(xScreenPos + 135, yScreenPos + 5 + i*15, 11, 11);
+                g2d.drawRect(xScreenPos + 133, yScreenPos + 5 + i*15, 11, 11);
 
             }
         }
