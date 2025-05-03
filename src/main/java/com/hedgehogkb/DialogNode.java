@@ -100,6 +100,11 @@ public class DialogNode {
         }
     }
 
+    public DialogNode(int dialogId) {
+        this();
+        this.dialogId = dialogId;
+    }
+
     public JSONObject buildJson() {
         JSONObject dialogJsonWrapper = new JSONObject();
         //distincitive title and id

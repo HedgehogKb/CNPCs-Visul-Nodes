@@ -2,6 +2,7 @@ package com.hedgehogkb;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -20,8 +21,8 @@ public class VisualNodeShell {
     private boolean isBeingDragged;
     public VisualNodeShell() {
         this.dialogNode = new DialogNode();
-        this.width = 100;
-        this.height = 75;
+        this.width = 150;
+        this.height = 100;
         this.offsetX = 0;
         this.offsetY = 0;
         this.posX = 0;
@@ -31,8 +32,8 @@ public class VisualNodeShell {
 
     public VisualNodeShell(int posX, int posY) {
         this.dialogNode = new DialogNode();
-        this.width = 100;
-        this.height = 75;
+        this.width = 150;
+        this.height = 100;
         this.offsetX = 0;
         this.offsetY = 0;
         this.posX = posX;
@@ -43,8 +44,8 @@ public class VisualNodeShell {
 
     public VisualNodeShell(int posX, int posY, int offsetX, int offsetY) {
         this.dialogNode = new DialogNode();
-        this.width = 100;
-        this.height = 75;
+        this.width = 150;
+        this.height = 100;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.posX = posX;
@@ -55,8 +56,8 @@ public class VisualNodeShell {
 
     public VisualNodeShell(int posX, int posY, int offsetX, int offsetY, DialogNode dialogNode) {
         this.dialogNode = dialogNode;
-        this.width = 100;
-        this.height = 80;
+        this.width = 150;
+        this.height = 100;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.posX = posX;
@@ -69,19 +70,26 @@ public class VisualNodeShell {
         int xScreenPos = posX + offsetX;;
         int yScreenPos = posY + offsetY;
 
-        g2d.setColor(Color.DARK_GRAY);
+        int colorValue = 100;
+        g2d.setColor(new Color(colorValue, colorValue, colorValue));
         g2d.fillRect(xScreenPos, yScreenPos, width, height);
         g2d.setColor(Color.BLACK);
-        g2d.setStroke(new BasicStroke(4));
-        g2d.drawRect(xScreenPos, yScreenPos, width, height);
+        g2d.setStroke(new BasicStroke(2));
+        g2d.drawRect(xScreenPos+3, yScreenPos+3, width-6, height-6);
 
-        g2d.setStroke(new BasicStroke(3));
+        g2d.setStroke(new BasicStroke(2));
 
         for(int i = 0 ; i < 6; i++) {
             if (dialogNode.getOptions().get(i).getOptionType() == 1) {
-                g2d.drawRect(xScreenPos + 90, yScreenPos + 5 + i*12, 7, 7);
+                g2d.fillRect(xScreenPos + 135, yScreenPos + 5 + i*15, 11, 11);
+            } else {
+                g2d.drawRect(xScreenPos + 135, yScreenPos + 5 + i*15, 11, 11);
+
             }
         }
+        g2d.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        g2d.drawString(dialogNode.getTitle(), xScreenPos+10, yScreenPos+22);
+        g2d.drawString("Id: " + dialogNode.getDialogId(), xScreenPos+10, yScreenPos+44);
     }
 
     public boolean isTouchingMouse(int mouseX, int mouseY) {

@@ -35,8 +35,8 @@ public class VisualNodeDisplayFrame {
 
 
         this.visualNodeShells = new ArrayList<>();
-        visualNodeShells.add(new VisualNodeShell(100, 100, 0, 0, new DialogNode()));
-        visualNodeShells.add(new VisualNodeShell(400, 300, 0, 0, new DialogNode()));
+        visualNodeShells.add(new VisualNodeShell(100, 100, 0, 0, new DialogNode(1)));
+        visualNodeShells.add(new VisualNodeShell(400, 300, 0, 0, new DialogNode(2)));
 
         this.mouseInputDetector = new MouseInputDetector(visualNodeShells);
 
@@ -61,14 +61,14 @@ public class VisualNodeDisplayFrame {
     private void drawBackground(Graphics g) {
         int width = panel.getWidth();
         int height = panel.getHeight();
-        g.setColor(Color.gray);
+        g.setColor(Color.lightGray);
         g.fillRect(0, 0, width, height);
         int gridSize = 30;
         int offsetX = mouseInputDetector.getMouseOffsetX();
         int offsetY = mouseInputDetector.getMouseOffsetY();
         int x = (offsetX%gridSize)-gridSize; 
         int y = (offsetY%gridSize)-gridSize;
-        g.setColor(new Color(50, 50, 50));
+        g.setColor(new Color(130, 130, 130));
         while (y < panel.getHeight() + gridSize) {
             while (x < panel.getWidth() + gridSize) {
                 g.fillOval(x, y, 5, 5);
