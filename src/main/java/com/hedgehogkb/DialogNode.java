@@ -238,17 +238,38 @@ public class DialogNode {
 
         }
     }
+
+    //getters and setters
     
     public ArrayList<DialogOption> getOptions() {
         return this.options;
     }
 
-    public String getTitle() {
+
+    public String getDialogTitle() {
         return this.dialogTitle;
+    }
+    public void setDialogTitle(String dialogTitle) {
+        this.dialogTitle = dialogTitle;
     }
 
     public int getDialogId() {
         return this.dialogId;
+    }
+
+
+    public String getDialogText() {
+        return this.dialogText;
+    }
+    public void setDialogText(String dialogText) {
+        this.dialogText = dialogText;
+    }
+
+    public String getDialogCommand(String dialogCommand) {
+        return this.dialogCommand;
+    }
+    public void setDialogCommand(String dialogCommand)  {
+        this.dialogCommand = dialogCommand;
     }
 
 }

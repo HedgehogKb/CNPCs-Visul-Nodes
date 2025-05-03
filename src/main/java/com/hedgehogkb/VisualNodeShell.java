@@ -88,7 +88,7 @@ public class VisualNodeShell {
             }
         }
         g2d.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-        g2d.drawString(dialogNode.getTitle(), xScreenPos+10, yScreenPos+22);
+        g2d.drawString(dialogNode.getDialogTitle(), xScreenPos+10, yScreenPos+22);
         g2d.drawString("Id: " + dialogNode.getDialogId(), xScreenPos+10, yScreenPos+44);
     }
 
