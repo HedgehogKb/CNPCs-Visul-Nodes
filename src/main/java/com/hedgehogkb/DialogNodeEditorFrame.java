@@ -122,11 +122,11 @@ public class DialogNodeEditorFrame {
                 cancelTitleButton = new JButton("Cancel Title");
                 topPanel.add(cancelTitleButton);
         
-                JTextArea dialogIdLabel = new JTextArea("Dialog Id: " + dialogNode.getDialogId());
+                JLabel dialogIdLabel = new JLabel("Dialog Id: " + dialogNode.getDialogId());
                 topPanel.add(dialogIdLabel);
         
                 springLayout.putConstraint(springLayout.WEST, titleLabel, 5, springLayout.WEST, topPanel);
-                springLayout.putConstraint(springLayout.NORTH, titleLabel, 5, springLayout.NORTH, topPanel);
+                springLayout.putConstraint(springLayout.NORTH, titleLabel, 7, springLayout.NORTH, topPanel);
                 springLayout.putConstraint(springLayout.WEST, titleTextBox, 5, springLayout.EAST, titleLabel);
                 springLayout.putConstraint(springLayout.NORTH, titleTextBox, 5, springLayout.NORTH, topPanel);
                 springLayout.putConstraint(springLayout.WEST, confirmTitleButton, 5, springLayout.EAST, titleTextBox);
@@ -135,7 +135,7 @@ public class DialogNodeEditorFrame {
                 springLayout.putConstraint(springLayout.NORTH, cancelTitleButton, 5, springLayout.NORTH, topPanel);
                 springLayout.putConstraint(springLayout.EAST, topPanel, 0, springLayout.EAST, dialogIdLabel);
                 springLayout.putConstraint(springLayout.WEST, dialogIdLabel, 20, springLayout.EAST, cancelTitleButton);
-                springLayout.putConstraint(springLayout.NORTH, dialogIdLabel, 5, springLayout.NORTH, topPanel);        
+                springLayout.putConstraint(springLayout.NORTH, dialogIdLabel, 7, springLayout.NORTH, topPanel);        
     }
 
     private void initializeLeftPanel() {
@@ -238,6 +238,7 @@ public class DialogNodeEditorFrame {
         GridBagConstraints c = new GridBagConstraints();
 
         commandLabel = new JLabel("Command: ");
+        c.ipady = 12;
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 0.5;
@@ -249,6 +250,7 @@ public class DialogNodeEditorFrame {
         c.gridx = 1;
         c.gridy = 0;
         c.weightx = 0.3;
+        c.ipady = 0;
         c.ipadx = 30;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTHWEST;
@@ -336,7 +338,8 @@ public class DialogNodeEditorFrame {
         c.anchor = GridBagConstraints.NORTH;
         otherOptionsPanel.add(disableEscCheckBox, c);
 
-        questNumberLabel = new JLabel("Quest Number: ");
+        questNumberLabel = new JLabel("Quest #: ");
+        questNumberLabel.setMinimumSize(new Dimension(70, 20));
         c.gridx = 0;
         c.gridy = 5;
         c.gridwidth =1;
@@ -345,15 +348,17 @@ public class DialogNodeEditorFrame {
         c.ipadx = 40;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTHEAST;
+        //c.insets = new Insets(0, 20, 0, 20);
         otherOptionsPanel.add(questNumberLabel, c);
 
         questNumberTextBox = new JTextArea(dialogNode.getDialogCommand());
         questNumberTextBox.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+        questNumberTextBox.setMinimumSize(new Dimension(30, 20));
         c.gridx = 1;
         c.gridy = 5;
-        c.gridwidth = 2;
+        c.gridwidth = 1;
         c.weightx = 0.3;
-        c.ipady = 8;
+        c.ipady = 1;
         c.ipadx = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTH;
