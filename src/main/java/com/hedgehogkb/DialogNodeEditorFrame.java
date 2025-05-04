@@ -53,8 +53,10 @@ public class DialogNodeEditorFrame {
     private JCheckBox showDialogWheelCheckBox;
     private JLabel disableEscLabel;
     private JCheckBox disableEscCheckBox;
-    private JLabel QuestNumberLabel;
+    private JLabel questNumberLabel;
     private JTextArea questNumberTextBox;
+    private JButton confirmQuestButton;
+    private JButton cancelQuestButton;
 
     //top panel components
     private JPanel topPanel;
@@ -247,6 +249,7 @@ public class DialogNodeEditorFrame {
         c.gridx = 1;
         c.gridy = 0;
         c.weightx = 0.3;
+        c.ipadx = 30;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTHWEST;
         c.insets = new Insets(0, 20, 0, 5);
@@ -265,6 +268,7 @@ public class DialogNodeEditorFrame {
         c.gridy = 1;
         c.weightx = 0.5;
         c.ipady = 20;
+        c.ipadx = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTH;
         c.gridwidth = 3;
@@ -275,7 +279,6 @@ public class DialogNodeEditorFrame {
         c.gridx = 0;
         c.gridy = 2;
         c.weightx = 0.5;
-        c.weighty = 0.5;
         c.ipady = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTH;
@@ -286,13 +289,76 @@ public class DialogNodeEditorFrame {
         c.gridx = 1;
         c.gridy = 2;
         c.weightx = 0.3;
-        c.weighty = 0.5;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.NORTH;
+        c.anchor = GridBagConstraints.NORTHEAST;
         otherOptionsPanel.add(hideNPCCheckBox, c);
 
+        showDialogWheelLabel = new JLabel("Show Dialog Wheel: ");
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 2;
+        c.weightx = 0.3;
+        c.ipady = 0;
+        c.ipadx = 20;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
+        otherOptionsPanel.add(showDialogWheelLabel, c);
 
+        showDialogWheelCheckBox = new JCheckBox();
+        showDialogWheelCheckBox.setSelected(dialogNode.getIsShowDialogueWheel());
+        c.gridx = 1;
+        c.gridy = 3;
+        c.weightx = 0.5;
+        c.ipadx = 0;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.NORTH;
+        otherOptionsPanel.add(showDialogWheelCheckBox, c);
 
+        disableEscLabel = new JLabel("Diable Esc: ");
+        c.gridx = 0;
+        c.gridy = 4;
+        c.gridwidth = 2;
+        c.weightx = 2;
+        c.ipady = 0;
+        c.ipadx = 40;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTHEAST;
+        otherOptionsPanel.add(disableEscLabel, c);
+
+        disableEscCheckBox = new JCheckBox();
+        dialogOptionsButton.setSelected(dialogNode.getIsShowDialogueWheel());
+        c.gridx = 1;
+        c.gridy = 4;
+        c.gridwidth = 1;
+        c.weightx = 0.3;
+        c.ipadx = 0;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.NORTH;
+        otherOptionsPanel.add(disableEscCheckBox, c);
+
+        questNumberLabel = new JLabel("Quest Number: ");
+        c.gridx = 0;
+        c.gridy = 5;
+        c.gridwidth =1;
+        c.weightx = 1;
+        c.weighty = 0.5;
+        c.ipadx = 40;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTHEAST;
+        otherOptionsPanel.add(questNumberLabel, c);
+
+        questNumberTextBox = new JTextArea(dialogNode.getDialogCommand());
+        questNumberTextBox.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+        c.gridx = 1;
+        c.gridy = 5;
+        c.gridwidth = 2;
+        c.weightx = 0.3;
+        c.ipady = 8;
+        c.ipadx = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
+        c.gridwidth = 2;
+        otherOptionsPanel.add(questNumberTextBox, c);
 
 
     }
