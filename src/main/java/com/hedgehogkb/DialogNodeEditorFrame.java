@@ -12,6 +12,7 @@ import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,7 +38,23 @@ public class DialogNodeEditorFrame {
     private JButton dialogOptionsButton;
     private JButton otherOptionsButton;
 
+    //initial, blank right panel
     private JPanel blankRightPanel;
+
+    //other right panel components
+    private JPanel otherOptionsPanel;
+    private JLabel commandLabel;
+    private JButton confirmCommandButton;
+    private JButton cancelCommandButton;
+    private JTextArea commandTextBox;
+    private JLabel hideNPCLabel;
+    private JCheckBox hideNPCCheckBox;
+    private JLabel showDialogWheelLabel;
+    private JCheckBox showDialogWheelCheckBox;
+    private JLabel disableEscLabel;
+    private JCheckBox disableEscCheckBox;
+    private JLabel QuestNumberLabel;
+    private JTextArea questNumberTextBox;
 
     //top panel components
     private JPanel topPanel;
@@ -66,11 +83,12 @@ public class DialogNodeEditorFrame {
         //Initialize the main panel which is divided in two parts,
         this.mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(0, 2));
-        //mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dialog Node Editor"));
 
         initializeTopPanel();
 
         initializeLeftPanel();
+
+        initializeOtherOptionsPanel();
 
         //Initialize right panel
         this.blankRightPanel = new JPanel();
@@ -210,10 +228,79 @@ public class DialogNodeEditorFrame {
         leftPanel.add(otherOptionsButton, c);
     }
 
+    private void initializeOtherOptionsPanel() {
+        this.otherOptionsPanel = new JPanel();
+        otherOptionsPanel.setLayout(new GridBagLayout());
+        otherOptionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Other Options"));
+        otherOptionsPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        commandLabel = new JLabel("Command: ");
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 0.5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTHEAST;
+        otherOptionsPanel.add(commandLabel, c);
+
+        confirmCommandButton = new JButton("Confirm");
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 0.3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.insets = new Insets(0, 20, 0, 5);
+        otherOptionsPanel.add(confirmCommandButton, c);
+
+        cancelCommandButton = new JButton("Cancel");
+        c.gridx = 2;
+        c.gridy = 0;
+        c.insets = new Insets(0, 0, 0, 0);
+        c.anchor = GridBagConstraints.NORTHWEST;
+        otherOptionsPanel.add(cancelCommandButton, c);
+
+        commandTextBox = new JTextArea(dialogNode.getDialogCommand());
+        commandTextBox.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 0.5;
+        c.ipady = 20;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
+        c.gridwidth = 3;
+        c.insets = new Insets(3, 10, 0, 10);
+        otherOptionsPanel.add(commandTextBox, c);
+
+        hideNPCLabel = new JLabel("Hide NPC: ");
+        c.gridx = 0;
+        c.gridy = 2;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.ipady = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
+        otherOptionsPanel.add(hideNPCLabel, c);
+
+        hideNPCCheckBox = new JCheckBox();
+        hideNPCCheckBox.setSelected(dialogNode.getIsHideNPC());
+        c.gridx = 1;
+        c.gridy = 2;
+        c.weightx = 0.3;
+        c.weighty = 0.5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
+        otherOptionsPanel.add(hideNPCCheckBox, c);
+
+
+
+
+
+    }
 
     private void buildLayout() {
         this.mainPanel.add(leftPanel, 0);
         this.mainPanel.add(blankRightPanel, 1);
+
         this.frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
         this.frame.getContentPane().add(topPanel, BorderLayout.NORTH);
         //this.frame.pack();
@@ -239,6 +326,13 @@ public class DialogNodeEditorFrame {
 
         cancelTitleButton.addActionListener(e -> {
             titleTextBox.setText(dialogNode.getDialogTitle());
+        });
+
+        otherOptionsButton.addActionListener(e -> {
+            mainPanel.remove(1);
+            mainPanel.add(otherOptionsPanel, 1);
+            mainPanel.revalidate();
+            mainPanel.repaint();
         });
     }
 }

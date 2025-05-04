@@ -265,11 +265,34 @@ public class DialogNode {
         this.dialogText = dialogText;
     }
 
-    public String getDialogCommand(String dialogCommand) {
+    public String getDialogCommand() {
         return this.dialogCommand;
     }
     public void setDialogCommand(String dialogCommand)  {
         this.dialogCommand = dialogCommand;
     }
+
+    public boolean getIsHideNPC() {
+        return this.hideNPC;
+    }
+    public void setHideNPC(boolean hideNPC) {
+        this.hideNPC = hideNPC;
+    }
+
+    public boolean getIsShowDialogueWheel() {
+        return this.showDialogueWheel;
+    }
+    public void setShowDialogueWheel(boolean showDialogueWheel) {
+        this.showDialogueWheel = showDialogueWheel;
+    }
+
+    public boolean getIsDisableEsc() {
+        return this.disableEsc;
+    }
+    public void setDisableEsc(boolean disableEsc) {
+        this.disableEsc = disableEsc;
+    }
+
+    
 
 }
