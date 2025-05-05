@@ -22,6 +22,8 @@ import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.tools.ToolProvider;
 
+import com.hedgehogkb.OptionsPanels.DialogOptionsPanel;
+
 
 public class DialogNodeEditorFrame {
     private DialogNode dialogNode;
@@ -40,6 +42,7 @@ public class DialogNodeEditorFrame {
 
     //initial, blank right panel
     private JPanel blankRightPanel;
+    private DialogOptionsPanel dialogOptionsPanel;
 
     //other right panel components
     private JPanel otherOptionsPanel;
@@ -97,7 +100,7 @@ public class DialogNodeEditorFrame {
         blankRightPanel.setLayout(new GridLayout(4, 2));
         blankRightPanel.setBorder(BorderFactory.createEtchedBorder());
 
-
+        dialogOptionsPanel = new DialogOptionsPanel(dialogNode);
     }
 
     private void initializeTopPanel() {
@@ -205,7 +208,7 @@ public class DialogNodeEditorFrame {
         c.insets = new Insets(10, 10, 0, 10);
         leftPanel.add(factionOptionsButton, c);
 
-        dialogOptionsButton = new JButton("Faction Options");
+        dialogOptionsButton = new JButton("Dialog Options");
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 3;
@@ -397,6 +400,13 @@ public class DialogNodeEditorFrame {
         otherOptionsButton.addActionListener(e -> {
             mainPanel.remove(1);
             mainPanel.add(otherOptionsPanel, 1);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
+
+        dialogOptionsButton.addActionListener(e -> {
+            mainPanel.remove(1);
+            mainPanel.add(dialogOptionsPanel.getPanel(), 1);
             mainPanel.revalidate();
             mainPanel.repaint();
         });

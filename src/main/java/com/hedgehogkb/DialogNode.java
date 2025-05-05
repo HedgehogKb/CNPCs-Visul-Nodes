@@ -93,7 +93,7 @@ public class DialogNode {
 
         this.options = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            options.add(new DialogOption());
+            options.add(new DialogOption(i+1));
             if (Math.random() < 0.5) {
                 options.get(i).setOptionType(1);
             }
@@ -228,8 +228,8 @@ public class DialogNode {
 
     public void optionFactionJson(JSONObject dialogJsonWrapper) {
         for(int i = 1; i <= 2; i++) {
-            String factionKey = "ptionFactions" + i;
-            String factionPointsKey = "ptionFaction" + i + "Points";
+            String factionKey = "OptionFactions" + i;
+            String factionPointsKey = "OptionFaction" + i + "Points";
             String decreaseFactionKey = "DecreaseFaction" + i + "Points";
 
             dialogJsonWrapper.put(factionKey, optionFactions[i - 1]);
