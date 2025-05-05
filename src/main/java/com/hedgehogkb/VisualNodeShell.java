@@ -98,6 +98,10 @@ public class VisualNodeShell {
         return isTouching;
     }
 
+    public int isOptionTouchingMouse() {
+        
+    }
+
     /**
      * Sets the offset X and Y variables.
      * @param offsetX
