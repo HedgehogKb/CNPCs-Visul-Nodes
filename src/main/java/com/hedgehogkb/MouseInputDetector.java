@@ -16,6 +16,9 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     @SuppressWarnings("FieldMayBeFinal")
     private ArrayList<VisualNodeShell> visualNodeShells;
     private boolean isDraggingBackground;
+    private boolean isDraggingOptionNode;
+    private DialogOption draggedOptionNode;
+    private int draggedOptionNodeSlot;
 
     public MouseInputDetector(ArrayList<VisualNodeShell> visualNodeShells) {
         this.mouseX = 0;
@@ -34,12 +37,23 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     public void mouseDragged(java.awt.event.MouseEvent e) {
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
-            if ((curVisualNode.isTouchingMouse(e.getX(), e.getY()) || curVisualNode.getIsBeingDragged()) && !isDraggingBackground) {
-                curVisualNode.setIsBeingDragged(true);
-                this.isDraggingBackground = false;
-                curVisualNode.changePosition(e.getX() - this.mouseX, e.getY() - this.mouseY);
-                visualNodeShells.add(0, visualNodeShells.remove(i)); // Move the dragged node to the front of the list
+            Boolean touching = curVisualNode.isTouchingMouse(e.getX(), e.getY());
+            if ((touching || curVisualNode.getIsBeingDragged()) && !isDraggingBackground) {
+                if (!curVisualNode.getIsBeingDragged()) {
+                    int curIsDragginOption = curVisualNode.isOptionTouchingMouse(e.getX(), e.getY());
+                    if (curIsDragginOption != -1) {
+                        this.isDraggingOptionNode = true;
+                        this.draggedOptionNode = curVisualNode.getDialogNode().getOptions().get(curIsDragginOption);
+                        this.draggedOptionNodeSlot = curIsDragginOption;
+                        curVisualNode.setIsBeingDragged(false);
+                    } else {
+                        curVisualNode.setIsBeingDragged(true);
+                        curVisualNode.changePosition(e.getX() - this.mouseX, e.getY() - this.mouseY);
 
+                    }
+                }
+                this.isDraggingBackground = false;
+                visualNodeShells.add(0, visualNodeShells.remove(i)); // Move the dragged node to the front of the list
                 this.mouseX = e.getX();
                 this.mouseY = e.getY();
                 return;
@@ -78,6 +92,9 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (this.isDraggingOptionNode) {
+            isDraggingOptionNode = false;
+        }
         for (int i = 0; i < visualNodeShells.size(); i++) {
             visualNodeShells.get(i).setIsBeingDragged(false);
             this.isDraggingBackground = false;
@@ -101,6 +118,25 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     public int getMouseOffsetY() {
         return this.offsetY;
+    }
+
+    public int getMouseX() {
+        return this.mouseX;
+    }
+    public int getMouseY() {
+        return this.mouseY;
+    }
+
+    public boolean getIsDraggingOptionNode() {
+        return this.isDraggingOptionNode;
+    }
+
+    public DialogOption getDraggedOptionNode() {
+        return this.draggedOptionNode;
+    }
+
+    public int getDraggedOptionNodeSlot() {
+        return this.draggedOptionNodeSlot;
     }
 
 }

@@ -98,8 +98,17 @@ public class VisualNodeShell {
         return isTouching;
     }
 
-    public int isOptionTouchingMouse() {
-        
+    public int isOptionTouchingMouse(int mouseX, int mouseY) {
+        for (int i = 0; i < 6; i++) {
+            int minX = posX + offsetX + 133;
+            int maxX = posX + offsetX + 144;
+            int minY = posY + offsetY + 5 + i * 15;
+            int maxY = posY + offsetY + 16 + i * 15;
+            if (minX <= mouseX && maxX >= mouseX && minY <= mouseY && maxY >= mouseY) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
