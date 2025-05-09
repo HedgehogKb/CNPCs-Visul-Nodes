@@ -16,4 +16,9 @@ public class VisualNodeManager {
         this.visualNodeShells.add(visualNodeShell);
         this.visualNodeShellsByID.put(visualNodeShell.getDialogNode().getDialogId(), visualNodeShell);
     }
+
+    public void moveVisualNodeToFront(VisualNodeShell visualNodeShell) {
+        this.visualNodeShells.remove(visualNodeShell);
+        this.visualNodeShells.add(0, visualNodeShell);
+    }
 }

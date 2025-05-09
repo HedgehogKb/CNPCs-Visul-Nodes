@@ -3,6 +3,7 @@ package com.hedgehogkb;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -17,6 +18,7 @@ public class VisualNodeDisplayFrame {
      * the further left in the list, the higher up in the order: 0 is on the top, size()-1 is on the bottom.
      */
     private ArrayList<VisualNodeShell> visualNodeShells;
+    private HashMap<Integer, VisualNodeShell> visualNodeShellsByID = new HashMap<>();
 
     private MouseInputDetector mouseInputDetector;
 
@@ -30,6 +32,7 @@ public class VisualNodeDisplayFrame {
 
                 drawBackground(g);
                 drawVisualNodeShells(g);
+                //drawDialogOptionLine(g);
             }
         };
 
@@ -88,6 +91,13 @@ public class VisualNodeDisplayFrame {
                 curNodeShell.setOffset(offsetX, offsetY);
                 curNodeShell.draw(g);
             }
+        }
+    }
+
+    public void drawDialogOptionLine(Graphics g) {
+        for (int i = 0; i < visualNodeShells.size(); i++) {
+            //VisualNodeShell curNodeShell = visualNodeShells.get(i);
+            
         }
     }
 

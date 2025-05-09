@@ -149,6 +149,9 @@ public class VisualNodeShell {
         this.isBeingDragged = isBeingDragged;
     }
 
+    public int getDialogId() {
+        return dialogNode.getDialogId();
+    }
 
     /**
      * Returns the dialog node that is associated with the visual node shell.
