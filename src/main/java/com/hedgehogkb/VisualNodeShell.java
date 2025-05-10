@@ -122,7 +122,7 @@ public class VisualNodeShell {
     }
 
     /**
-     * adds to the offset X and Y variables.
+     * adds to the parameters to the X offset and Y offset variables.
      * @param offsetX
      * @param offsetY
      */
@@ -131,11 +131,21 @@ public class VisualNodeShell {
         this.offsetY += offsetY;
     }
 
+    /**
+     * sets position of the X position and Y position variables.
+     * @param posX
+     * @param posY
+     */
     public void setPosition(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
     }
 
+    /**
+     * add the parameters to the X position and Y position variables.
+     * @param posX
+     * @param posY
+     */
     public void changePosition(int posX, int posY) {
         this.posX += posX;
         this.posY += posY;
