@@ -71,8 +71,8 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
             }
         }
         this.isDraggingBackground = true;   
-        offsetX = mouseX - e.getX();
-        offsetY = mouseY - e.getY(); 
+        offsetX += e.getX() - mouseX;
+        offsetY += e.getY() - mouseY;
         mouseX = e.getX();
         mouseY = e.getY();
     }
@@ -81,8 +81,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     public void mouseClicked(MouseEvent e) {
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
-            System.err.println("cur option node: "+curVisualNode.isOptionTouchingMouse(e.getX(), e.getY()));
-            if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground) {
+            if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground && !isDraggingOption) {
                 SwingUtilities.invokeLater(() -> {
                     DialogNodeEditorFrame dialogNodeEditorFrame = new DialogNodeEditorFrame(curVisualNode.getDialogNode());
                 });
@@ -99,7 +98,9 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        this.draggedOptionSlot = 0;
+        this.isDraggingOption = false;
+        this.isDraggingBackground = false;
         for (int i = 0; i < visualNodeShells.size(); i++) {
             visualNodeShells.get(i).setIsBeingDragged(false);
             this.isDraggingBackground = false;
