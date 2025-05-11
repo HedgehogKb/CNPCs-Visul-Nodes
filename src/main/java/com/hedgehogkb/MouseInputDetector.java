@@ -18,6 +18,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     private boolean isDraggingBackground;
     private boolean isDraggingOption;
     private int draggedOptionSlot;
+    private VisualNodeShell draggedOptionNode;
 
     public MouseInputDetector(ArrayList<VisualNodeShell> visualNodeShells) {
         this.mouseX = 0;
@@ -59,6 +60,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                     if (touchingOption != -1) {
                         draggedOptionSlot = touchingOption;
                         isDraggingOption = true;
+                        this.draggedOptionNode = curVisualNode;
                     } else {
                         curVisualNode.setIsBeingDragged(true);
                     }
@@ -100,6 +102,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     public void mouseReleased(MouseEvent e) {
         this.draggedOptionSlot = 0;
         this.isDraggingOption = false;
+        this.draggedOptionNode = null;
         this.isDraggingBackground = false;
         for (int i = 0; i < visualNodeShells.size(); i++) {
             visualNodeShells.get(i).setIsBeingDragged(false);
@@ -133,4 +136,15 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
         return this.mouseY;
     }
 
+    public boolean getIsDraggingOption() {
+        return this.isDraggingOption;
+    }
+
+    public int getDraggedOptionSlot() {
+        return this.draggedOptionSlot;
+    }
+
+    public VisualNodeShell getDraggedOptionNode() {
+        return this.draggedOptionNode;
+    }
 }

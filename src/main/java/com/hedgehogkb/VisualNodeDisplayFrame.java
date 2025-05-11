@@ -32,7 +32,7 @@ public class VisualNodeDisplayFrame {
 
                 drawBackground(g);
                 drawVisualNodeShells(g);
-                //drawDialogOptionLine(g);
+                drawDialogOptionLine(g);
             }
         };
 
@@ -95,9 +95,15 @@ public class VisualNodeDisplayFrame {
     }
 
     public void drawDialogOptionLine(Graphics g) {
-        for (int i = 0; i < visualNodeShells.size(); i++) {
-            //VisualNodeShell curNodeShell = visualNodeShells.get(i);
-            
+        if (mouseInputDetector.getIsDraggingOption()) {
+            VisualNodeShell curNode = mouseInputDetector.getDraggedOptionNode();
+            int curOptionSlot = mouseInputDetector.getDraggedOptionSlot();
+            int offsetX = mouseInputDetector.getMouseOffsetX();
+            int offsetY = mouseInputDetector.getMouseOffsetY();
+            int startX = offsetX + curNode.getPosX() + 138;
+            int startY = offsetY + curNode.getPosY() + 10 + curOptionSlot*15;
+            g.setColor(Color.black);
+            g.drawLine(startX, startY, mouseInputDetector.getMouseX(), mouseInputDetector.getMouseY());
         }
     }
 
