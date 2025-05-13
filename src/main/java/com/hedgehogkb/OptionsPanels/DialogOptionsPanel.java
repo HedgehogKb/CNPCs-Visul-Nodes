@@ -214,6 +214,14 @@ public class DialogOptionsPanel {
     public void initializeOptionPanelValues(DialogOption option) {
         optionTitleTextArea.setText(option.getTitle());
         colorTextArea.setText(String.valueOf(option.getDialogColor()));
+        System.out.println(option.getOptionType());
+        if (option.getOptionType() == 1) {
+            System.out.println("selected 1");
+            optionTypeBox.setSelectedIndex(0);
+        } else if (option.getOptionType() == 3) {
+            optionTypeBox.setSelectedIndex(3);
+        }
+        revealOptionTypeComponents();
         if (optionTypeBox.getSelectedItem().equals("Dialog")) {
             specificOptionTypeTextArea.setText(String.valueOf(option.getDialog()));
         } else if (optionTypeBox.getSelectedItem().equals("Command Block")) {
@@ -255,28 +263,73 @@ public class DialogOptionsPanel {
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
+                String colorString = colorTextArea.getText();
+                if (colorString.equals("")) {
+                    return;
+                }
+                int dialogColor = Integer.valueOf(colorString);
+                dialogOption.setDialogColor(dialogColor);
             }
             @Override
             public void changedUpdate(DocumentEvent e) {}
         });
 
         optionTypeBox.addActionListener(e -> {
-            if (optionTypeBox.getSelectedItem().equals("Dialog")) {
+           revealOptionTypeComponents();
+        });
+
+        specificOptionTypeTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (optionTypeBox.getSelectedItem().equals("Dialog")) {
+                    try {
+                        int dialogId = Integer.valueOf(specificOptionTypeTextArea.getText());
+                        dialogOption.setDialog(dialogId);
+                    } catch (Exception ex) {
+                        SwingUtilities.invokeLater(() -> {
+                            specificOptionTypeTextArea.setText(String.valueOf(dialogOption.getDialog()));
+                        });
+                    }
+                } else {
+                    dialogOption.setOptionCommand(specificOptionTypeTextArea.getText());
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (optionTypeBox.getSelectedItem().equals("Dialog")) {
+                     try {
+                        int dialogId = Integer.valueOf(specificOptionTypeTextArea.getText());
+                        dialogOption.setDialog(dialogId);
+                    } catch (Exception ex) {
+                        //do nothing because when removing I want the person to be able to remove more
+                    }
+                } else {
+                    dialogOption.setOptionCommand(specificOptionTypeTextArea.getText());
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+    }
+
+    public void revealOptionTypeComponents() {
+         if (optionTypeBox.getSelectedItem().equals("Dialog")) {
                 specificOptionTypeLabel.setVisible(true);
                 specificOptionTypeLabel.setText("Next Dialog Id: ");
                 specificOptionTypeTextArea.setVisible(true);
                 specificOptionTypeTextArea.setText(String.valueOf(dialogOption.getDialog()));
-             } else if (optionTypeBox.getSelectedItem().equals("Command Block")) {
+        } else if (optionTypeBox.getSelectedItem().equals("Command Block")) {
                 specificOptionTypeLabel.setVisible(true);
                 specificOptionTypeLabel.setText("Command: ");
                 specificOptionTypeTextArea.setVisible(true);
                 specificOptionTypeTextArea.setText(dialogOption.getOptionCommand());
-            } else {
+        } else {
                 specificOptionTypeLabel.setVisible(false);
                 specificOptionTypeTextArea.setVisible(false);
 
-            }
-        });
+        }
     }
 
     public JPanel getPanel() {

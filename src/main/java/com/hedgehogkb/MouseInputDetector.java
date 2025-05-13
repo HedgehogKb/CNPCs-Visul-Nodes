@@ -109,7 +109,11 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                     draggedOptionNode.getDialogNode().getOptions().get(draggedOptionSlot).setDialog(linkedNodeId);
                     break;
                 }
+                if (i == visualNodeShells.size() -1) {
+                    draggedOptionNode.getDialogNode().getOptions().get(draggedOptionSlot).setDialog(-1);
+                }
             }
+
             this.draggedOptionSlot = 0;
             this.isDraggingOption = false;
             this.draggedOptionNode = null;
