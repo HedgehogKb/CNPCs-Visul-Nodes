@@ -1,11 +1,9 @@
 package com.hedgehogkb.OptionsPanels;
 
-import com.hedgehogkb.DialogNode;
-import com.hedgehogkb.DialogOption;
-
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -14,10 +12,16 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.border.Border;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import com.hedgehogkb.DialogNode;
+import com.hedgehogkb.DialogOption;
 
 public class DialogOptionsPanel {
     private DialogNode dialogNode;
+    private DialogOption dialogOption;
     private JPanel panel;
     private JPanel specificOptionPanel;
     private JLabel specificOptionLabel;
@@ -38,7 +42,10 @@ public class DialogOptionsPanel {
     public DialogOptionsPanel(DialogNode dialogNode) {
         this.dialogNode = dialogNode;
         initializeMainPanelComponents();
-        initializeSpecificOptionPanelComponents(); 
+        initializeSpecificOptionPanelComponents();
+        this.dialogOption = dialogNode.getOptions().get(0);
+        initializeOptionPanelValues(dialogOption);
+        handleOptionPanelInputs();
     }
 
     private void initializeMainPanelComponents() {
@@ -171,30 +178,105 @@ public class DialogOptionsPanel {
         c.gridy = 3;
         c.gridwidth = 2;
         c.weightx = 0.5;
-        c.weighty = 0.5;
+        c.weighty = 0.01;
         c.ipady = 0;
         c.anchor = GridBagConstraints.NORTHWEST;
         c.fill = GridBagConstraints.HORIZONTAL;
         specificOptionPanel.add(optionTypeBox, c);
 
         this.specificOptionTypeLabel = new JLabel("Next Dialog: ");
+        specificOptionTypeLabel.setVisible(false);
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 1;
         c.weightx = 0.5;
+        c.weighty = 1;
         c.ipady = 10;
         c.anchor = GridBagConstraints.NORTHWEST;
         c.fill = GridBagConstraints.HORIZONTAL;
+        specificOptionPanel.add(specificOptionTypeLabel, c);
 
         this.specificOptionTypeTextArea = new JTextArea();
         specificOptionTypeTextArea.setBorder(BorderFactory.createLineBorder(Color.darkGray));
+        specificOptionTypeTextArea.setVisible(false);
         c.gridx = 1;
         c.gridy = 4;
         c.gridwidth = 2;
         c.weightx = 0.5;
+        c.weighty = 1;
         c.ipady = 0;
-        c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.NORTHWEST;
+        c.insets = new Insets(5, 0, 0, 0);
+        specificOptionPanel.add(specificOptionTypeTextArea, c);
+    }
+
+    public void initializeOptionPanelValues(DialogOption option) {
+        optionTitleTextArea.setText(option.getTitle());
+        colorTextArea.setText(String.valueOf(option.getDialogColor()));
+        if (optionTypeBox.getSelectedItem().equals("Dialog")) {
+            specificOptionTypeTextArea.setText(String.valueOf(option.getDialog()));
+        } else if (optionTypeBox.getSelectedItem().equals("Command Block")) {
+            specificOptionTypeTextArea.setText(option.getOptionCommand());
+        }
+    }
+
+    public void handleOptionPanelInputs() {
+        specificOptionBox.addActionListener(e -> {
+            int optionId = specificOptionBox.getSelectedIndex();
+            this.dialogOption = dialogNode.getOptions().get(optionId);
+            initializeOptionPanelValues(dialogOption);
+            //specificOptionPanel.repaint();
+        });
+
+        confirmOptionTitleButton.addActionListener(e -> {
+            dialogOption.setTitle(optionTitleTextArea.getText());
+            int selectedIndex = specificOptionBox.getSelectedIndex();
+            specificOptionBox.insertItemAt(dialogOption.getOptionSlot() + " - " + dialogOption.getTitle(), selectedIndex);
+            specificOptionBox.removeItemAt(selectedIndex + 1);
+            specificOptionBox.setSelectedIndex(selectedIndex);
+        });
+
+        cancelOptionTitleButton.addActionListener(e -> {
+            optionTitleTextArea.setText(dialogOption.getTitle());
+        });
+
+        colorTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    int dialogColor = Integer.valueOf(colorTextArea.getText());
+                    dialogOption.setDialogColor(dialogColor);
+                } catch (Exception ex) {
+                    SwingUtilities.invokeLater(() -> {
+                        colorTextArea.setText(String.valueOf(dialogOption.getDialogColor()));
+                    });
+                }
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+
+        optionTypeBox.addActionListener(e -> {
+            if (optionTypeBox.getSelectedItem().equals("Dialog")) {
+                specificOptionTypeLabel.setVisible(true);
+                specificOptionTypeLabel.setText("Next Dialog Id: ");
+                specificOptionTypeTextArea.setVisible(true);
+                specificOptionTypeTextArea.setText(String.valueOf(dialogOption.getDialog()));
+             } else if (optionTypeBox.getSelectedItem().equals("Command Block")) {
+                specificOptionTypeLabel.setVisible(true);
+                specificOptionTypeLabel.setText("Command: ");
+                specificOptionTypeTextArea.setVisible(true);
+                specificOptionTypeTextArea.setText(dialogOption.getOptionCommand());
+            } else {
+                specificOptionTypeLabel.setVisible(false);
+                specificOptionTypeTextArea.setVisible(false);
+
+            }
+        });
     }
 
     public JPanel getPanel() {

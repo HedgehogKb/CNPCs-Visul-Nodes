@@ -92,6 +92,16 @@ public class VisualNodeShell {
         g2d.drawString("Id: " + dialogNode.getDialogId(), xScreenPos+10, yScreenPos+44);
     }
 
+    public void drawOutline(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        int xScreenPos = posX + offsetX;
+        int yScreenPos = posY + offsetY;
+
+        g2d.setColor(new Color(235, 227, 7));
+        g2d.setStroke(new BasicStroke(5));
+        g2d.drawRect(xScreenPos-3, yScreenPos-3, width+6, height+6);    
+    }
+
     public boolean isTouchingMouse(int mouseX, int mouseY) {
         boolean isTouching = (posX + offsetX <= mouseX && posX +offsetX + width >= mouseX) &&
                              (posY + offsetY <= mouseY && posY + offsetY + height >= mouseY);

@@ -47,7 +47,6 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                 }
 
                 if (isDraggingOption) {
-                    System.out.println("dragging option: " + draggedOptionSlot);
                     mouseX = e.getX();
                     mouseY = e.getY();
                     return;
@@ -57,7 +56,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                 
                 if (touching) {
                     int touchingOption = curVisualNode.isOptionTouchingMouse(e.getX(), e.getY());
-                    if (touchingOption != -1) {
+                    if (touchingOption != -1 && curVisualNode.getDialogNode().getOptions().get(touchingOption).getOptionType() == 1) {
                         draggedOptionSlot = touchingOption;
                         isDraggingOption = true;
                         this.draggedOptionNode = curVisualNode;
@@ -100,13 +99,25 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        this.draggedOptionSlot = 0;
-        this.isDraggingOption = false;
-        this.draggedOptionNode = null;
         this.isDraggingBackground = false;
+
+        if (isDraggingOption) {
+            for (int i = 0; i < visualNodeShells.size(); i++) {
+                VisualNodeShell curNode = visualNodeShells.get(i);
+                if (!curNode.equals(draggedOptionNode) && curNode.isTouchingMouse(mouseX, mouseY)) {
+                    int linkedNodeId = curNode.getDialogNode().getDialogId();
+                    draggedOptionNode.getDialogNode().getOptions().get(draggedOptionSlot).setDialog(linkedNodeId);
+                    break;
+                }
+            }
+            this.draggedOptionSlot = 0;
+            this.isDraggingOption = false;
+            this.draggedOptionNode = null;
+        }
+
         for (int i = 0; i < visualNodeShells.size(); i++) {
-            visualNodeShells.get(i).setIsBeingDragged(false);
-            this.isDraggingBackground = false;
+            VisualNodeShell curNode = visualNodeShells.get(i);
+            curNode.setIsBeingDragged(false);
         }
 
     }

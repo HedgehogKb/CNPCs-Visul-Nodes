@@ -96,14 +96,24 @@ public class VisualNodeDisplayFrame {
 
     public void drawDialogOptionLine(Graphics g) {
         if (mouseInputDetector.getIsDraggingOption()) {
-            VisualNodeShell curNode = mouseInputDetector.getDraggedOptionNode();
+            VisualNodeShell draggedNode = mouseInputDetector.getDraggedOptionNode();
             int curOptionSlot = mouseInputDetector.getDraggedOptionSlot();
             int offsetX = mouseInputDetector.getMouseOffsetX();
             int offsetY = mouseInputDetector.getMouseOffsetY();
-            int startX = offsetX + curNode.getPosX() + 138;
-            int startY = offsetY + curNode.getPosY() + 10 + curOptionSlot*15;
+            int startX = offsetX + draggedNode.getPosX() + 138;
+            int startY = offsetY + draggedNode.getPosY() + 10 + curOptionSlot*15;
             g.setColor(Color.black);
             g.drawLine(startX, startY, mouseInputDetector.getMouseX(), mouseInputDetector.getMouseY());
+
+            int mouseX = mouseInputDetector.getMouseX();
+            int mouseY = mouseInputDetector.getMouseY();
+            for (int i = 0; i < visualNodeShells.size(); i++) {
+                VisualNodeShell curNode = visualNodeShells.get(i);
+                if (!curNode.equals(draggedNode) && curNode.isTouchingMouse(mouseX, mouseY)) {
+                    curNode.drawOutline(g);
+                    return;
+                }
+            }
         }
     }
 
