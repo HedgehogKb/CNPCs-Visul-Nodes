@@ -87,6 +87,9 @@ public class VisualNodeShell {
 
             }
         }
+
+        g2d.fillRect(xScreenPos+10, yScreenPos +55, 10, 30);
+
         g2d.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         g2d.drawString(dialogNode.getDialogTitle(), xScreenPos+10, yScreenPos+22);
         g2d.drawString("Id: " + dialogNode.getDialogId(), xScreenPos+10, yScreenPos+44);
@@ -99,7 +102,9 @@ public class VisualNodeShell {
 
         g2d.setColor(new Color(235, 227, 7));
         g2d.setStroke(new BasicStroke(5));
-        g2d.drawRect(xScreenPos-3, yScreenPos-3, width+6, height+6);    
+        g2d.drawRect(xScreenPos-3, yScreenPos-3, width+6, height+6);  
+        g2d.setStroke(new BasicStroke(2));
+  
     }
 
     public boolean isTouchingMouse(int mouseX, int mouseY) {
