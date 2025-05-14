@@ -216,7 +216,6 @@ public class DialogOptionsPanel {
         colorTextArea.setText(String.valueOf(option.getDialogColor()));
         System.out.println(option.getOptionType());
         if (option.getOptionType() == 1) {
-            System.out.println("selected 1");
             optionTypeBox.setSelectedIndex(0);
         } else if (option.getOptionType() == 3) {
             optionTypeBox.setSelectedIndex(3);
