@@ -21,6 +21,7 @@ public class VisualNodeDisplayFrame {
     private HashMap<Integer, VisualNodeShell> visualNodeShellsByID = new HashMap<>();
 
     private MouseInputDetector mouseInputDetector;
+    private KeyboardInputDetector keyboardInputDetector;
 
     public VisualNodeDisplayFrame() {
         this.frame = new JFrame("Visual Node Display");
@@ -47,6 +48,7 @@ public class VisualNodeDisplayFrame {
         }
 
         this.mouseInputDetector = new MouseInputDetector(visualNodeShells);
+        this.keyboardInputDetector = new KeyboardInputDetector();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -54,6 +56,7 @@ public class VisualNodeDisplayFrame {
         
         panel.addMouseMotionListener(mouseInputDetector);
         panel.addMouseListener(mouseInputDetector);
+        frame.addKeyListener(keyboardInputDetector);
         panel.setBorder(BorderFactory.createEtchedBorder());
         //frame.addMouseMotionListener(mouseInputDetector);
         //frame.addMouseListener(mouseInputDetector);

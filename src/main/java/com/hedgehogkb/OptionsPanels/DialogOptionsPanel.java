@@ -211,6 +211,7 @@ public class DialogOptionsPanel {
         specificOptionPanel.add(specificOptionTypeTextArea, c);
     }
 
+    //ms egger needs to ask the rotc people in third block. (remember newspaper).
     public void initializeOptionPanelValues(DialogOption option) {
         optionTitleTextArea.setText(option.getTitle());
         colorTextArea.setText(String.valueOf(option.getDialogColor()));
