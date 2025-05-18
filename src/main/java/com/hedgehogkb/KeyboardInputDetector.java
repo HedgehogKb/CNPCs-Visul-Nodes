@@ -1,8 +1,12 @@
 package com.hedgehogkb;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Timer;
+
+import javax.swing.Timer;
+
 
 
 public class KeyboardInputDetector implements KeyListener {
@@ -11,12 +15,21 @@ public class KeyboardInputDetector implements KeyListener {
     //timer variables
     private Timer keyPressTimer;
     private Boolean timerRunning;
+    private ActionListener timerActionListener;
 
     public KeyboardInputDetector() {
         this.shiftHeld = false;
         this.aHeld = false;
         this.timerRunning = false;
-        this.keyPressTimer = new Timer();
+        this.timerActionListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timerRunning = false;
+            }
+            
+        };
+        this.keyPressTimer = new Timer(100, timerActionListener);
+        this.keyPressTimer.setRepeats(false);
     }
 
     @Override
@@ -35,11 +48,22 @@ public class KeyboardInputDetector implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println();
         if (e.getKeyCode() == e.VK_SHIFT) {
-          
+            if (this.timerRunning) {
+                cancelTimer();
+                System.err.println("Shift and A pressed");
+            } else {
+                this.timerRunning = true;
+                this.keyPressTimer.start();
+            }
         } else if  (e.getKeyCode() == e.VK_A) {
-
+            if (this.timerRunning) {
+                cancelTimer();
+                System.err.println("Shift and A pressed");
+            } else {
+                this.timerRunning = true;
+                this.keyPressTimer.start();
+            }
         }    
     }
 
@@ -49,8 +73,8 @@ public class KeyboardInputDetector implements KeyListener {
 
     public void cancelTimer() {
         if (timerRunning) {
-        this.timerRunning = false;
-        this.keyPressTimer.cancel();
+            this.timerRunning = false;
+            this.keyPressTimer.stop();
         }
     }
     
