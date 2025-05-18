@@ -9,6 +9,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.hedgehogkb.DialogNodeComponents.DialogNode;
+import com.hedgehogkb.DialogNodeComponents.DialogOption;
+import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
+import com.hedgehogkb.InputDetectors.KeyboardInputDetector;
+import com.hedgehogkb.InputDetectors.MouseInputDetector;
+
 public class VisualNodeDisplayFrame {
     private JFrame frame;
     private JPanel panel;

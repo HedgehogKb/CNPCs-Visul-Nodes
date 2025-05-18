@@ -1,4 +1,4 @@
-package com.hedgehogkb;
+package com.hedgehogkb.DialogNodeComponents;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

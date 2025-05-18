@@ -1,4 +1,4 @@
-package com.hedgehogkb.OptionsPanels;
+package com.hedgehogkb.EditorPanels;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -16,8 +16,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.hedgehogkb.DialogNode;
-import com.hedgehogkb.DialogOption;
+import com.hedgehogkb.DialogNodeComponents.DialogNode;
+import com.hedgehogkb.DialogNodeComponents.DialogOption;
 
 public class DialogOptionsPanel {
     private DialogNode dialogNode;

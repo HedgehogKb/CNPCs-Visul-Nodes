@@ -1,10 +1,8 @@
-package com.hedgehogkb;
+package com.hedgehogkb.EditorPanels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -17,12 +15,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.SpinnerDateModel;
-import javax.swing.Spring;
 import javax.swing.SpringLayout;
-import javax.tools.ToolProvider;
 
-import com.hedgehogkb.OptionsPanels.DialogOptionsPanel;
+import com.hedgehogkb.DialogNodeComponents.DialogNode;
+
+//import com.hedgehogkb.OptionsPanels.DialogOptionsPanel;
 
 
 public class DialogNodeEditorFrame {
@@ -84,6 +81,7 @@ public class DialogNodeEditorFrame {
         frame.setLayout(new BorderLayout());
         frame.setSize(600, 430);
         frame.setMinimumSize(new Dimension(600, 340));
+        
 
         //Initialize the main panel which is divided in two parts,
         this.mainPanel = new JPanel();

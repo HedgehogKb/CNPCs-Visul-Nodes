@@ -1,4 +1,4 @@
-package com.hedgehogkb;
+package com.hedgehogkb.InputDetectors;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -6,6 +6,10 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
+
+import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
+import com.hedgehogkb.EditorPanels.DialogNodeEditorFrame;
+
 
 public class MouseInputDetector implements MouseMotionListener, MouseListener {
     private int mouseX;
