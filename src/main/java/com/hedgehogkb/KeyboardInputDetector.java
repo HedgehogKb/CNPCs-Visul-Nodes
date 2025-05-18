@@ -16,8 +16,9 @@ public class KeyboardInputDetector implements KeyListener {
     private Timer keyPressTimer;
     private Boolean timerRunning;
     private ActionListener timerActionListener;
+    private VisualNodeDisplayFrame visualNodeDisplay;
 
-    public KeyboardInputDetector() {
+    public KeyboardInputDetector(VisualNodeDisplayFrame visualNodeDisplay) {
         this.shiftHeld = false;
         this.aHeld = false;
         this.timerRunning = false;
@@ -30,6 +31,7 @@ public class KeyboardInputDetector implements KeyListener {
         };
         this.keyPressTimer = new Timer(100, timerActionListener);
         this.keyPressTimer.setRepeats(false);
+        this.visualNodeDisplay = visualNodeDisplay;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class KeyboardInputDetector implements KeyListener {
             if (this.timerRunning) {
                 cancelTimer();
                 System.err.println("Shift and A pressed");
+                visualNodeDisplay.addVisualNode();
             } else {
                 this.timerRunning = true;
                 this.keyPressTimer.start();
@@ -60,6 +63,8 @@ public class KeyboardInputDetector implements KeyListener {
             if (this.timerRunning) {
                 cancelTimer();
                 System.err.println("Shift and A pressed");
+                visualNodeDisplay.addVisualNode();
+
             } else {
                 this.timerRunning = true;
                 this.keyPressTimer.start();

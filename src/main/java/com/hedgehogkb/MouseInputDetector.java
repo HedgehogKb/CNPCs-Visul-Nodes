@@ -15,6 +15,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @SuppressWarnings("FieldMayBeFinal")
     private ArrayList<VisualNodeShell> visualNodeShells;
+    private boolean mouseDown;
     private boolean isDraggingBackground;
     private boolean isDraggingOption;
     private int draggedOptionSlot;
@@ -25,6 +26,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
         this.mouseY = 0;
         this.visualNodeShells = visualNodeShells;
         this.isDraggingBackground = false;
+        this.mouseDown = false;
     }
 
     @Override
@@ -80,6 +82,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        mouseDown = true;
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
             if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground && !isDraggingOption) {
@@ -94,11 +97,11 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        mouseDown = false;
         this.isDraggingBackground = false;
 
         if (isDraggingOption) {

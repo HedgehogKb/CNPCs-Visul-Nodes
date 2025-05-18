@@ -216,11 +216,15 @@ public class DialogOptionsPanel {
         optionTitleTextArea.setText(option.getTitle());
         colorTextArea.setText(String.valueOf(option.getDialogColor()));
         System.out.println(option.getOptionType());
+
         if (option.getOptionType() == 1) {
             optionTypeBox.setSelectedIndex(0);
-        } else if (option.getOptionType() == 3) {
-            optionTypeBox.setSelectedIndex(3);
+        } else if (option.getOptionType() == 0) {
+            optionTypeBox.setSelectedIndex(1);
+        } else {
+            optionTypeBox.setSelectedIndex(option.getOptionType());
         }
+
         revealOptionTypeComponents();
         if (optionTypeBox.getSelectedItem().equals("Dialog")) {
             specificOptionTypeTextArea.setText(String.valueOf(option.getDialog()));
@@ -233,8 +237,8 @@ public class DialogOptionsPanel {
         specificOptionBox.addActionListener(e -> {
             int optionId = specificOptionBox.getSelectedIndex();
             this.dialogOption = dialogNode.getOptions().get(optionId);
+            revealOptionTypeComponents();
             initializeOptionPanelValues(dialogOption);
-            //specificOptionPanel.repaint();
         });
 
         confirmOptionTitleButton.addActionListener(e -> {

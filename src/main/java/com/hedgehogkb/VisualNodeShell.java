@@ -67,7 +67,7 @@ public class VisualNodeShell {
 
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        int xScreenPos = posX + offsetX;;
+        int xScreenPos = posX + offsetX;
         int yScreenPos = posY + offsetY;
 
         int colorValue = 100;

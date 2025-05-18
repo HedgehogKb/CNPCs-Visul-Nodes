@@ -40,7 +40,7 @@ public class VisualNodeDisplayFrame {
 
         this.visualNodeShells = new ArrayList<>();
         visualNodeShells.add(new VisualNodeShell(100, 100, 0, 0, new DialogNode(1)));
-        visualNodeShells.add(new VisualNodeShell(400, 300, 0, 0, new DialogNode(2)));
+        //visualNodeShells.add(new VisualNodeShell(400, 300, 0, 0, new DialogNode(2)));
         
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curNode = visualNodeShells.get(i);
@@ -48,7 +48,7 @@ public class VisualNodeDisplayFrame {
         }
 
         this.mouseInputDetector = new MouseInputDetector(visualNodeShells);
-        this.keyboardInputDetector = new KeyboardInputDetector();
+        this.keyboardInputDetector = new KeyboardInputDetector(this);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -150,5 +150,16 @@ public class VisualNodeDisplayFrame {
         }
     }
 
+    public void addVisualNode() {
+        DialogNode curNode = new DialogNode(visualNodeShells.size()+1);
+        int mouseX = mouseInputDetector.getMouseX();
+        int mouseY = mouseInputDetector.getMouseY();
+        int offsetX = mouseInputDetector.getMouseOffsetX();
+        int offsetY = mouseInputDetector.getMouseOffsetY();
+
+        VisualNodeShell curVisualNode = new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX , offsetY, curNode);
+        visualNodeShells.add(curVisualNode);
+        visualNodeShellsByID.put(curVisualNode.getDialogId(), curVisualNode);
+    }
 
 }
