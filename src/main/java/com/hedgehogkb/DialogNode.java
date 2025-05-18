@@ -94,9 +94,6 @@ public class DialogNode {
         this.options = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             options.add(new DialogOption(i+1));
-            if (Math.random() < 0.5) {
-                options.get(i).setOptionType(1);
-            }
         }
     }
 

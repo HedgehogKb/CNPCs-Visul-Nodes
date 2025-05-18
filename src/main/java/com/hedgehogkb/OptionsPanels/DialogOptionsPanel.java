@@ -280,6 +280,13 @@ public class DialogOptionsPanel {
 
         optionTypeBox.addActionListener(e -> {
            revealOptionTypeComponents();
+           int optionTypeValue = optionTypeBox.getSelectedIndex();
+           if (optionTypeBox.getSelectedIndex() == 0) {
+            optionTypeValue = 1;
+           } else if (optionTypeBox.getSelectedIndex() == 1) {
+            optionTypeValue = 0;
+           }
+           dialogOption.setOptionType(optionTypeValue);
         });
 
         specificOptionTypeTextArea.getDocument().addDocumentListener(new DocumentListener() {
