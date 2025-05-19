@@ -101,6 +101,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                     } else {
                         try {
                             DialogNodeEditorFrame curEditorFrame = getEditorFrameForDialogNode(curVisualNode.getDialogNode());
+                            curEditorFrame.setVisible(true);
                             curEditorFrame.moveFrameToTop();
                         } catch (Exception ex) {}
                     }
@@ -178,6 +179,16 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
         }
         return false;
     }
+
+    public boolean editorIsVisible(DialogNode node) {
+        try {
+        if (getEditorFrameForDialogNode(node).isVisible()) {
+            return true;
+        }
+        } catch (Exception e) {}
+        return false;
+    }
+
 
     public DialogNodeEditorFrame getEditorFrameForDialogNode(DialogNode node) throws Exception {
         for (int i = dialogNodeEditorFrames.size() -1; i >= 0; i--) {

@@ -428,4 +428,11 @@ public class DialogNodeEditorFrame {
         return this.dialogNode;
     }
 
+    public Boolean isVisible() {
+        return this.frame.isVisible();
+    }
+    public void setVisible(Boolean visibility) {
+        this.frame.setVisible(visibility);
+    }
+
 }
