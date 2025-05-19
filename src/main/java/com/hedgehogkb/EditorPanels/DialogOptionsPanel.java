@@ -297,9 +297,11 @@ public class DialogOptionsPanel {
                         int dialogId = Integer.valueOf(specificOptionTypeTextArea.getText());
                         dialogOption.setDialog(dialogId);
                     } catch (Exception ex) {
-                        SwingUtilities.invokeLater(() -> {
-                            specificOptionTypeTextArea.setText(String.valueOf(dialogOption.getDialog()));
-                        });
+                        if (!specificOptionTypeTextArea.getText().equals("-")) {
+                            SwingUtilities.invokeLater(() -> {
+                                specificOptionTypeTextArea.setText(String.valueOf(dialogOption.getDialog()));
+                            });
+                        }
                     }
                 } else {
                     dialogOption.setOptionCommand(specificOptionTypeTextArea.getText());
@@ -313,7 +315,9 @@ public class DialogOptionsPanel {
                         int dialogId = Integer.valueOf(specificOptionTypeTextArea.getText());
                         dialogOption.setDialog(dialogId);
                     } catch (Exception ex) {
-                        //do nothing because when removing I want the person to be able to remove more
+                        dialogOption.setDialog(-1);
+                        //I want the person to be able to remove more (ex. removing the 1 from -1 results in just -, but the person still
+                        //needs to delete mroe stuff to get a regular number.) also, since this isn't a number I set it to -1 to not cause  confusion.
                     }
                 } else {
                     dialogOption.setOptionCommand(specificOptionTypeTextArea.getText());
@@ -343,7 +347,18 @@ public class DialogOptionsPanel {
         }
     }
 
+    public void updateDialogValue() {
+        if (optionTypeBox.getSelectedItem().equals("Dialog")) {
+            specificOptionTypeTextArea.setText(String.valueOf(dialogOption.getDialog()));
+        }
+    }
+
+    //getters and setters
     public JPanel getPanel() {
         return panel;
+    }
+
+    public DialogNode getDialogNode() {
+        return this.dialogNode;
     }
 }

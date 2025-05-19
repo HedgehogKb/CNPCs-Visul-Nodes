@@ -3,6 +3,8 @@ package com.hedgehogkb;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
+
 public class VisualNodeManager {
     private ArrayList<VisualNodeShell> visualNodeShells;
     private HashMap<Integer, VisualNodeShell> visualNodeShellsByID;

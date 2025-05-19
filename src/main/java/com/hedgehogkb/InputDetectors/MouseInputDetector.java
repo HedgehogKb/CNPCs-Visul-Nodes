@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.EditorPanels.DialogNodeEditorFrame;
 
@@ -24,6 +25,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     private boolean isDraggingOption;
     private int draggedOptionSlot;
     private VisualNodeShell draggedOptionNode;
+    private ArrayList<DialogNodeEditorFrame> dialogNodeEditorFrames;
 
     public MouseInputDetector(ArrayList<VisualNodeShell> visualNodeShells) {
         this.mouseX = 0;
@@ -31,12 +33,15 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
         this.visualNodeShells = visualNodeShells;
         this.isDraggingBackground = false;
         this.mouseDown = false;
+        this.dialogNodeEditorFrames = new ArrayList<>();
     }
 
     @Override
     public void mouseMoved(java.awt.event.MouseEvent e) {
-        this.mouseX = e.getX();
-        this.mouseY = e.getY();
+        if (!mouseDown) {
+            this.mouseX = e.getX();
+            this.mouseY = e.getY();
+        }
     }
 
     @Override
@@ -91,7 +96,14 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
             if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground && !isDraggingOption) {
                 SwingUtilities.invokeLater(() -> {
-                    DialogNodeEditorFrame dialogNodeEditorFrame = new DialogNodeEditorFrame(curVisualNode.getDialogNode());
+                    if (!editorExistsForNode(curVisualNode.getDialogNode())) {
+                        dialogNodeEditorFrames.add(new DialogNodeEditorFrame(curVisualNode.getDialogNode()));
+                    } else {
+                        try {
+                            DialogNodeEditorFrame curEditorFrame = getEditorFrameForDialogNode(curVisualNode.getDialogNode());
+                            curEditorFrame.moveFrameToTop();
+                        } catch (Exception ex) {}
+                    }
                 });
                 
                 return;
@@ -114,10 +126,12 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                 if (!curNode.equals(draggedOptionNode) && curNode.isTouchingMouse(mouseX, mouseY)) {
                     int linkedNodeId = curNode.getDialogNode().getDialogId();
                     draggedOptionNode.getDialogNode().getOptions().get(draggedOptionSlot).setDialog(linkedNodeId);
+                    updateEditorFrameValues(draggedOptionNode.getDialogNode());
                     break;
                 }
                 if (i == visualNodeShells.size() -1) {
                     draggedOptionNode.getDialogNode().getOptions().get(draggedOptionSlot).setDialog(-1);
+                    updateEditorFrameValues(draggedOptionNode.getDialogNode());
                 }
             }
 
@@ -142,6 +156,39 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     public void mouseExited(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public void updateEditorFrameValues(DialogNode changedNode) {
+        for (int i = dialogNodeEditorFrames.size() -1; i >= 0; i--) {
+            DialogNodeEditorFrame curFrame = dialogNodeEditorFrames.get(i);
+            if (curFrame == null) {
+                dialogNodeEditorFrames.remove(i);
+            } else {
+                if (curFrame.getDialogOptionsPanel().getDialogNode() == changedNode) {
+                    curFrame.getDialogOptionsPanel().updateDialogValue();
+                }
+            }
+        }
+    }
+
+    public boolean editorExistsForNode(DialogNode node) {
+        for (int i = dialogNodeEditorFrames.size() -1; i >= 0; i--) {
+            if (node.equals(dialogNodeEditorFrames.get(i).getDialogNode())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public DialogNodeEditorFrame getEditorFrameForDialogNode(DialogNode node) throws Exception {
+        for (int i = dialogNodeEditorFrames.size() -1; i >= 0; i--) {
+            if (node.equals(dialogNodeEditorFrames.get(i).getDialogNode())) {
+                return dialogNodeEditorFrames.get(i);
+            }
+        }
+        throw new Exception();
+    }
+
+    //getters and setters
 
     public int getMouseOffsetX() {
         return this.offsetX;

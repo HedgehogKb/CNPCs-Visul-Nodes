@@ -414,4 +414,18 @@ public class DialogNodeEditorFrame {
             mainPanel.repaint();
         });
     }
+
+    public void moveFrameToTop() {
+        this.frame.setAlwaysOnTop(true);
+        this.frame.setAlwaysOnTop(false);
+    }
+
+    public DialogOptionsPanel getDialogOptionsPanel() {
+        return this.dialogOptionsPanel;
+    }
+
+    public DialogNode getDialogNode() {
+        return this.dialogNode;
+    }
+
 }

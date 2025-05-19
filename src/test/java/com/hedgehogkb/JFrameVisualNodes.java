@@ -3,6 +3,8 @@ package com.hedgehogkb;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
+
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
