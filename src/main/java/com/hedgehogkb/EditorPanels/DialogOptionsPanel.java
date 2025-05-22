@@ -217,13 +217,7 @@ public class DialogOptionsPanel {
         colorTextArea.setText(String.valueOf(option.getDialogColor()));
         System.out.println(option.getOptionType());
 
-        if (option.getOptionType() == 1) {
-            optionTypeBox.setSelectedIndex(0);
-        } else if (option.getOptionType() == 0) {
-            optionTypeBox.setSelectedIndex(1);
-        } else {
-            optionTypeBox.setSelectedIndex(option.getOptionType());
-        }
+        setOptoinTypeBoxValue(option);
 
         revealOptionTypeComponents();
         if (optionTypeBox.getSelectedItem().equals("Dialog")) {
@@ -329,6 +323,16 @@ public class DialogOptionsPanel {
         });
     }
 
+    public void setOptoinTypeBoxValue(DialogOption option) {
+        if (option.getOptionType() == 1) {
+            optionTypeBox.setSelectedIndex(0);
+        } else if (option.getOptionType() == 0) {
+            optionTypeBox.setSelectedIndex(1);
+        } else {
+            optionTypeBox.setSelectedIndex(option.getOptionType());
+        }
+    }
+
     public void revealOptionTypeComponents() {
          if (optionTypeBox.getSelectedItem().equals("Dialog")) {
                 specificOptionTypeLabel.setVisible(true);
@@ -348,6 +352,7 @@ public class DialogOptionsPanel {
     }
 
     public void updateDialogValue() {
+        setOptoinTypeBoxValue(this.dialogOption);
         revealOptionTypeComponents();
     }
 
