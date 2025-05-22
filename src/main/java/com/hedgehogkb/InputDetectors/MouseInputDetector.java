@@ -95,18 +95,24 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
             if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground && !isDraggingOption) {
-                SwingUtilities.invokeLater(() -> {
-                    if (!editorExistsForNode(curVisualNode.getDialogNode())) {
-                        dialogNodeEditorFrames.add(new DialogNodeEditorFrame(curVisualNode.getDialogNode()));
-                    } else {
-                        try {
-                            DialogNodeEditorFrame curEditorFrame = getEditorFrameForDialogNode(curVisualNode.getDialogNode());
-                            curEditorFrame.setVisible(true);
-                            curEditorFrame.moveFrameToTop();
-                        } catch (Exception ex) {}
-                    }
-                });
-                
+                int touchingOption = curVisualNode.isOptionTouchingMouse(e.getX(), e.getY());
+                if (touchingOption != -1) {
+                    curVisualNode.getDialogNode().getOptions().get(touchingOption).toggleOptionType();
+                    updateEditorFrameValues(curVisualNode.getDialogNode());
+                } else {
+                    SwingUtilities.invokeLater(() -> {
+                        if (!editorExistsForNode(curVisualNode.getDialogNode())) {
+                            dialogNodeEditorFrames.add(new DialogNodeEditorFrame(curVisualNode.getDialogNode()));
+                        } else {
+                            try {
+                                DialogNodeEditorFrame curEditorFrame = getEditorFrameForDialogNode(curVisualNode.getDialogNode());
+                                curEditorFrame.setVisible(true);
+                                curEditorFrame.moveFrameToTop();
+                            } catch (Exception ex) {}
+                        }
+                    });
+                }
+
                 return;
             }
         }

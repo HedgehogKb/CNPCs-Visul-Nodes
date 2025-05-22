@@ -43,6 +43,14 @@ public class DialogOption {
         return optionJsonWrapper;
     }
 
+    public void toggleOptionType() {
+        if (this.optionType == 1) {
+            this.optionType = 0;
+        } else {
+            this.optionType = 1;
+        }
+    }
+
     //getters and setters
 
     public int getOptionType() {

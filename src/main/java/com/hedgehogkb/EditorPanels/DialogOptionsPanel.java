@@ -348,9 +348,7 @@ public class DialogOptionsPanel {
     }
 
     public void updateDialogValue() {
-        if (optionTypeBox.getSelectedItem().equals("Dialog")) {
-            specificOptionTypeTextArea.setText(String.valueOf(dialogOption.getDialog()));
-        }
+        revealOptionTypeComponents();
     }
 
     //getters and setters
