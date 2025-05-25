@@ -17,6 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.ProjectInfo;
 
 
 
@@ -24,6 +29,7 @@ public class LauncherFrame {
     private JFrame frame;
     private JFileChooser fileChooser;
     private File selectedDirectory;
+    private JButton createProjectButton;
 
     private int selectedProjectType;
 
@@ -46,6 +52,7 @@ public class LauncherFrame {
     private JLabel blankProjectExplinationLabel;
     private JLabel startingNumberLabel;
     private JTextArea startingNumberTextArea;
+    private int startingNumber;
     private JLabel blankProjectFileLocationLabel;
     private JButton blankProjectFolderSelectorButton;
     private JLabel selectedFolderLabel;
@@ -63,6 +70,8 @@ public class LauncherFrame {
         this.frame.setMinimumSize(new Dimension(540, 200));
         this.frame.setLayout(new GridLayout(0, 2));
 
+        this.createProjectButton = new JButton("Create Project");
+
         this.fileChooser = new JFileChooser();
         this.fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         this.selectedDirectory = null;
@@ -79,6 +88,7 @@ public class LauncherFrame {
 
         buildFrame();
 
+        handleGeneralInputs();
         handleLeftPanelInputs();
         handleBlankProjectInputs();
     }
@@ -164,6 +174,8 @@ public class LauncherFrame {
         c.insets = new Insets(0, 0, 5, 0);
         blankProjectPanel.add(startingNumberTextArea, c);
 
+        this.startingNumber = 1;
+
         blankProjectFileLocationLabel = new JLabel("Select Project Location:");
         c.gridx = 0;
         c.gridy = 2;
@@ -171,7 +183,7 @@ public class LauncherFrame {
         c.weightx = 0.9;
         c.anchor = GridBagConstraints.NORTHWEST;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 0, 0);
+        c.insets = new Insets(2, 0, 0, 0);
         blankProjectPanel.add(blankProjectFileLocationLabel, c);
 
         blankProjectFolderSelectorButton = new JButton("Select Folder");
@@ -182,7 +194,6 @@ public class LauncherFrame {
         c.anchor = GridBagConstraints.NORTHWEST;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(0, 0, 0, 0);
-
         blankProjectPanel.add(blankProjectFolderSelectorButton, c);
 
         selectedFolderLabel = new JLabel("<html>" + "Selected Folder: Null" + "</html>");
@@ -190,11 +201,20 @@ public class LauncherFrame {
         c.gridy = 3;
         c.gridwidth = 3;
         c.weightx = 0.5;
-        c.weighty = 0.5;
         c.anchor = GridBagConstraints.NORTHWEST;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0,0,0,0);
+        c.insets = new Insets(0,0,8,0);
         blankProjectPanel.add(selectedFolderLabel, c);
+
+        //create project button
+        c.gridx = 0;
+        c.gridy = 4;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.anchor = GridBagConstraints.NORTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        blankProjectPanel.add(createProjectButton, c);
     } 
 
     private void initializeExistingProjectPanel() {
@@ -215,6 +235,13 @@ public class LauncherFrame {
         this.frame.setVisible(true);
     }
 
+    public void handleGeneralInputs() {
+        createProjectButton.addActionListener(e -> {
+            ProjectInfo projectInfo = new ProjectInfo(selectedDirectory, Integer.parseInt(startingNumberTextArea.getText()));
+            projectInfo.addGroup(new NodeGroup("test"));
+        });
+    }
+
     private void handleLeftPanelInputs() {
         blankProjectButton.addActionListener(e -> {
             this.frame.remove(blankRightPanel);
@@ -232,6 +259,37 @@ public class LauncherFrame {
                 this.selectedDirectory = fileChooser.getSelectedFile();
                 selectedFolderLabel.setText("<html>"+"Selected Folder: " + selectedDirectory.getAbsolutePath() + "</html>");
             }
+        });
+
+        startingNumberTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    startingNumber = Integer.valueOf(startingNumberTextArea.getText());
+                    if (startingNumber < 1) {
+                        startingNumber = 1;
+                        SwingUtilities.invokeLater(() -> {
+                            startingNumberTextArea.setText("1");
+                        });
+                    }
+                } catch (Exception ex) {
+                    SwingUtilities.invokeLater(() -> {
+                        startingNumberTextArea.setText(String.valueOf(startingNumber));
+                    });
+                }
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String colorString = startingNumberTextArea.getText();
+                if (colorString.equals("")) {
+                    startingNumber = 1;
+                    return;
+                }
+                startingNumber = Integer.valueOf(colorString);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
         });
     }
 }
