@@ -1,6 +1,7 @@
 package com.hedgehogkb.LauncherFrame;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -23,6 +24,12 @@ public class LauncherFrame {
     private JFrame frame;
     private JFileChooser fileChooser;
     private File selectedDirectory;
+
+    private int selectedProjectType;
+
+    public static final int BLANK_PROJECT = 0;
+    public static final int EXISTING_PROJECT = 1;
+    public static final int EXISTING_NODES = 2;
 
     //left panel components
     private JPanel leftPanel;
@@ -53,6 +60,7 @@ public class LauncherFrame {
         this.frame = new JFrame("Dialog Node Editor");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setSize(550, 300);
+        this.frame.setMinimumSize(new Dimension(540, 200));
         this.frame.setLayout(new GridLayout(0, 2));
 
         this.fileChooser = new JFileChooser();
@@ -72,6 +80,7 @@ public class LauncherFrame {
         buildFrame();
 
         handleLeftPanelInputs();
+        handleBlankProjectInputs();
     }
 
     private void initializeLeftPanel() {
@@ -176,7 +185,7 @@ public class LauncherFrame {
 
         blankProjectPanel.add(blankProjectFolderSelectorButton, c);
 
-        selectedFolderLabel = new JLabel("Selected Folder: Null");
+        selectedFolderLabel = new JLabel("<html>" + "Selected Folder: Null" + "</html>");
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 3;
@@ -210,9 +219,19 @@ public class LauncherFrame {
         blankProjectButton.addActionListener(e -> {
             this.frame.remove(blankRightPanel);
             this.frame.add(this.blankProjectPanel);
-            System.out.println("Blanked Project Panel Added");
             SwingUtilities.updateComponentTreeUI(frame);
+
+            this.selectedProjectType = BLANK_PROJECT;
         });
     }
     
+    private void handleBlankProjectInputs() {
+        blankProjectFolderSelectorButton.addActionListener(e -> {
+            int returnValue = fileChooser.showOpenDialog(this.frame);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                this.selectedDirectory = fileChooser.getSelectedFile();
+                selectedFolderLabel.setText("<html>"+"Selected Folder: " + selectedDirectory.getAbsolutePath() + "</html>");
+            }
+        });
+    }
 }
