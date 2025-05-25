@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.Timer;
 
-import com.hedgehogkb.VisualNodeDisplayFrame;
+import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayFrame;
 
 
 

@@ -1,0 +1,218 @@
+package com.hedgehogkb.LauncherFrame;
+
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.io.File;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+
+
+
+public class LauncherFrame {
+    private JFrame frame;
+    private JFileChooser fileChooser;
+    private File selectedDirectory;
+
+    //left panel components
+    private JPanel leftPanel;
+    private JLabel projectTypeLabel;
+    private JButton blankProjectButton;
+    private JButton existingProjectButton;
+    private JButton existingNodesButton;
+
+    //blank right panel components
+    private JPanel blankRightPanel;
+
+    //blank project components
+    private JPanel blankProjectPanel;
+    private JLabel blankProjectExplinationLabel;
+    private JLabel startingNumberLabel;
+    private JTextArea startingNumberTextArea;
+    private JLabel blankProjectFileLocationLabel;
+    private JButton blankProjectFolderSelectorButton;
+    private JLabel selectedFolderLabel;
+
+    //existing project components
+    private JPanel existingProjectPanel;
+
+    //existing nodes components
+    private JPanel existingNodesPanel;
+
+    public LauncherFrame() {
+        this.frame = new JFrame("Dialog Node Editor");
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setSize(550, 300);
+        this.frame.setLayout(new GridLayout(0, 2));
+
+        this.fileChooser = new JFileChooser();
+        this.fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        this.selectedDirectory = null;
+
+        this.leftPanel = new JPanel();
+        this.blankProjectPanel = new JPanel();
+        this.existingProjectPanel = new JPanel();
+        this.existingNodesPanel = new JPanel();
+
+        initializeLeftPanel();
+        initializeBlankProjectPanel();
+        initializeExistingProjectPanel();
+        initializeExistingNodesPanel();
+
+        buildFrame();
+
+        handleLeftPanelInputs();
+    }
+
+    private void initializeLeftPanel() {
+        this.leftPanel.setBorder(BorderFactory.createEtchedBorder());
+        this.leftPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        projectTypeLabel = new JLabel("Select Project Type:");
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets.set(10, 10, 10, 10);
+        leftPanel.add(projectTypeLabel, c);
+
+        blankProjectButton = new JButton("Create Blank Project");
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets.set(0, 10, 10, 10);
+        leftPanel.add(blankProjectButton, c);
+
+        existingProjectButton = new JButton("Open Existing Project");
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        leftPanel.add(existingProjectButton, c);
+
+        existingNodesButton = new JButton("Open Existing Nodes");
+        c.gridx = 1;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.anchor = GridBagConstraints.NORTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        leftPanel.add(existingNodesButton, c);
+    }
+
+    private void initializeBlankProjectPanel() {
+        this.blankProjectPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Blank Project"));
+        this.blankProjectPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        blankProjectExplinationLabel = new JLabel("<html>"+"Creates a completely new project off of a starting number."+"</html>");
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 10, 0);
+        blankProjectPanel.add(blankProjectExplinationLabel, c);
+
+        startingNumberLabel = new JLabel("Lowest Number:");
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.9;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 5, 0);
+        blankProjectPanel.add(startingNumberLabel, c);
+
+        startingNumberTextArea = new JTextArea("1");
+        startingNumberTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 5, 0);
+        blankProjectPanel.add(startingNumberTextArea, c);
+
+        blankProjectFileLocationLabel = new JLabel("Select Project Location:");
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 0.9;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 0);
+        blankProjectPanel.add(blankProjectFileLocationLabel, c);
+
+        blankProjectFolderSelectorButton = new JButton("Select Folder");
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 0);
+
+        blankProjectPanel.add(blankProjectFolderSelectorButton, c);
+
+        selectedFolderLabel = new JLabel("Selected Folder: Null");
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0,0,0,0);
+        blankProjectPanel.add(selectedFolderLabel, c);
+    } 
+
+    private void initializeExistingProjectPanel() {
+
+    }
+
+    private void initializeExistingNodesPanel() {
+
+    }
+
+    private void buildFrame() {
+        this.frame.getContentPane().add(leftPanel);
+
+        this.blankRightPanel = new JPanel();
+        this.blankRightPanel.setBorder(BorderFactory.createEtchedBorder());
+        this.frame.getContentPane().add(blankRightPanel);
+
+        this.frame.setVisible(true);
+    }
+
+    private void handleLeftPanelInputs() {
+        blankProjectButton.addActionListener(e -> {
+            this.frame.remove(blankRightPanel);
+            this.frame.add(this.blankProjectPanel);
+            System.out.println("Blanked Project Panel Added");
+            SwingUtilities.updateComponentTreeUI(frame);
+        });
+    }
+    
+}

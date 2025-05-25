@@ -1,4 +1,4 @@
-package com.hedgehogkb;
+package com.hedgehogkb.NodeDisplayFrame;
 
 import java.awt.Color;
 import java.awt.Graphics;

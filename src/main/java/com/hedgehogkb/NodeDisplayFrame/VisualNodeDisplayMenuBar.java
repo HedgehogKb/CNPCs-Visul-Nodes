@@ -1,4 +1,4 @@
-package com.hedgehogkb;
+package com.hedgehogkb.NodeDisplayFrame;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;

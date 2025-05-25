@@ -4,8 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import com.hedgehogkb.VisualNodeDisplayFrame;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
+import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayFrame;
 
 public class VisualNodePopUp {
     private JPopupMenu visualNodePopUp;
