@@ -19,11 +19,5 @@ public class App
         });
 
         timer.start();
-
-        try {
-            Thread.sleep(10000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
