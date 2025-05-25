@@ -12,10 +12,10 @@ public class App
 {
     public static void main( String[] args )
     {
-        VisualNodeDisplayFrame frame = new VisualNodeDisplayFrame();
+        NodeGroup group = new NodeGroup("Test Group");
 
         Timer timer = new Timer(5, (e) -> {
-            frame.repaint();
+            group.getVisualNodeDisplayFrame().repaint();
         });
 
         timer.start();

@@ -14,23 +14,26 @@ import com.hedgehogkb.DialogNodeComponents.DialogOption;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.InputDetectors.KeyboardInputDetector;
 import com.hedgehogkb.InputDetectors.MouseInputDetector;
+import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.NodeHandler;
+
 
 public class VisualNodeDisplayFrame {
     private JFrame frame;
     private JPanel panel;
     private VisualNodeDisplayMenuBar menuBar;
 
-    /**
-     * visual node shells are listed in their visual order.
-     * the further left in the list, the higher up in the order: 0 is on the top, size()-1 is on the bottom.
-     */
-    private ArrayList<VisualNodeShell> visualNodeShells;
-    private HashMap<Integer, VisualNodeShell> visualNodeShellsByID = new HashMap<>();
+    private NodeGroup group;
+    private NodeHandler nodeHandler;
+    
 
     private MouseInputDetector mouseInputDetector;
     private KeyboardInputDetector keyboardInputDetector;
 
-    public VisualNodeDisplayFrame() {
+    public VisualNodeDisplayFrame(NodeGroup group) {
+        this.group = group;
+        this.nodeHandler = group.getNodeHandler();
+
         this.frame = new JFrame("Visual Node Display");
         this.menuBar = new VisualNodeDisplayMenuBar(this);
         this.frame.setJMenuBar(menuBar.getMenuBar());
@@ -48,16 +51,10 @@ public class VisualNodeDisplayFrame {
         };
 
 
-        this.visualNodeShells = new ArrayList<>();
-        visualNodeShells.add(new VisualNodeShell(100, 100, 0, 0, new DialogNode(1)));
-        //visualNodeShells.add(new VisualNodeShell(400, 300, 0, 0, new DialogNode(2)));
+        nodeHandler.add(new VisualNodeShell(100, 100, 0, 0, new DialogNode(1)));
         
-        for (int i = 0; i < visualNodeShells.size(); i++) {
-            VisualNodeShell curNode = visualNodeShells.get(i);
-            visualNodeShellsByID.put(curNode.getDialogNode().getDialogId(), curNode);
-        }
 
-        this.mouseInputDetector = new MouseInputDetector(this, visualNodeShells);
+        this.mouseInputDetector = new MouseInputDetector(this, nodeHandler);
         this.keyboardInputDetector = new KeyboardInputDetector(this);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,8 +98,8 @@ public class VisualNodeDisplayFrame {
     }
 
     private void drawVisualNodeShells(Graphics g) {
-        for(int i = visualNodeShells.size()-1; i >=0 ; i--) {
-            VisualNodeShell curNodeShell = visualNodeShells.get(i);
+        for(int i = nodeHandler.size()-1; i >=0 ; i--) {
+            VisualNodeShell curNodeShell = nodeHandler.getIndex(i);
             if (curNodeShell != null) {
                 int offsetX = mouseInputDetector.getMouseOffsetX();
                 int offsetY = mouseInputDetector.getMouseOffsetY();
@@ -119,8 +116,8 @@ public class VisualNodeDisplayFrame {
            
             int mouseX = mouseInputDetector.getMouseX();
             int mouseY = mouseInputDetector.getMouseY();
-            for (int i = 0; i < visualNodeShells.size(); i++) {
-                VisualNodeShell curNode = visualNodeShells.get(i);
+            for (int i = 0; i < nodeHandler.size(); i++) {
+                VisualNodeShell curNode = nodeHandler.getIndex(i);
                 if (!curNode.equals(draggedNode) && curNode.isTouchingMouse(mouseX, mouseY)) {
                     curNode.drawOutline(g);
                     break;
@@ -139,20 +136,20 @@ public class VisualNodeDisplayFrame {
         int offsetX = mouseInputDetector.getMouseOffsetX();
         int offsetY = mouseInputDetector.getMouseOffsetY();
 
-        for (int i = 0; i < visualNodeShells.size(); i++) {
-            DialogNode curNode = visualNodeShells.get(i).getDialogNode();
+        for (int i = 0; i < nodeHandler.size(); i++) {
+            DialogNode curNode = nodeHandler.getIndex(i).getDialogNode();
             ArrayList<DialogOption> curOptions = curNode.getOptions();
             for (int v = 0; v < curOptions.size(); v++) {
                 DialogOption curOption = curOptions.get(v);
                 int endDialog = curOption.getDialog();
                 VisualNodeShell draggedNode = mouseInputDetector.getDraggedOptionNode();
                 if (curOption.getOptionType() == 1 && 
-                !(draggedNode != null && draggedNode.equals(visualNodeShells.get(i)) && v == mouseInputDetector.getDraggedOptionSlot()) && 
+                !(draggedNode != null && draggedNode.equals(nodeHandler.getIndex(i)) && v == mouseInputDetector.getDraggedOptionSlot()) && 
                 curOption.getDialog() > 0) {
-                    int startX = offsetX + visualNodeShells.get(i).getPosX() + 138;
-                    int startY = offsetY + visualNodeShells.get(i).getPosY() + 10 + v*15;  
-                    int endX = offsetX + visualNodeShellsByID.get(endDialog).getPosX() + 15;
-                    int endY = offsetY + visualNodeShellsByID.get(endDialog).getPosY() + 70;
+                    int startX = offsetX + nodeHandler.getIndex(i).getPosX() + 138;
+                    int startY = offsetY + nodeHandler.getIndex(i).getPosY() + 10 + v*15;  
+                    int endX = offsetX + nodeHandler.get(endDialog).getPosX() + 15;
+                    int endY = offsetY + nodeHandler.get(endDialog).getPosY() + 70;
                     g.drawLine(startX, startY, endX, endY);
 
                 }
@@ -161,20 +158,18 @@ public class VisualNodeDisplayFrame {
     }
 
     public void addVisualNode() {
-        DialogNode curNode = new DialogNode(visualNodeShells.size()+1);
+        DialogNode curNode = new DialogNode(nodeHandler.size()+1);
         int mouseX = mouseInputDetector.getMouseX();
         int mouseY = mouseInputDetector.getMouseY();
         int offsetX = mouseInputDetector.getMouseOffsetX();
         int offsetY = mouseInputDetector.getMouseOffsetY();
 
         VisualNodeShell curVisualNode = new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX , offsetY, curNode);
-        visualNodeShells.add(curVisualNode);
-        visualNodeShellsByID.put(curVisualNode.getDialogId(), curVisualNode);
+        nodeHandler.add(curVisualNode);
     }
 
     public void removeVisualNode(VisualNodeShell node) {
-        visualNodeShells.remove(node);
-        visualNodeShellsByID.remove(node.getDialogId());
+        nodeHandler.removeVisualNode(node);
     }
 
     public JFrame getFrame() {
