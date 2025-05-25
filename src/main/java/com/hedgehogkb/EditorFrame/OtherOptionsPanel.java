@@ -1,4 +1,4 @@
-package com.hedgehogkb.EditorPanels;
+package com.hedgehogkb.EditorFrame;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;

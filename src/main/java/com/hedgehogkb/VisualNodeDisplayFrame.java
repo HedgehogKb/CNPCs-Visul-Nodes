@@ -18,6 +18,7 @@ import com.hedgehogkb.InputDetectors.MouseInputDetector;
 public class VisualNodeDisplayFrame {
     private JFrame frame;
     private JPanel panel;
+    private VisualNodeDisplayMenuBar menuBar;
 
     /**
      * visual node shells are listed in their visual order.
@@ -31,6 +32,9 @@ public class VisualNodeDisplayFrame {
 
     public VisualNodeDisplayFrame() {
         this.frame = new JFrame("Visual Node Display");
+        this.menuBar = new VisualNodeDisplayMenuBar(this);
+        this.frame.setJMenuBar(menuBar.getMenuBar());
+
         this.panel = new JPanel() {
 
             @Override
@@ -53,7 +57,7 @@ public class VisualNodeDisplayFrame {
             visualNodeShellsByID.put(curNode.getDialogNode().getDialogId(), curNode);
         }
 
-        this.mouseInputDetector = new MouseInputDetector(visualNodeShells);
+        this.mouseInputDetector = new MouseInputDetector(this, visualNodeShells);
         this.keyboardInputDetector = new KeyboardInputDetector(this);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -166,6 +170,15 @@ public class VisualNodeDisplayFrame {
         VisualNodeShell curVisualNode = new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX , offsetY, curNode);
         visualNodeShells.add(curVisualNode);
         visualNodeShellsByID.put(curVisualNode.getDialogId(), curVisualNode);
+    }
+
+    public void removeVisualNode(VisualNodeShell node) {
+        visualNodeShells.remove(node);
+        visualNodeShellsByID.remove(node.getDialogId());
+    }
+
+    public JFrame getFrame() {
+        return this.frame;
     }
 
 }

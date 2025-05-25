@@ -3,7 +3,7 @@ package com.hedgehogkb;
 import javax.swing.Timer;
 
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
-import com.hedgehogkb.EditorPanels.DialogNodeEditorFrame;
+import com.hedgehogkb.EditorFrame.DialogNodeEditorFrame;
 
 public class VisualNodesTester {
     public static void main(String[] args) {

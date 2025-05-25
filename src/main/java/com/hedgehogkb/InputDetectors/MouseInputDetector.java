@@ -7,9 +7,11 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import com.hedgehogkb.VisualNodeDisplayFrame;
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
-import com.hedgehogkb.EditorPanels.DialogNodeEditorFrame;
+import com.hedgehogkb.EditorFrame.DialogNodeEditorFrame;
+import com.hedgehogkb.PopUpMenus.VisualNodePopUp;
 
 
 public class MouseInputDetector implements MouseMotionListener, MouseListener {
@@ -18,7 +20,10 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     private int offsetX;
     private int offsetY;
 
+    private VisualNodePopUp visualNodePopUp;
+
     @SuppressWarnings("FieldMayBeFinal")
+    private VisualNodeDisplayFrame visualNodeDisplay;
     private ArrayList<VisualNodeShell> visualNodeShells;
     private boolean mouseDown;
     private boolean isDraggingBackground;
@@ -34,6 +39,13 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
         this.isDraggingBackground = false;
         this.mouseDown = false;
         this.dialogNodeEditorFrames = new ArrayList<>();
+        this.visualNodePopUp = new VisualNodePopUp();
+    }
+
+    public MouseInputDetector(VisualNodeDisplayFrame visualNodeDisplay, ArrayList<VisualNodeShell> visualNodeShells) {
+        this(visualNodeShells);
+        this.visualNodeDisplay = visualNodeDisplay;
+        this.visualNodePopUp = new VisualNodePopUp(visualNodeDisplay);
     }
 
     @Override
@@ -91,35 +103,42 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        mouseDown = true;
         for (int i = 0; i < visualNodeShells.size(); i++) {
             VisualNodeShell curVisualNode = visualNodeShells.get(i);
-            if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground && !isDraggingOption) {
-                int touchingOption = curVisualNode.isOptionTouchingMouse(e.getX(), e.getY());
-                if (touchingOption != -1) {
-                    curVisualNode.getDialogNode().getOptions().get(touchingOption).toggleOptionType();
-                    updateEditorFrameValues(curVisualNode.getDialogNode());
-                } else {
-                    SwingUtilities.invokeLater(() -> {
-                        if (!editorExistsForNode(curVisualNode.getDialogNode())) {
-                            dialogNodeEditorFrames.add(new DialogNodeEditorFrame(curVisualNode.getDialogNode()));
-                        } else {
-                            try {
-                                DialogNodeEditorFrame curEditorFrame = getEditorFrameForDialogNode(curVisualNode.getDialogNode());
-                                curEditorFrame.setVisible(true);
-                                curEditorFrame.moveFrameToTop();
-                            } catch (Exception ex) {}
-                        }
-                    });
-                }
-
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground && !isDraggingOption) {
+                    int touchingOption = curVisualNode.isOptionTouchingMouse(e.getX(), e.getY());
+                    if (touchingOption != -1) {
+                        curVisualNode.getDialogNode().getOptions().get(touchingOption).toggleOptionType();
+                        updateEditorFrameValues(curVisualNode.getDialogNode());
+                    } else {
+                        SwingUtilities.invokeLater(() -> {
+                            if (!editorExistsForNode(curVisualNode.getDialogNode())) {
+                                dialogNodeEditorFrames.add(new DialogNodeEditorFrame(curVisualNode.getDialogNode()));
+                            } else {
+                                try {
+                                    DialogNodeEditorFrame curEditorFrame = getEditorFrameForDialogNode(curVisualNode.getDialogNode());
+                                    curEditorFrame.setVisible(true);
+                                    curEditorFrame.moveFrameToTop();
+                                } catch (Exception ex) {}
+                            }
+                        });
+                    }
                 return;
+                }
+            } else if (e.getButton() == MouseEvent.BUTTON3) {
+                if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground && !isDraggingOption) {
+                    visualNodePopUp.setVisualNodeShell(curVisualNode);
+                    visualNodePopUp.showPopUp(visualNodeDisplay.getFrame(), e.getX(), e.getY());
+                    return;
+                }
             }
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        mouseDown = true;
     }
 
     @Override
