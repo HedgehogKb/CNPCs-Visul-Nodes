@@ -2,6 +2,9 @@ package com.hedgehogkb.NodeDisplayFrame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -57,7 +60,7 @@ public class VisualNodeDisplayFrame {
         this.mouseInputDetector = new MouseInputDetector(this, nodeHandler);
         this.keyboardInputDetector = new KeyboardInputDetector(this);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(800, 600);
         frame.add(panel);
         
@@ -65,11 +68,8 @@ public class VisualNodeDisplayFrame {
         panel.addMouseListener(mouseInputDetector);
         frame.addKeyListener(keyboardInputDetector);
         panel.setBorder(BorderFactory.createEtchedBorder());
-        //frame.addMouseMotionListener(mouseInputDetector);
-        //frame.addMouseListener(mouseInputDetector);
-        //frame.setVisible(true);
 
-
+        detectFrameClosed();
     }
 
     public void repaint() {
@@ -159,6 +159,18 @@ public class VisualNodeDisplayFrame {
                 }
             }
         }
+    }
+
+    public void detectFrameClosed() {
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.out.println("Visual Node Display Frame is closing.");
+                group.stopDisplay();
+
+                frame.dispose();
+            }
+        });
     }
 
     public void addVisualNode() {

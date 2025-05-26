@@ -14,10 +14,13 @@ public class App
     {
         NodeGroup group = new NodeGroup("Test Group");
 
+        group.setDisplayVisible(true);
+
         Timer timer = new Timer(5, (e) -> {
             group.getVisualNodeDisplayFrame().repaint();
         });
 
         timer.start();
+
     }
 }

@@ -178,7 +178,7 @@ public class ProjectEditorFrame {
             String selectedGroupName = groupList.getSelectedValue();
             if (selectedGroupName != null) {
                 NodeGroup selectedGroup = projectInfo.getGroup(selectedGroupName);
-                selectedGroup.setVisible(true);
+                selectedGroup.startDisplay();
             } else {
                 JOptionPane.showMessageDialog(frame, "No group selected.");
             }
