@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
 
 public class ProjectEditorFrame {
@@ -43,10 +44,10 @@ public class ProjectEditorFrame {
     private JList<String> groupList;
     private DefaultListModel<String> listModel;
 
-    private ArrayList<JButton> groupButtons;
 
+    public ProjectEditorFrame(ProjectInfo projectInfo) {
+        this.projectInfo = projectInfo;
 
-    public ProjectEditorFrame() {
         this.frame = new JFrame("Project Editor");
         this.frame.setLayout(new GridLayout(0,1));
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -133,17 +134,22 @@ public class ProjectEditorFrame {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(0,5,0,5);
         leftPanel.add(addGroupButton, c);
-
-
     }
 
     public void initializeRightPanelComponents() {
         this.rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.LINE_AXIS));
 
         this.listModel = new DefaultListModel<>();
-        /*listModel.addElement("Group 1");
-        listModel.addElement("Group 2");
-        listModel.addElement("Group 3");*/
+
+        for (int i = 0; i < projectInfo.getGroups().size(); i++) {
+            String groupName = projectInfo.getGroups().get(i).getName();
+            if (groupName != null && !groupName.isEmpty()) {
+                listModel.addElement(groupName);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Group name is invalid. It is either blank or already exists.");
+            }
+        }
+
         this.groupList = new JList<>(listModel);
         groupList.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         
@@ -168,11 +174,23 @@ public class ProjectEditorFrame {
                 selectedGroupLabel.setText("<html>" + "Selected Group: " + selectedGroup + "</html>");
         });
 
+        openGroupButton.addActionListener(e -> {
+            String selectedGroupName = groupList.getSelectedValue();
+            if (selectedGroupName != null) {
+                NodeGroup selectedGroup = projectInfo.getGroup(selectedGroupName);
+                selectedGroup.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(frame, "No group selected.");
+            }
+        });
+
         addGroupButton.addActionListener(e -> {
             String groupName = groupNameTextArea.getText().trim();
             if (!groupName.isEmpty() && !listModel.contains(groupName)) {
                 listModel.addElement(groupName);
                 groupNameTextArea.setText("");
+
+                projectInfo.addGroup(new NodeGroup(groupName));
             } else {
                 JOptionPane.showMessageDialog(frame, "Group name is invalid. It is either blank or already exists.");
             }

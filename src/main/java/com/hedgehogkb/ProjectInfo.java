@@ -25,6 +25,19 @@ public class ProjectInfo {
         groups.add(group);
     }
 
+    public ArrayList<NodeGroup> getGroups() {
+        return groups;
+    }
+
+    public NodeGroup getGroup(String groupName) {
+        for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i).getName().equals(groupName)) {
+                return groups.get(i);
+            }
+        }
+        return null;
+    }
+
     public int getLowestNodeNumber() {
         return lowestNodeNumber;
     }

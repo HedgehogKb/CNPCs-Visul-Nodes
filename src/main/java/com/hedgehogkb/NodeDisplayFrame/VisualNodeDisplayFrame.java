@@ -67,13 +67,17 @@ public class VisualNodeDisplayFrame {
         panel.setBorder(BorderFactory.createEtchedBorder());
         //frame.addMouseMotionListener(mouseInputDetector);
         //frame.addMouseListener(mouseInputDetector);
-        frame.setVisible(true);
+        //frame.setVisible(true);
 
 
     }
 
     public void repaint() {
         panel.repaint();
+    }
+
+    public void setVisible(boolean visible) {
+        frame.setVisible(visible);
     }
 
     private void drawBackground(Graphics g) {

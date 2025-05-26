@@ -27,4 +27,12 @@ public class NodeGroup {
     public VisualNodeDisplayFrame getVisualNodeDisplayFrame() {
         return visualNodeDisplayFrame;
     }
+
+    public String getName() {
+        return name;
+    }
+    
+    public void setVisible(boolean visible) {
+        visualNodeDisplayFrame.setVisible(visible);
+    }
 }
