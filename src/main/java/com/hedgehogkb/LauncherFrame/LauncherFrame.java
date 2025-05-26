@@ -238,7 +238,6 @@ public class LauncherFrame {
     public void handleGeneralInputs() {
         createProjectButton.addActionListener(e -> {
             ProjectInfo projectInfo = new ProjectInfo(selectedDirectory, Integer.parseInt(startingNumberTextArea.getText()));
-            projectInfo.addGroup(new NodeGroup("test"));
         });
     }
 
