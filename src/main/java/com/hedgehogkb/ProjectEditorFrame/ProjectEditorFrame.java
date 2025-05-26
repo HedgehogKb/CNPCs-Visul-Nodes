@@ -190,7 +190,7 @@ public class ProjectEditorFrame {
                 listModel.addElement(groupName);
                 groupNameTextArea.setText("");
 
-                projectInfo.addGroup(new NodeGroup(groupName));
+                projectInfo.addGroup(new NodeGroup(groupName, projectInfo));
             } else {
                 JOptionPane.showMessageDialog(frame, "Group name is invalid. It is either blank or already exists.");
             }

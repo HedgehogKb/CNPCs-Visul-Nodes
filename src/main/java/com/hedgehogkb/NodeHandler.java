@@ -44,7 +44,7 @@ public class NodeHandler {
      */
     public void add(DialogNode node, int mouseX, int mouseY, int offsetX, int offsetY) {
         visualNodeShells.add(new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX, offsetY, node));
-        visualNodeShellsByID.put(node.getDialogId(), new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX, offsetY, node));
+        visualNodeShellsByID.put(node.getDialogId(),visualNodeShells.get(visualNodeShells.size() - 1));
     }
 
     /**
@@ -97,6 +97,7 @@ public class NodeHandler {
         while (visualNodeShellsByID.containsKey(nextId)) {
             nextId++;
         }
+        projectInfo.setLowestNodeNumber(nextId + 1);
         return nextId;
     }
 

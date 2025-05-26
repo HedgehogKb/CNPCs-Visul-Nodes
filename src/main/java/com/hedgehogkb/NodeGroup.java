@@ -6,19 +6,22 @@ import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayRunner;
 
 public class NodeGroup {
     String name;
+    ProjectInfo projectInfo;
     NodeHandler nodeHandler;
     VisualNodeDisplayFrame visualNodeDisplayFrame;
     VisualNodeDisplayRunner visualNodeDisplayRunner;
 
-    public NodeGroup(String name) {
+    public NodeGroup(String name, ProjectInfo projectInfo) {
         this.name = name;
-        this.nodeHandler = new NodeHandler(this);
+        this.projectInfo = projectInfo;
+        this.nodeHandler = new NodeHandler(this, projectInfo);
         this.visualNodeDisplayFrame = new VisualNodeDisplayFrame(this);
         this.visualNodeDisplayRunner = new VisualNodeDisplayRunner(visualNodeDisplayFrame);
     }
 
-    public NodeGroup(String name, NodeHandler nodeHandler) {
+    public NodeGroup(String name, ProjectInfo projectInfo, NodeHandler nodeHandler) {
         this.name = name;
+        this.projectInfo = projectInfo;
         this.nodeHandler = nodeHandler;
         this.visualNodeDisplayFrame = new VisualNodeDisplayFrame(this);
     }

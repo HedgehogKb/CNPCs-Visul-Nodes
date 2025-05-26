@@ -41,4 +41,8 @@ public class ProjectInfo {
     public int getLowestNodeNumber() {
         return lowestNodeNumber;
     }
+
+    public void setLowestNodeNumber(int lowestNodeNumber) {
+        this.lowestNodeNumber = lowestNodeNumber;
+    } 
 }

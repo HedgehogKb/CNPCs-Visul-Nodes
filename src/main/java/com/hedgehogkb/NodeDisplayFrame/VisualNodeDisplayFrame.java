@@ -52,9 +52,6 @@ public class VisualNodeDisplayFrame {
                 drawDialogOptionLine(g);
             }
         };
-
-
-        nodeHandler.add(new VisualNodeShell(100, 100, 0, 0, new DialogNode(1)));
         
 
         this.mouseInputDetector = new MouseInputDetector(this, nodeHandler);
@@ -174,14 +171,12 @@ public class VisualNodeDisplayFrame {
     }
 
     public void addVisualNode() {
-        DialogNode curNode = new DialogNode(nodeHandler.size()+1);
         int mouseX = mouseInputDetector.getMouseX();
         int mouseY = mouseInputDetector.getMouseY();
         int offsetX = mouseInputDetector.getMouseOffsetX();
         int offsetY = mouseInputDetector.getMouseOffsetY();
 
-        VisualNodeShell curVisualNode = new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX , offsetY, curNode);
-        nodeHandler.add(curVisualNode);
+        nodeHandler.add(mouseX, mouseY, offsetX, offsetY);
     }
 
     public void removeVisualNode(VisualNodeShell node) {
