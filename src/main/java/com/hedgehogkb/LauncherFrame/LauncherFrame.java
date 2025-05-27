@@ -75,6 +75,7 @@ public class LauncherFrame {
 
         this.fileChooser = new JFileChooser();
         this.fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        this.fileChooser.setSelectedFile(new File("C:\\Users\\kereb\\AppData\\Roaming\\.minecraft\\saves"));
         this.selectedDirectory = null;
 
         this.leftPanel = new JPanel();

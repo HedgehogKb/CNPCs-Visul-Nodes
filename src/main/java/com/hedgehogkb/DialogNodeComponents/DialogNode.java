@@ -93,7 +93,7 @@ public class DialogNode {
 
         this.options = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            options.add(new DialogOption(i+1));
+            options.add(new DialogOption(i));
         }
     }
 
@@ -111,9 +111,9 @@ public class DialogNode {
         //dialog values with single values
         dialogJsonWrapper.put("DialogText", dialogText);
         dialogJsonWrapper.put("DialogCommand", dialogCommand);
-        dialogJsonWrapper.put("DialogShowWheel", showDialogueWheel);
-        dialogJsonWrapper.put("DialogHideNPC", hideNPC);
-        dialogJsonWrapper.put("DialogDisableEsc", disableEsc);
+        dialogJsonWrapper.put("DialogShowWheel", booleanToInt(showDialogueWheel));
+        dialogJsonWrapper.put("DialogHideNPC", booleanToInt(hideNPC));
+        dialogJsonWrapper.put("DialogDisableEsc", booleanToInt(disableEsc));
 
         //dialog options array
         dialogJsonWrapper.put("Options", buildOptionsJson());
@@ -231,9 +231,13 @@ public class DialogNode {
 
             dialogJsonWrapper.put(factionKey, optionFactions[i - 1]);
             dialogJsonWrapper.put(factionPointsKey, optionFactionPoints[i - 1]);
-            dialogJsonWrapper.put(decreaseFactionKey, decreaseOptionFactionPoints[i - 1]);
+            dialogJsonWrapper.put(decreaseFactionKey, booleanToInt(decreaseOptionFactionPoints[i - 1]));
 
         }
+    }
+
+    public int booleanToInt(boolean value) {
+        return value ? 1 : 0;
     }
 
     //getters and setters

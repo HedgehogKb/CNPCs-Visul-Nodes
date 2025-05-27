@@ -168,11 +168,11 @@ public class DialogOptionsPanel {
         specificOptionPanel.add(optionTypeLable, c);
 
         this.optionTypeBox = new JComboBox<>();
+        optionTypeBox.addItem("Close");
         optionTypeBox.addItem("Dialog");
         optionTypeBox.addItem("Disabled");
         optionTypeBox.addItem("Role");
         optionTypeBox.addItem("Command Block");
-        optionTypeBox.addItem("Close");
         optionTypeBox.setSelectedIndex(1);
         c.gridx = 1;
         c.gridy = 3;
@@ -275,11 +275,11 @@ public class DialogOptionsPanel {
         optionTypeBox.addActionListener(e -> {
            revealOptionTypeComponents();
            int optionTypeValue = optionTypeBox.getSelectedIndex();
-           if (optionTypeBox.getSelectedIndex() == 0) {
+           /*if (optionTypeBox.getSelectedIndex() == 0) {
             optionTypeValue = 1;
            } else if (optionTypeBox.getSelectedIndex() == 1) {
             optionTypeValue = 0;
-           }
+           }*/
            dialogOption.setOptionType(optionTypeValue);
         });
 
@@ -324,13 +324,7 @@ public class DialogOptionsPanel {
     }
 
     public void setOptoinTypeBoxValue(DialogOption option) {
-        if (option.getOptionType() == 1) {
-            optionTypeBox.setSelectedIndex(0);
-        } else if (option.getOptionType() == 0) {
-            optionTypeBox.setSelectedIndex(1);
-        } else {
-            optionTypeBox.setSelectedIndex(option.getOptionType());
-        }
+        optionTypeBox.setSelectedIndex(option.getOptionType());
     }
 
     public void revealOptionTypeComponents() {

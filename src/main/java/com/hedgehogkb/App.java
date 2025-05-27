@@ -4,8 +4,6 @@ import java.io.File;
 
 import javax.swing.Timer;
 
-import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayFrame;
-
 /**
  * Hello world!
  *

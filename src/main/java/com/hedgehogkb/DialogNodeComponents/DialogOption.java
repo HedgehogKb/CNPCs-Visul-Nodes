@@ -14,7 +14,7 @@ public class DialogOption {
 
     public DialogOption() {
         optionSlot = 0;
-        optionType = 0;
+        optionType = 2;
         optionCommand = "";
         dialog = -1;
         title = "[title]";
