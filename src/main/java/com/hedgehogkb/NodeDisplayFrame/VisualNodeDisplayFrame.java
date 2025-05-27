@@ -144,9 +144,9 @@ public class VisualNodeDisplayFrame {
                 DialogOption curOption = curOptions.get(v);
                 int endDialog = curOption.getDialog();
                 VisualNodeShell draggedNode = mouseInputDetector.getDraggedOptionNode();
-                if (curOption.getOptionType() == 1 && 
-                !(draggedNode != null && draggedNode.equals(nodeHandler.getIndex(i)) && v == mouseInputDetector.getDraggedOptionSlot()) && 
-                curOption.getDialog() > 0) {
+                if (
+                nodeHandler.get(endDialog) != null && curOption.getOptionType() == 1 && 
+                !(draggedNode != null && draggedNode.equals(nodeHandler.getIndex(i)) && v == mouseInputDetector.getDraggedOptionSlot()) ) {
                     int startX = offsetX + nodeHandler.getIndex(i).getPosX() + 138;
                     int startY = offsetY + nodeHandler.getIndex(i).getPosY() + 10 + v*15;  
                     int endX = offsetX + nodeHandler.get(endDialog).getPosX() + 15;
