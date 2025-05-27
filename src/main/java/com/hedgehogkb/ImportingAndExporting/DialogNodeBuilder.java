@@ -41,16 +41,16 @@ public class DialogNodeBuilder {
         dialogNode.setDialogTitle(dialogNodeJson.getString("DialogTitle"));
         dialogNode.setDialogText(dialogNodeJson.getString("DialogText"));
         dialogNode.setDialogCommand(dialogNodeJson.getString("DialogCommand"));
-        dialogNode.setShowDialogWheel(dialogNodeJson.getBoolean("ShowDialogueWheel"));
-        dialogNode.setHideNPC(dialogNodeJson.getBoolean("DialogHideNPC"));
-        dialogNode.setDisableEsc(dialogNodeJson.getBoolean("DialogDisableEsc"));
+        dialogNode.setShowDialogWheel(intToBoolean(dialogNodeJson.getInt("DialogShowWheel")));
+        dialogNode.setHideNPC(intToBoolean(dialogNodeJson.getInt("DialogHideNPC")));
+        dialogNode.setDisableEsc(intToBoolean(dialogNodeJson.getInt("DialogDisableEsc")));
         ArrayList<DialogOption> dialogOptions = buildDialogOption(dialogNodeJson);
         dialogNode.setOptions(dialogOptions);
     }
 
     public ArrayList<DialogOption> buildDialogOption(JSONObject dialogOptionJson) {
         ArrayList<DialogOption> dialogOptions = new ArrayList<>();
-        JSONArray dialogOptionArray = dialogOptionJson.getJSONArray("DialogOptions");
+        JSONArray dialogOptionArray = dialogOptionJson.getJSONArray("Options");
         for(int i = 0; i < dialogOptionArray.length(); i++) {
             JSONObject optionJson = dialogOptionArray.getJSONObject(i).getJSONObject("Option");
             DialogOption dialogOption = new DialogOption(i);

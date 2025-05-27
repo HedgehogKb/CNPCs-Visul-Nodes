@@ -22,6 +22,7 @@ import javax.swing.event.DocumentListener;
 
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
+import com.hedgehogkb.ImportingAndExporting.ProjectImporter;
 import com.hedgehogkb.ProjectEditorFrame.ProjectEditorFrame;
 
 
@@ -30,7 +31,6 @@ public class LauncherFrame {
     private JFrame frame;
     private JFileChooser fileChooser;
     private File selectedDirectory;
-    private JButton createProjectButton;
 
     private int selectedProjectType;
 
@@ -57,10 +57,17 @@ public class LauncherFrame {
     private JLabel blankProjectFileLocationLabel;
     private JButton blankProjectFolderSelectorButton;
     private JLabel selectedFolderLabel;
+    private JButton createProjectButton;
+
 
     //existing project components
     private JPanel existingProjectPanel;
-
+    private JLabel existingProjectExplinationlabel;
+    private JLabel existingProjectFileLocationLabel;
+    private JButton existingProjectFolderSelectionButton;
+    private JLabel existingProjectSelectedFolderLabel;
+    private JButton existingProjectCreateProjectButton;
+    //private JLabel existingProjectSelectedFolderLabel;
     //existing nodes components
     private JPanel existingNodesPanel;
 
@@ -93,6 +100,7 @@ public class LauncherFrame {
         handleGeneralInputs();
         handleLeftPanelInputs();
         handleBlankProjectInputs();
+        handleExistingProjectInputs();
     }
 
     private void initializeLeftPanel() {
@@ -220,7 +228,61 @@ public class LauncherFrame {
     } 
 
     private void initializeExistingProjectPanel() {
+        existingProjectPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Existing project"));
+        existingProjectPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
+        existingProjectExplinationlabel = new JLabel("<html>" + "Opens an exising project from the selected folder. Make sure the folder contains a Project Settings Json file." + "</html>");
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 10, 0);
+        existingProjectPanel.add(existingProjectExplinationlabel, c); 
+
+        existingProjectFileLocationLabel = new JLabel("Select Project Folder:");
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 0.1;
+        c.gridwidth = 1;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(2, 0, 5, 0);
+        existingProjectPanel.add(existingProjectFileLocationLabel, c);
+
+        existingProjectFolderSelectionButton = new JButton("Select Folder");
+        c.gridx = 1;
+        c.gridy = 1;
+        c.weightx = 0.9;
+        //c.weighty = 0.5;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 0);
+        existingProjectPanel.add(existingProjectFolderSelectionButton, c);
+
+        existingProjectSelectedFolderLabel = new JLabel("<html>" + "Selected Folder: Null" + "</html>");
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0,0,8,0);
+        existingProjectPanel.add(existingProjectSelectedFolderLabel, c);
+
+        existingProjectCreateProjectButton = new JButton("Open Project");
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.anchor = GridBagConstraints.NORTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 0);
+        existingProjectPanel.add(existingProjectCreateProjectButton, c);
     }
 
     private void initializeExistingNodesPanel() {
@@ -237,7 +299,7 @@ public class LauncherFrame {
         this.frame.setVisible(true);
     }
 
-    public void handleGeneralInputs() {
+    private void handleGeneralInputs() {
         createProjectButton.addActionListener(e -> {
             ProjectInfo projectInfo = new ProjectInfo(selectedDirectory, Integer.parseInt(startingNumberTextArea.getText()));
             ProjectEditorFrame projectEditorFrame = new ProjectEditorFrame(projectInfo);
@@ -247,11 +309,20 @@ public class LauncherFrame {
 
     private void handleLeftPanelInputs() {
         blankProjectButton.addActionListener(e -> {
-            this.frame.remove(blankRightPanel);
+            this.frame.getContentPane().remove(1);
             this.frame.add(this.blankProjectPanel);
             SwingUtilities.updateComponentTreeUI(frame);
 
             this.selectedProjectType = BLANK_PROJECT;
+        });
+
+        existingProjectButton.addActionListener(e -> {
+            this.frame.getContentPane().remove(1);
+            this.frame.add(this.existingProjectPanel);
+            SwingUtilities.updateComponentTreeUI(frame);
+
+            this.selectedProjectType = EXISTING_PROJECT;
+
         });
     }
     
@@ -293,6 +364,22 @@ public class LauncherFrame {
 
             @Override
             public void changedUpdate(DocumentEvent e) {}
+        });
+    }
+
+    private void handleExistingProjectInputs() {
+        existingProjectFolderSelectionButton.addActionListener(e -> {
+            int returnValue = fileChooser.showOpenDialog(this.frame);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                this.selectedDirectory = fileChooser.getSelectedFile();
+                existingProjectSelectedFolderLabel.setText("<html>"+"Selected Folder: " + selectedDirectory.getAbsolutePath() + "</html>");
+            }
+        });
+
+        existingProjectCreateProjectButton.addActionListener(e -> {
+            ProjectImporter importer = new ProjectImporter(selectedDirectory);
+            ProjectEditorFrame editorFrame = new ProjectEditorFrame(importer.getProjectInfo());
+            this.frame.dispose();
         });
     }
 }

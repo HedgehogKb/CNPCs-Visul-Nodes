@@ -29,6 +29,8 @@ public class ProjectImporter {
         }
         int lowestNodeNumber = projectSettings.getInt("lowestNodeNumber");
         this.projectInfo = new ProjectInfo(inputDirectory,  lowestNodeNumber);
+        
+        importGroups(projectSettings);
     }
 
     public void importGroups(JSONObject projectSettings) {
@@ -44,6 +46,7 @@ public class ProjectImporter {
 
                 VisualNodeShell visualNodeShell = new VisualNodeShell(posX, posY);
                 visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, nodeGroupsJson.getJSONObject(i).getString("name"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
+                group.getNodeHandler().add(visualNodeShell);
             }
             projectInfo.addGroup(group);
         }
