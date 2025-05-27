@@ -230,9 +230,15 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     public int getMouseOffsetX() {
         return this.offsetX;
     }
+    public void setMouseOffsetX(int offsetX) {
+        this.offsetX = offsetX;
+    }
 
     public int getMouseOffsetY() {
         return this.offsetY;
+    }
+    public void setMouseOffsetY(int offsetY) {
+        this.offsetY = offsetY;
     }
 
     public int getMouseX() {

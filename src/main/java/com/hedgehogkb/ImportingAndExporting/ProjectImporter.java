@@ -37,7 +37,9 @@ public class ProjectImporter {
         JSONArray nodeGroupsJson = projectSettings.getJSONArray("nodeGroups");
         for (int i = 0; i < nodeGroupsJson.length(); i++) {
             String groupName = nodeGroupsJson.getJSONObject(i).getString("name");
-            NodeGroup group = new NodeGroup(groupName, projectInfo);
+            int offsetX = nodeGroupsJson.getJSONObject(i).getInt("offsetX");
+            int offsetY = nodeGroupsJson.getJSONObject(i).getInt("offsetY");
+            NodeGroup group = new NodeGroup(groupName, projectInfo, offsetX, offsetY);
             //TODO: change Nodes to be lowercase in the exporter
             JSONArray visualNodesJson = nodeGroupsJson.getJSONObject(i).getJSONArray("Nodes");
             for (int v = 0; v < visualNodesJson.length(); v++) {

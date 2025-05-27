@@ -28,6 +28,15 @@ public class NodeGroup {
         this.visualNodeDisplayFrame = new VisualNodeDisplayFrame(this);
     }
 
+    public NodeGroup(String name, ProjectInfo projectInfo, int offsetX, int offsetY) {
+        this.name = name;
+        this.projectInfo = projectInfo;
+        this.nodeHandler = new NodeHandler(this, projectInfo);
+        this.visualNodeDisplayFrame = new VisualNodeDisplayFrame(this, offsetX, offsetY);
+        this.visualNodeDisplayRunner = new VisualNodeDisplayRunner(visualNodeDisplayFrame);
+
+    }
+
     public NodeHandler getNodeHandler() {
         return nodeHandler;
     }

@@ -69,6 +69,12 @@ public class VisualNodeDisplayFrame {
         detectFrameClosed();
     }
 
+    public VisualNodeDisplayFrame(NodeGroup group, int offsetX, int offsetY) {
+        this(group);
+        this.mouseInputDetector.setMouseOffsetX(offsetX);
+        this.mouseInputDetector.setMouseOffsetY(offsetY);
+    }
+
     public void repaint() {
         panel.repaint();
     }
