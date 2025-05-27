@@ -187,4 +187,16 @@ public class VisualNodeDisplayFrame {
         return this.frame;
     }
 
+    public int getOffsetX() {
+        return mouseInputDetector.getMouseOffsetX();
+    }
+
+    public int getOffsetY() {
+        return mouseInputDetector.getMouseOffsetY();
+    }
+
+    public void saveProject() {
+        group.saveProject();
+    }
+
 }

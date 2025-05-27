@@ -3,6 +3,8 @@ package com.hedgehogkb;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONObject;
+
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 
@@ -108,5 +110,13 @@ public class NodeHandler {
 
     public int size() {
         return visualNodeShells.size();
+    }
+
+    public ArrayList<JSONObject> buildJson() {
+        ArrayList<JSONObject> visualNodeJsons = new ArrayList<>();
+        for (VisualNodeShell visualNodeShell : visualNodeShells) {
+            visualNodeJsons.add(visualNodeShell.buildJson());
+        }
+        return visualNodeJsons;
     }
 }

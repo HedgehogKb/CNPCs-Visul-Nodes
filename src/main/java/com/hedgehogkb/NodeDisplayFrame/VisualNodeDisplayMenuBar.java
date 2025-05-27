@@ -9,9 +9,9 @@ public class VisualNodeDisplayMenuBar {
 
     private JMenuBar menuBar;
     private JMenu fileMenu;
-    private JMenu editMenu;
-    private JMenu addNodeMenu;
+    private JMenuItem saveButton;
 
+    private JMenu addNodeMenu;
     private JMenuItem addNodeButton;
     private JMenuItem impotCNPCsNode;
     private JMenuItem importProjectNode;
@@ -31,6 +31,10 @@ public class VisualNodeDisplayMenuBar {
     
     private void initializeMenuBar() {
         fileMenu = new JMenu("File");
+        
+        saveButton = new JMenuItem("Save");
+        fileMenu.add(saveButton);
+
         //editMenu = new JMenu("Edit");
         addNodeMenu = new JMenu("Add Node");
         
@@ -67,6 +71,11 @@ public class VisualNodeDisplayMenuBar {
 
         importProjectNode.addActionListener(e -> {
         
+        });
+
+        saveButton.addActionListener(e -> {
+            System.out.println("Saving project");
+            visualNodeDisplay.saveProject();
         });
     }
 }

@@ -9,11 +9,13 @@ public class ProjectInfo {
     ArrayList<NodeGroup> groups;
     File projectDirectory;
     int lowestNodeNumber;
+    ProjectExporter projectExporter;
 
     public ProjectInfo(File projectDirectory) {
         this.projectDirectory = projectDirectory;
         this.groups = new ArrayList<>();
         this.lowestNodeNumber = 1;
+        this.projectExporter = new ProjectExporter(this);
     }
 
     public ProjectInfo(File projectDirectory, int lowestNodeNumber) {
@@ -45,4 +47,12 @@ public class ProjectInfo {
     public void setLowestNodeNumber(int lowestNodeNumber) {
         this.lowestNodeNumber = lowestNodeNumber;
     } 
+
+    public File getProjectDirectory() {
+        return projectDirectory;
+    }
+
+    public ProjectExporter getProjectExporter() {
+        return projectExporter;
+    }
 }

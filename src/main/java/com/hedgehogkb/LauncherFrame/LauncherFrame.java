@@ -22,6 +22,7 @@ import javax.swing.event.DocumentListener;
 
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
+import com.hedgehogkb.ProjectEditorFrame.ProjectEditorFrame;
 
 
 
@@ -238,6 +239,8 @@ public class LauncherFrame {
     public void handleGeneralInputs() {
         createProjectButton.addActionListener(e -> {
             ProjectInfo projectInfo = new ProjectInfo(selectedDirectory, Integer.parseInt(startingNumberTextArea.getText()));
+            ProjectEditorFrame projectEditorFrame = new ProjectEditorFrame(projectInfo);
+            this.frame.dispose();
         });
     }
 

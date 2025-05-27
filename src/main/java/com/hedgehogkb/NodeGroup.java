@@ -1,5 +1,7 @@
 package com.hedgehogkb;
 
+import org.json.JSONObject;
+
 import com.hedgehogkb.NodeHandler;
 import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayFrame;
 import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayRunner;
@@ -50,5 +52,18 @@ public class NodeGroup {
     public void stopDisplay() {
         visualNodeDisplayRunner.stop();
         visualNodeDisplayFrame.setVisible(false);
+    }
+
+    public JSONObject buildJson() {
+        JSONObject nodeGroupJson = new JSONObject();
+        nodeGroupJson.put("name", name);
+        nodeGroupJson.put("offsetX", visualNodeDisplayFrame.getOffsetX());
+        nodeGroupJson.put("offsetY", visualNodeDisplayFrame.getOffsetY());
+        nodeGroupJson.put("Nodes", nodeHandler.buildJson());
+        return nodeGroupJson;
+    }
+
+    public void saveProject() {
+        projectInfo.getProjectExporter().export();
     }
 }

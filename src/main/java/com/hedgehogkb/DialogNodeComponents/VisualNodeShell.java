@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import org.json.JSONObject;
+
 public class VisualNodeShell {
     private DialogNode dialogNode;
 
@@ -193,5 +195,13 @@ public class VisualNodeShell {
      */
     public DialogNode getDialogNode() {
         return dialogNode;
+    }
+
+    public JSONObject buildJson() {
+        JSONObject visulNodeJson = new JSONObject();
+        visulNodeJson.put("nodeId", dialogNode.getDialogId());
+        visulNodeJson.put("posX", posX);
+        visulNodeJson.put("posY", posY);
+        return visulNodeJson;
     }
 }
