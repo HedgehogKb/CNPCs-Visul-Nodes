@@ -118,7 +118,7 @@ public class OtherOptionsPanel {
         otherOptionsPanel.add(showDialogWheelLabel, c);
 
         showDialogWheelCheckBox = new JCheckBox();
-        showDialogWheelCheckBox.setSelected(dialogNode.getIsShowDialogueWheel());
+        showDialogWheelCheckBox.setSelected(dialogNode.getIsShowDialogWheel());
         c.gridx = 1;
         c.gridy = 3;
         c.weightx = 0.5;
@@ -139,7 +139,7 @@ public class OtherOptionsPanel {
         otherOptionsPanel.add(disableEscLabel, c);
 
         disableEscCheckBox = new JCheckBox();
-        disableEscCheckBox.setSelected(dialogNode.getIsShowDialogueWheel());
+        disableEscCheckBox.setSelected(dialogNode.getIsShowDialogWheel());
         c.gridx = 1;
         c.gridy = 4;
         c.gridwidth = 1;

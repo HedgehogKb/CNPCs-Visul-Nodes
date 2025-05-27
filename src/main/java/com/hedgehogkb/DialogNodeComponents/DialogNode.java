@@ -11,7 +11,7 @@ public class DialogNode {
     //simple boolean or string variables;
     private String dialogText;
     private String dialogCommand;
-    private boolean showDialogueWheel;
+    private boolean showDialogWheel;
     private boolean hideNPC;
     private boolean disableEsc;
 
@@ -66,7 +66,7 @@ public class DialogNode {
         this.dialogTitle = "[title]";
         this.dialogText = "[text]";
         this.dialogCommand = "";
-        this.showDialogueWheel = false;
+        this.showDialogWheel = false;
         this.hideNPC = false;
         this.disableEsc = false;
 
@@ -111,7 +111,7 @@ public class DialogNode {
         //dialog values with single values
         dialogJsonWrapper.put("DialogText", dialogText);
         dialogJsonWrapper.put("DialogCommand", dialogCommand);
-        dialogJsonWrapper.put("DialogShowWheel", booleanToInt(showDialogueWheel));
+        dialogJsonWrapper.put("DialogShowWheel", booleanToInt(showDialogWheel));
         dialogJsonWrapper.put("DialogHideNPC", booleanToInt(hideNPC));
         dialogJsonWrapper.put("DialogDisableEsc", booleanToInt(disableEsc));
 
@@ -241,9 +241,19 @@ public class DialogNode {
     }
 
     //getters and setters
+
+    public int getDialogId() {
+        return this.dialogId;
+    }
+    public void setDialogId(int dialogId) {
+        this.dialogId = dialogId;
+    }
     
     public ArrayList<DialogOption> getOptions() {
         return this.options;
+    }
+    public void setOptions(ArrayList<DialogOption> options) {
+        this.options = options;
     }
 
 
@@ -254,9 +264,6 @@ public class DialogNode {
         this.dialogTitle = dialogTitle;
     }
 
-    public int getDialogId() {
-        return this.dialogId;
-    }
 
 
     public String getDialogText() {
@@ -280,11 +287,11 @@ public class DialogNode {
         this.hideNPC = hideNPC;
     }
 
-    public boolean getIsShowDialogueWheel() {
-        return this.showDialogueWheel;
+    public boolean getIsShowDialogWheel() {
+        return this.showDialogWheel;
     }
-    public void setShowDialogueWheel(boolean showDialogueWheel) {
-        this.showDialogueWheel = showDialogueWheel;
+    public void setShowDialogWheel(boolean showDialogWheel) {
+        this.showDialogWheel = showDialogWheel;
     }
 
     public boolean getIsDisableEsc() {

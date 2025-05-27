@@ -197,6 +197,10 @@ public class VisualNodeShell {
         return dialogNode;
     }
 
+    public void setDialogNode(DialogNode dialogNode) {
+        this.dialogNode = dialogNode;
+    }
+
     public JSONObject buildJson() {
         JSONObject visulNodeJson = new JSONObject();
         visulNodeJson.put("nodeId", dialogNode.getDialogId());
