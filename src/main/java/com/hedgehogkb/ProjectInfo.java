@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.ImportingAndExporting.ProjectExporter;
 
 public class ProjectInfo {
     ArrayList<NodeGroup> groups;

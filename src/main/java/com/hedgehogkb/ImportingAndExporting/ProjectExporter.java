@@ -1,4 +1,4 @@
-package com.hedgehogkb;
+package com.hedgehogkb.ImportingAndExporting;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
+import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.ProjectInfo;
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 
