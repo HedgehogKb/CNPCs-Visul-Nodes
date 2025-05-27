@@ -41,14 +41,14 @@ public class DialogNodeBuilder {
         dialogNode.setDialogTitle(dialogNodeJson.getString("DialogTitle"));
         dialogNode.setDialogText(dialogNodeJson.getString("DialogText"));
         dialogNode.setDialogCommand(dialogNodeJson.getString("DialogCommand"));
-        dialogNode.setShowDialogWheel(intToBoolean(dialogNodeJson.getInt("DialogShowWheel")));
-        dialogNode.setHideNPC(intToBoolean(dialogNodeJson.getInt("DialogHideNPC")));
-        dialogNode.setDisableEsc(intToBoolean(dialogNodeJson.getInt("DialogDisableEsc")));
+        dialogNode.setShowDialogWheel(jsonToBoolean(dialogNodeJson, "DialogShowWheel"));
+        dialogNode.setHideNPC(jsonToBoolean(dialogNodeJson,"DialogHideNPC"));
+        dialogNode.setDisableEsc(jsonToBoolean(dialogNodeJson,"DialogDisableEsc"));
         ArrayList<DialogOption> dialogOptions = buildDialogOption(dialogNodeJson);
         dialogNode.setOptions(dialogOptions);
     }
 
-    public ArrayList<DialogOption> buildDialogOption(JSONObject dialogOptionJson) {
+    public ArrayList<DialogOption> buildDialogOption(JSONObject dialogOptionJson) throws JSONException {
         ArrayList<DialogOption> dialogOptions = new ArrayList<>();
         JSONArray dialogOptionArray = dialogOptionJson.getJSONArray("Options");
         for(int i = 0; i < dialogOptionArray.length(); i++) {
@@ -70,5 +70,19 @@ public class DialogNodeBuilder {
 
     public DialogNode getDialogNode() {
         return dialogNode;
+    }
+
+    public Boolean jsonToBoolean(JSONObject json, String key) {
+        if (!json.has(key)) {
+            return false;
+        }
+
+        if (json.get(key) instanceof Boolean) {
+            return json.getBoolean(key);
+        } else if (json.get(key) instanceof Integer) {
+            return intToBoolean(json.getInt(key));
+        } else {
+            return false; // Default case if the type is unexpected
+        }
     }
 }

@@ -385,21 +385,22 @@ public class LauncherFrame {
             ProjectImporter importer = null;
             try {
                 importer = new ProjectImporter(selectedDirectory);
-            } catch (FileNotFoundException e1) {
+            } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(frame, "Cannot find file.");
-
-                e1.printStackTrace();
-            } catch (JSONException e1) {
-                JOptionPane.showMessageDialog(frame, "Invalid Json.");
                 return;
-            } catch (IOException e1) {
+            } catch (JSONException ex) {
                 JOptionPane.showMessageDialog(frame, "Invalid Json.");
+                ex.printStackTrace();
+                return;
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(frame, "Error finding files. Ensure that the selected folder contains a project settings file and the specified group directories.");
+                return;
             }
 
             if (importer != null) {
                 ProjectEditorFrame editorFrame = new ProjectEditorFrame(importer.getProjectInfo());
+                this.frame.dispose();
             }
-            this.frame.dispose();
         });
     }
 }
