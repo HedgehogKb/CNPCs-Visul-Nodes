@@ -23,7 +23,7 @@ public class DialogNodeBuilder {
     private DialogNode dialogNode;
 
     
-    public  DialogNodeBuilder(File projectDirectory, String groupName, int nodeId) {
+    public  DialogNodeBuilder(File projectDirectory, String groupName, int nodeId) throws JSONException {
         this.projectDirectory = projectDirectory;
         this.groupName = groupName;
         this.nodeId = nodeId;

@@ -7,18 +7,23 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import org.json.JSONException;
 
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
@@ -377,8 +382,23 @@ public class LauncherFrame {
         });
 
         existingProjectCreateProjectButton.addActionListener(e -> {
-            ProjectImporter importer = new ProjectImporter(selectedDirectory);
-            ProjectEditorFrame editorFrame = new ProjectEditorFrame(importer.getProjectInfo());
+            ProjectImporter importer = null;
+            try {
+                importer = new ProjectImporter(selectedDirectory);
+            } catch (FileNotFoundException e1) {
+                JOptionPane.showMessageDialog(frame, "Cannot find file.");
+
+                e1.printStackTrace();
+            } catch (JSONException e1) {
+                JOptionPane.showMessageDialog(frame, "Invalid Json.");
+                return;
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(frame, "Invalid Json.");
+            }
+
+            if (importer != null) {
+                ProjectEditorFrame editorFrame = new ProjectEditorFrame(importer.getProjectInfo());
+            }
             this.frame.dispose();
         });
     }

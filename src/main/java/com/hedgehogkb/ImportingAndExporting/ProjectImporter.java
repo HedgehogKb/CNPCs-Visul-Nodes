@@ -1,5 +1,6 @@
 package com.hedgehogkb.ImportingAndExporting;
 
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -19,21 +20,17 @@ public class ProjectImporter {
     private File inputDirectory;
     private ProjectInfo projectInfo;
 
-    public ProjectImporter(File inputDirectory) {
+    public ProjectImporter(File inputDirectory) throws FileNotFoundException, JSONException, IOException {
         this.inputDirectory = inputDirectory;
         JSONObject projectSettings = new JSONObject();
-        try {
-            projectSettings = new JSONObject(Files.readString(Path.of(inputDirectory + File.separator + "cnpcsProjectSettings.json")));
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+        projectSettings = new JSONObject(Files.readString(Path.of(inputDirectory + File.separator + "cnpcsProjectSettings.json")));
         int lowestNodeNumber = projectSettings.getInt("lowestNodeNumber");
         this.projectInfo = new ProjectInfo(inputDirectory,  lowestNodeNumber);
         
         importGroups(projectSettings);
     }
 
-    public void importGroups(JSONObject projectSettings) {
+    public void importGroups(JSONObject projectSettings) throws JSONException, IOException {
         JSONArray nodeGroupsJson = projectSettings.getJSONArray("nodeGroups");
         for (int i = 0; i < nodeGroupsJson.length(); i++) {
             String groupName = nodeGroupsJson.getJSONObject(i).getString("name");
