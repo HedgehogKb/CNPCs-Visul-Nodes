@@ -15,5 +15,6 @@ public class App
     public static void main( String[] args )
     {
         LauncherFrame frame = new LauncherFrame();
+        System.out.println("Hello World!");
     }
 }
