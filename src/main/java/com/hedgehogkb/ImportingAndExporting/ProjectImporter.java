@@ -26,7 +26,7 @@ public class ProjectImporter {
         projectSettings = new JSONObject(Files.readString(Path.of(inputDirectory + File.separator + "cnpcsProjectSettings.json")));
         int lowestNodeNumber = projectSettings.getInt("lowestNodeNumber");
         this.projectInfo = new ProjectInfo(inputDirectory,  lowestNodeNumber);
-        
+        projectInfo.setProjectSaved(true);
         importGroups(projectSettings);
     }
 

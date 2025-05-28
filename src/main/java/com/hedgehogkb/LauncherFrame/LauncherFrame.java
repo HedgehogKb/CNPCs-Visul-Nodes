@@ -307,6 +307,7 @@ public class LauncherFrame {
     private void handleGeneralInputs() {
         createProjectButton.addActionListener(e -> {
             ProjectInfo projectInfo = new ProjectInfo(selectedDirectory, Integer.parseInt(startingNumberTextArea.getText()));
+            projectInfo.setProjectSaved(false);
             ProjectEditorFrame projectEditorFrame = new ProjectEditorFrame(projectInfo);
             this.frame.dispose();
         });

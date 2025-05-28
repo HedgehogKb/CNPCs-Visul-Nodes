@@ -95,6 +95,7 @@ public class ProjectExporter {
     public void export() {
         exportProjectInfo();
         exportProjectNodes();
+        projectInfo.setProjectSaved(true);
     }
 
 }

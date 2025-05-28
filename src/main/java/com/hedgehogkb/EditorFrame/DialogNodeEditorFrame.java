@@ -7,14 +7,21 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 
@@ -25,6 +32,10 @@ public class DialogNodeEditorFrame {
     private DialogNode dialogNode;
     private JFrame frame;
     private JPanel mainPanel;
+
+    //saved information
+    private boolean titleSaved;
+    private boolean dialogSaved;
     
     //left panel components
     private JPanel leftPanel;
@@ -53,6 +64,8 @@ public class DialogNodeEditorFrame {
 
     public DialogNodeEditorFrame(DialogNode dialogNode) {
         this.dialogNode = dialogNode;
+        this.titleSaved = true;
+        this.dialogSaved = true;
         initializeComponents();
         buildLayout();
         handleInputs();
@@ -62,7 +75,7 @@ public class DialogNodeEditorFrame {
 
         // Initialize JFrame
         this.frame = new JFrame("Dialog Id: "+dialogNode.getDialogId() + " - " + dialogNode.getDialogTitle());
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setSize(600, 430);
         frame.setMinimumSize(new Dimension(600, 340));
@@ -231,20 +244,26 @@ public class DialogNodeEditorFrame {
         confirmTextButton.addActionListener(e -> {
             String text = dialogTextBox.getText();
             dialogNode.setDialogText(text);
+            dialogSaved = true;
         });
 
         cancelTextButton.addActionListener(e -> {
             dialogTextBox.setText(dialogNode.getDialogText());
+            dialogSaved = true;
+
         });
 
         confirmTitleButton.addActionListener(e -> {
             String title = titleTextBox.getText();
             dialogNode.setDialogTitle(title);
             frame.setTitle("Dialog Id: "+dialogNode.getDialogId() + " - " + dialogNode.getDialogTitle());
+            titleSaved = true;
+
         });
 
         cancelTitleButton.addActionListener(e -> {
             titleTextBox.setText(dialogNode.getDialogTitle());
+            titleSaved = true;
         });
 
         otherOptionsButton.addActionListener(e -> {
@@ -260,11 +279,87 @@ public class DialogNodeEditorFrame {
             mainPanel.revalidate();
             mainPanel.repaint();
         });
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                if(isPanelSaved()) {
+                    frame.dispose();
+                } else {
+                    int saveChoice = JOptionPane.showConfirmDialog(frame, "You have unsaved changes. Do you want to save them before closing?", "Save Changes", JOptionPane.YES_NO_CANCEL_OPTION);
+                    switch(saveChoice) {
+                        case JOptionPane.NO_OPTION:
+                            titleTextBox.setText(dialogNode.getDialogTitle());
+                            dialogTextBox.setText(dialogNode.getDialogText());
+                            setPanelSaved();
+                            frame.dispose();
+                            break;
+                        case JOptionPane.YES_OPTION:
+                            dialogNode.setDialogTitle(titleTextBox.getText());
+                            dialogNode.setDialogText(dialogTextBox.getText());
+
+                            if (!dialogOptionsPanel.isSaved()) {
+                                dialogOptionsPanel.saveDialogOption();
+                            }
+
+                            setPanelSaved();
+                            frame.dispose();
+                            break;
+                    }
+                }
+            }
+        });
+
+        titleTextBox.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                titleSaved = false;
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                titleSaved = false;
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+
+        dialogTextBox.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                dialogSaved = false;
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                dialogSaved = false;
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+
     }
 
     public void moveFrameToTop() {
         this.frame.setAlwaysOnTop(true);
         this.frame.setAlwaysOnTop(false);
+    }
+
+    /**
+     * Does not actually update the dialogNode, but sets the panel as saved.
+     */
+    public void setPanelSaved() {
+        titleSaved = true;
+        dialogSaved = true;
+    }
+
+    public boolean isPanelSaved() {
+        boolean saved = titleSaved && dialogSaved && dialogOptionsPanel.isSaved();
+        return saved;
     }
 
     public DialogOptionsPanel getDialogOptionsPanel() {

@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -26,6 +27,7 @@ public class DialogOptionsPanel {
     private JPanel specificOptionPanel;
     private JLabel specificOptionLabel;
     private JComboBox<String> specificOptionBox;
+    private boolean[] optionTitleSaved;
 
     //specific option panel components
     private JLabel optionTitleLabel;
@@ -41,10 +43,17 @@ public class DialogOptionsPanel {
     
     public DialogOptionsPanel(DialogNode dialogNode) {
         this.dialogNode = dialogNode;
+
+        this.optionTitleSaved = new boolean[6];
+        for (int i = 0; i < optionTitleSaved.length; i++) {
+            optionTitleSaved[i] = true;
+        }
+
         initializeMainPanelComponents();
         initializeSpecificOptionPanelComponents();
         this.dialogOption = dialogNode.getOptions().get(0);
         initializeOptionPanelValues(dialogOption);
+
         handleOptionPanelInputs();
     }
 
@@ -215,8 +224,6 @@ public class DialogOptionsPanel {
     public void initializeOptionPanelValues(DialogOption option) {
         optionTitleTextArea.setText(option.getTitle());
         colorTextArea.setText(String.valueOf(option.getDialogColor()));
-        System.out.println(option.getOptionType());
-
         setOptoinTypeBoxValue(option);
 
         revealOptionTypeComponents();
@@ -229,22 +236,55 @@ public class DialogOptionsPanel {
 
     public void handleOptionPanelInputs() {
         specificOptionBox.addActionListener(e -> {
+            if (!isSaved()) {
+                int saveChoice = JOptionPane.showConfirmDialog(panel, "Do you want to save the edited Dialog Title?", "Save Changes", JOptionPane.YES_NO_OPTION);
+                    switch(saveChoice) {
+                        case JOptionPane.NO_OPTION:
+                            optionTitleSaved[dialogOption.getOptionSlot()] = true;
+                            break;
+                        case JOptionPane.YES_OPTION:
+                            saveDialogOption();
+                            break;
+                    }
+            }
+            int previousOptionId = dialogOption.getOptionSlot();
             int optionId = specificOptionBox.getSelectedIndex();
             this.dialogOption = dialogNode.getOptions().get(optionId);
             revealOptionTypeComponents();
             initializeOptionPanelValues(dialogOption);
+            optionTitleSaved[specificOptionBox.getSelectedIndex()] = true;
+        });
+
+        optionTitleTextArea.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                optionTitleSaved[specificOptionBox.getSelectedIndex()] = false;
+
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                optionTitleSaved[specificOptionBox.getSelectedIndex()] = false;
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+            
         });
 
         confirmOptionTitleButton.addActionListener(e -> {
             dialogOption.setTitle(optionTitleTextArea.getText());
             int selectedIndex = specificOptionBox.getSelectedIndex();
-            specificOptionBox.insertItemAt(dialogOption.getOptionSlot() + " - " + dialogOption.getTitle(), selectedIndex);
+            specificOptionBox.insertItemAt(dialogOption.getOptionSlot() + " - " + cutString(15, dialogOption.getTitle()), selectedIndex);
             specificOptionBox.removeItemAt(selectedIndex + 1);
             specificOptionBox.setSelectedIndex(selectedIndex);
+            optionTitleSaved[selectedIndex] = true;
         });
 
         cancelOptionTitleButton.addActionListener(e -> {
             optionTitleTextArea.setText(dialogOption.getTitle());
+            optionTitleSaved[specificOptionBox.getSelectedIndex()] = true;
         });
 
         colorTextArea.getDocument().addDocumentListener(new DocumentListener() {
@@ -275,11 +315,6 @@ public class DialogOptionsPanel {
         optionTypeBox.addActionListener(e -> {
            revealOptionTypeComponents();
            int optionTypeValue = optionTypeBox.getSelectedIndex();
-           /*if (optionTypeBox.getSelectedIndex() == 0) {
-            optionTypeValue = 1;
-           } else if (optionTypeBox.getSelectedIndex() == 1) {
-            optionTypeValue = 0;
-           }*/
            dialogOption.setOptionType(optionTypeValue);
         });
 
@@ -350,6 +385,22 @@ public class DialogOptionsPanel {
         revealOptionTypeComponents();
     }
 
+    public String cutString(int maxLength, String input) {
+        if (input.length() <= maxLength) {
+            return input;
+        } else {
+            return input.substring(0, maxLength) + "...";
+        }
+    }
+
+    public void saveDialogOption() {
+        dialogOption.setTitle(optionTitleTextArea.getText());
+        int selectedIndex = dialogOption.getOptionSlot();
+        specificOptionBox.insertItemAt(dialogOption.getOptionSlot() + " - " + cutString(15, dialogOption.getTitle()), selectedIndex);
+        specificOptionBox.removeItemAt(selectedIndex + 1);
+        optionTitleSaved[dialogOption.getOptionSlot()] = true;
+    }
+
     //getters and setters
     public JPanel getPanel() {
         return panel;
@@ -358,4 +409,14 @@ public class DialogOptionsPanel {
     public DialogNode getDialogNode() {
         return this.dialogNode;
     }
+
+    public boolean isSaved() {
+        for (int i = 0; i < optionTitleSaved.length; i++) {
+            if (!optionTitleSaved[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
