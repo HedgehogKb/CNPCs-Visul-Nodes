@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 
 import com.hedgehogkb.NodeHandler;
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
+import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.EditorFrame.DialogNodeEditorFrame;
 import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayFrame;
@@ -113,7 +114,7 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                         visualNodeDisplay.setProjectUnsaved();
                         curVisualNode.getDialogNode().getOptions().get(touchingOption).toggleOptionType();
                         curVisualNode.updateEditorOptionValues();
-                    } else {
+                    } else if (!(curVisualNode instanceof GroupNodeShell)){
                         SwingUtilities.invokeLater(() -> {
                             curVisualNode.moveEditorFrameToFront();
                         });

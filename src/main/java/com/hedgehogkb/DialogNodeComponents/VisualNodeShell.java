@@ -104,8 +104,8 @@ public class VisualNodeShell {
         g2d.fillRect(xScreenPos+10, yScreenPos +55, 10, 30);
 
         g2d.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-        g2d.drawString(dialogNode.getDialogTitle(), xScreenPos+10, yScreenPos+22);
-        g2d.drawString("Id: " + dialogNode.getDialogId(), xScreenPos+10, yScreenPos+44);
+        g2d.drawString(trimString(getDialogNode().getDialogTitle(), 20), xScreenPos+10, yScreenPos+22);
+        g2d.drawString("Id: " + getDialogNode().getDialogId(), xScreenPos+10, yScreenPos+44);
     }
 
     public void drawOutline(Graphics g) {
@@ -159,6 +159,10 @@ public class VisualNodeShell {
 
     public void updateEditorOptionValues() {
         dialogNodeEditorFrame.updateOptionValues();
+    }
+
+    public String trimString(String string, int length) {
+        return string.substring(0, Math.min(string.length(), length)) + "...";
     }
 
     /**

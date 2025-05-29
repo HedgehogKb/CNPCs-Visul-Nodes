@@ -74,7 +74,7 @@ public class VisualNodeDisplayMenuBar {
         addNodeMenu.add(projectNodesMenu);
         addNodeMenu.add(impotCNPCsNode);
 
-        importProjectNode = new JMenuItem("Import Dialog Node");
+        importProjectNode = new JMenuItem("Import Other Group Node");
         addNodeMenu.add(importProjectNode);
         
     }
@@ -112,11 +112,11 @@ public class VisualNodeDisplayMenuBar {
                 if (selectedValue.equals(null)) {
                     return;
                 }
-
                 VisualNodeShell projectNode = selectedValue;
                 if (visualNodeDisplay.getGroup().getNodeHandler().contains(projectNode)) {
                     return;
                 }
+                visualNodeDisplay.setProjectUnsaved();
                 projectNode.setPosition(visualNodeDisplay.getMouseX() - visualNodeDisplay.getOffsetX(), visualNodeDisplay.getMouseY() - visualNodeDisplay.getOffsetY());
                 visualNodeDisplay.getGroup().getNodeHandler().add(projectNode);
             }

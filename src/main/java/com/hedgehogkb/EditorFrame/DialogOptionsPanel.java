@@ -41,6 +41,9 @@ public class DialogOptionsPanel {
     private JComboBox<String> optionTypeBox;
     private JLabel specificOptionTypeLabel;
     private JTextArea specificOptionTypeTextArea;
+
+    //I'm not even joking this is the value I got when I tried to see what would go off screen.
+    public final int MAX_TITLE_LENGTH = 75;
     
     public DialogOptionsPanel(DialogNode dialogNode, DialogNodeEditorFrame dialogNodeEditorFrame) {
         this.dialogNodeEditorFrame = dialogNodeEditorFrame;
@@ -286,6 +289,9 @@ public class DialogOptionsPanel {
             specificOptionBox.removeItemAt(selectedIndex + 1);
             specificOptionBox.setSelectedIndex(selectedIndex);
             optionTitleSaved[selectedIndex] = true;
+            if (optionTitleTextArea.getText().length() > MAX_TITLE_LENGTH) {
+                JOptionPane.showMessageDialog(panel, "Warning! The title is too long and will likely go off the minecraft screen.");
+            }
         });
 
         cancelOptionTitleButton.addActionListener(e -> {

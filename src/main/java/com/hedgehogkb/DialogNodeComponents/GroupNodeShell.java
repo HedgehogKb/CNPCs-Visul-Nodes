@@ -30,7 +30,7 @@ public class GroupNodeShell extends VisualNodeShell {
         int xScreenPos = getPosX() + getOffsetX();
         int yScreenPos = getPosY() + getOffsetY();
 
-        int colorValue = 100;
+        int colorValue = 125;
         g2d.setColor(new Color(colorValue, colorValue, colorValue));
         g2d.fillRect(xScreenPos, yScreenPos, 150, 100);
         g2d.setColor(Color.BLACK);
@@ -43,8 +43,10 @@ public class GroupNodeShell extends VisualNodeShell {
         g2d.fillRect(xScreenPos+10, yScreenPos +55, 10, 30);
 
         g2d.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-        g2d.drawString(getDialogNode().getDialogTitle(), xScreenPos+10, yScreenPos+22);
+        g2d.drawString(trimString(getDialogNode().getDialogTitle(), 20), xScreenPos+10, yScreenPos+22);
         g2d.drawString("Id: " + getDialogNode().getDialogId(), xScreenPos+10, yScreenPos+44);
+        g2d.setFont(new Font("Times New Roman", Font.BOLD, 15));
+        g2d.drawString("Group: " + trimString(groupName, 7), xScreenPos+25, yScreenPos+ 66);
     }
 
     @Override
