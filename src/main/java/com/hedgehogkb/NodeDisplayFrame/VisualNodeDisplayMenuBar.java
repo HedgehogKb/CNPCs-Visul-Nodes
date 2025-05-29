@@ -30,8 +30,8 @@ public class VisualNodeDisplayMenuBar {
     private JMenuItem addNodeButton;
     private JMenuItem importProjectNode;
     private JMenu projectNodesMenu;
-    private JList<String> projectNodesList;
-    private DefaultListModel<String> projectNodesListModel;
+    private JList<GroupNodeShell> projectNodesList;
+    private DefaultListModel<GroupNodeShell> projectNodesListModel;
     private JScrollPane projectNodesScrollPane;
     private JMenuItem impotCNPCsNode;
 
@@ -108,16 +108,16 @@ public class VisualNodeDisplayMenuBar {
         projectNodesList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String selectedValue = projectNodesList.getSelectedValue();
+                GroupNodeShell selectedValue = projectNodesList.getSelectedValue();
                 if (selectedValue.equals(null)) {
                     return;
                 }
-                int dialogId = Integer.parseInt(selectedValue.split("-")[0].trim());
-                DialogNode dialogNode = visualNodeDisplay.getGroup().getProjectInfo().getNodeById(dialogId).getDialogNode();
-                VisualNodeShell projectNode = new GroupNodeShell(visualNodeDisplay.getOffsetX(), visualNodeDisplay.getOffsetY(), visualNodeDisplay.getGroup(), dialogNode);
+
+                VisualNodeShell projectNode = selectedValue;
                 if (visualNodeDisplay.getGroup().getNodeHandler().contains(projectNode)) {
                     return;
                 }
+                projectNode.setPosition(visualNodeDisplay.getMouseX() - visualNodeDisplay.getOffsetX(), visualNodeDisplay.getMouseY() - visualNodeDisplay.getOffsetY());
                 visualNodeDisplay.getGroup().getNodeHandler().add(projectNode);
             }
         });
@@ -132,13 +132,13 @@ public class VisualNodeDisplayMenuBar {
         ProjectInfo projectInfo = visualNodeDisplay.getGroup().getProjectInfo();
         for (NodeGroup nodeGroup : projectInfo.getGroups()) {
             if (nodeGroup.equals(visualNodeDisplay.getGroup())) {
-                continue; // Skip the current group
+                continue;
             }
             NodeHandler curhandler = nodeGroup.getNodeHandler();
             for (int i = 0; i < curhandler.size(); i++) {
                 VisualNodeShell node = nodeGroup.getNodeHandler().getIndex(i);
                 if (!projectNodesListModel.contains(node.getDialogId())) {
-                    projectNodesListModel.addElement(""+node.getDialogId() + " - " + node.getDialogNode().getDialogTitle());
+                    projectNodesListModel.addElement(new GroupNodeShell(visualNodeDisplay.getOffsetX(), visualNodeDisplay.getOffsetY(), nodeGroup, node.getDialogNode()));
                 }
             }
         }

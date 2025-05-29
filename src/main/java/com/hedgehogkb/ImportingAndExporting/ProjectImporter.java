@@ -47,11 +47,12 @@ public class ProjectImporter {
                 VisualNodeShell visualNodeShell;
                 if (visualNodesJson.getJSONObject(v).getString("type").equals("groupNode")) {
                     visualNodeShell = new GroupNodeShell(posX, posY, group);
+                    visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, visualNodesJson.getJSONObject(v).getString("groupName"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
                 } else {
                     visualNodeShell = new VisualNodeShell(posX, posY, group);
+                    visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, nodeGroupsJson.getJSONObject(i).getString("name"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
                 }
-                visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, nodeGroupsJson.getJSONObject(i).getString("name"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
-                group.getNodeHandler().add(visualNodeShell);
+                    group.getNodeHandler().add(visualNodeShell);
             }
             projectInfo.addGroup(group);
         }

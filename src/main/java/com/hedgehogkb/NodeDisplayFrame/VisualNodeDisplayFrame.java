@@ -197,6 +197,14 @@ public class VisualNodeDisplayFrame {
         return this.menuBar;
     }
 
+    public int getMouseX() {
+        return mouseInputDetector.getMouseX();
+    }
+
+    public int getMouseY() {
+        return mouseInputDetector.getMouseY();
+    }
+
     public int getOffsetX() {
         return mouseInputDetector.getMouseOffsetX();
     }

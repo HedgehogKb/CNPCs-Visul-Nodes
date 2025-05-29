@@ -23,18 +23,15 @@ public class DialogNodeBuilder {
     private DialogNode dialogNode;
 
     
-    public  DialogNodeBuilder(File projectDirectory, String groupName, int nodeId) throws JSONException {
+    public  DialogNodeBuilder(File projectDirectory, String groupName, int nodeId) throws JSONException, IOException {
         this.projectDirectory = projectDirectory;
         this.groupName = groupName;
         this.nodeId = nodeId;
         this.dialogNodeFile = new File(projectDirectory.getAbsolutePath() + File.separator + groupName + File.separator + nodeId + ".json");
 
         JSONObject dialogNodeJson = new JSONObject();
-        try {
-            dialogNodeJson = new JSONObject(Files.readString(Path.of(dialogNodeFile.getAbsolutePath())));
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+        dialogNodeJson = new JSONObject(Files.readString(Path.of(dialogNodeFile.getAbsolutePath())));
+
 
         this.dialogNode = new DialogNode();
         dialogNode.setDialogId(nodeId);

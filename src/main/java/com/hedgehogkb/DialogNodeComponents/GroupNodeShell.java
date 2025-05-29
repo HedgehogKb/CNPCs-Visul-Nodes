@@ -57,6 +57,7 @@ public class GroupNodeShell extends VisualNodeShell {
         JSONObject visualNodeJson = new JSONObject();
         visualNodeJson.put("nodeId", getDialogNode().getDialogId());
         visualNodeJson.put("type", "groupNode");
+        visualNodeJson.put("groupName", this.groupName);
         visualNodeJson.put("posX", getPosX());
         visualNodeJson.put("posY", getPosY());
         return visualNodeJson;
@@ -66,6 +67,9 @@ public class GroupNodeShell extends VisualNodeShell {
         return groupName;
     }
 
-
+    @Override
+    public String toString() {
+        return "" + getDialogId() + " - " + getDialogNode().getDialogTitle();
+    }
 
 }
