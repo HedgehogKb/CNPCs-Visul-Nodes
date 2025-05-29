@@ -110,19 +110,12 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                 if (curVisualNode.isTouchingMouse(e.getX(), e.getY()) && !curVisualNode.getIsBeingDragged() && !isDraggingBackground && !isDraggingOption) {
                     int touchingOption = curVisualNode.isOptionTouchingMouse(e.getX(), e.getY());
                     if (touchingOption != -1) {
+                        visualNodeDisplay.setProjectUnsaved();
                         curVisualNode.getDialogNode().getOptions().get(touchingOption).toggleOptionType();
-                        updateEditorFrameValues(curVisualNode.getDialogNode());
+                        curVisualNode.updateEditorOptionValues();
                     } else {
                         SwingUtilities.invokeLater(() -> {
-                            if (!editorExistsForNode(curVisualNode.getDialogNode())) {
-                                dialogNodeEditorFrames.add(new DialogNodeEditorFrame(curVisualNode.getDialogNode()));
-                            } else {
-                                try {
-                                    DialogNodeEditorFrame curEditorFrame = getEditorFrameForDialogNode(curVisualNode.getDialogNode());
-                                    curEditorFrame.setVisible(true);
-                                    curEditorFrame.moveFrameToTop();
-                                } catch (Exception ex) {}
-                            }
+                            curVisualNode.moveEditorFrameToFront();
                         });
                     }
                 return;
@@ -153,15 +146,16 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
                 if (!curNode.equals(draggedOptionNode) && curNode.isTouchingMouse(mouseX, mouseY)) {
                     int linkedNodeId = curNode.getDialogNode().getDialogId();
                     draggedOptionNode.getDialogNode().getOptions().get(draggedOptionSlot).setDialog(linkedNodeId);
-                    updateEditorFrameValues(draggedOptionNode.getDialogNode());
+                    draggedOptionNode.updateEditorOptionValues();
                     break;
                 }
                 if (i == nodeHandler.size() -1) {
                     draggedOptionNode.getDialogNode().getOptions().get(draggedOptionSlot).setDialog(-1);
-                    updateEditorFrameValues(draggedOptionNode.getDialogNode());
+                    draggedOptionNode.updateEditorOptionValues();
                 }
             }
 
+            visualNodeDisplay.setProjectUnsaved();
             this.draggedOptionSlot = 0;
             this.isDraggingOption = false;
             this.draggedOptionNode = null;
@@ -185,45 +179,9 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     }
 
     public void updateEditorFrameValues(DialogNode changedNode) {
-        for (int i = dialogNodeEditorFrames.size() -1; i >= 0; i--) {
-            DialogNodeEditorFrame curFrame = dialogNodeEditorFrames.get(i);
-            if (curFrame == null) {
-                dialogNodeEditorFrames.remove(i);
-            } else {
-                if (curFrame.getDialogOptionsPanel().getDialogNode() == changedNode) {
-                    curFrame.getDialogOptionsPanel().updateDialogValue();
-                }
-            }
-        }
+        nodeHandler.get(changedNode.getDialogId()).updateEditorOptionValues();
     }
 
-    public boolean editorExistsForNode(DialogNode node) {
-        for (int i = dialogNodeEditorFrames.size() -1; i >= 0; i--) {
-            if (node.equals(dialogNodeEditorFrames.get(i).getDialogNode())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean editorIsVisible(DialogNode node) {
-        try {
-        if (getEditorFrameForDialogNode(node).isVisible()) {
-            return true;
-        }
-        } catch (Exception e) {}
-        return false;
-    }
-
-
-    public DialogNodeEditorFrame getEditorFrameForDialogNode(DialogNode node) throws Exception {
-        for (int i = dialogNodeEditorFrames.size() -1; i >= 0; i--) {
-            if (node.equals(dialogNodeEditorFrames.get(i).getDialogNode())) {
-                return dialogNodeEditorFrames.get(i);
-            }
-        }
-        throw new Exception();
-    }
 
     //getters and setters
 

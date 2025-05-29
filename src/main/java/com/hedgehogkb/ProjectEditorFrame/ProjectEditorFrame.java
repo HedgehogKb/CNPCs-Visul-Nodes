@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -25,6 +26,7 @@ import javax.swing.border.Border;
 
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
+import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayMenuBar;
 
 public class ProjectEditorFrame {
     private JFrame frame;
@@ -50,13 +52,15 @@ public class ProjectEditorFrame {
 
         this.frame = new JFrame("Project Editor");
         this.frame.setLayout(new GridLayout(0,1));
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.frame.setSize(500, 250);
 
         this.splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         
         this.leftPanel = new JPanel();
         this.rightPanel = new JPanel();
+
+        initializeGroupList();
 
         initializeLeftPanelComponents();
         initializeRightPanelComponents();
@@ -168,6 +172,10 @@ public class ProjectEditorFrame {
         this.frame.setVisible(true);
     }
 
+    public void initializeGroupList() {
+        projectInfo.refreshProjectNodes();
+    }
+
     public void handleInputs() {
         groupList.addListSelectionListener(e -> {
                 String selectedGroup = groupList.getSelectedValue();
@@ -193,6 +201,22 @@ public class ProjectEditorFrame {
                 projectInfo.addGroup(new NodeGroup(groupName, projectInfo));
             } else {
                 JOptionPane.showMessageDialog(frame, "Group name is invalid. It is either blank or already exists.");
+            }
+        });
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                if (!projectInfo.isProjectSaved()) {
+                int response = JOptionPane.showConfirmDialog(frame, "You have unsaved changes. Do you want to exit?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    frame.dispose();
+                    System.exit(0);
+                }
+                } else {
+                    frame.dispose();
+                    System.exit(0); 
+                }
             }
         });
     }

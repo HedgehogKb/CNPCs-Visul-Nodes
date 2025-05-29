@@ -45,7 +45,7 @@ public class DialogOption {
 
     public void toggleOptionType() {
         if (this.optionType == 1) {
-            this.optionType = 0;
+            this.optionType = 2;
         } else {
             this.optionType = 1;
         }

@@ -193,6 +193,10 @@ public class VisualNodeDisplayFrame {
         return this.frame;
     }
 
+    public VisualNodeDisplayMenuBar getMenuBar() {
+        return this.menuBar;
+    }
+
     public int getOffsetX() {
         return mouseInputDetector.getMouseOffsetX();
     }
@@ -205,4 +209,11 @@ public class VisualNodeDisplayFrame {
         group.saveProject();
     }
 
+    public void setProjectUnsaved() {
+        group.setProjectUnsaved();
+    }
+
+    public NodeGroup getGroup() {
+        return group;
+    }
 }

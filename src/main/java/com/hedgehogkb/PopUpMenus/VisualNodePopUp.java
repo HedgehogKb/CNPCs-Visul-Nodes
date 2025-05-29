@@ -35,6 +35,7 @@ public class VisualNodePopUp {
 
     public void handleMenuInputs() {
         deleteNodeButton.addActionListener(e -> {
+            visualNodeDisplay.setProjectUnsaved();
             visualNodeDisplay.removeVisualNode(this.visualNodeShell);
         });
     }

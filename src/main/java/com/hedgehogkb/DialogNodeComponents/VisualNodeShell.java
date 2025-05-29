@@ -8,8 +8,13 @@ import java.awt.Graphics2D;
 
 import org.json.JSONObject;
 
+import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.EditorFrame.DialogNodeEditorFrame;
+
 public class VisualNodeShell {
+    private NodeGroup group;
     private DialogNode dialogNode;
+    private DialogNodeEditorFrame dialogNodeEditorFrame;
 
     private int posX;
     private int posY;
@@ -21,7 +26,8 @@ public class VisualNodeShell {
     private int height;
 
     private boolean isBeingDragged;
-    public VisualNodeShell() {
+    public VisualNodeShell(NodeGroup group) {
+        this.group = group;
         this.dialogNode = new DialogNode();
         this.width = 150;
         this.height = 100;
@@ -30,9 +36,11 @@ public class VisualNodeShell {
         this.posX = 0;
         this.posY = 0;
         this.isBeingDragged = false;
+        this.dialogNodeEditorFrame = new DialogNodeEditorFrame(dialogNode, this);
     }
 
-    public VisualNodeShell(int posX, int posY) {
+    public VisualNodeShell(int posX, int posY, NodeGroup group) {
+        this.group = group;
         this.dialogNode = new DialogNode();
         this.width = 150;
         this.height = 100;
@@ -41,10 +49,11 @@ public class VisualNodeShell {
         this.posX = posX;
         this.posY = posY;
         this.isBeingDragged = false;
-
+        this.dialogNodeEditorFrame = new DialogNodeEditorFrame(dialogNode, this);
     }
 
-    public VisualNodeShell(int posX, int posY, int offsetX, int offsetY) {
+    public VisualNodeShell(int posX, int posY, int offsetX, int offsetY, NodeGroup group) {
+        this.group = group;
         this.dialogNode = new DialogNode();
         this.width = 150;
         this.height = 100;
@@ -53,10 +62,11 @@ public class VisualNodeShell {
         this.posX = posX;
         this.posY = posY;
         this.isBeingDragged = false;
-
+        this.dialogNodeEditorFrame = new DialogNodeEditorFrame(dialogNode, this);
     }
 
-    public VisualNodeShell(int posX, int posY, int offsetX, int offsetY, DialogNode dialogNode) {
+    public VisualNodeShell(int posX, int posY, int offsetX, int offsetY, DialogNode dialogNode, NodeGroup group) {
+        this.group = group;
         this.dialogNode = dialogNode;
         this.width = 150;
         this.height = 100;
@@ -65,6 +75,7 @@ public class VisualNodeShell {
         this.posX = posX;
         this.posY = posY;
         this.isBeingDragged = false;
+        this.dialogNodeEditorFrame = new DialogNodeEditorFrame(dialogNode, this);
     }
 
     public void draw(Graphics g) {
@@ -128,6 +139,28 @@ public class VisualNodeShell {
         return -1;
     }
 
+    public JSONObject buildJson() {
+        JSONObject visualNodeJson = new JSONObject();
+        visualNodeJson.put("nodeId", dialogNode.getDialogId());
+        visualNodeJson.put("type", "visualNode");
+        visualNodeJson.put("posX", posX);
+        visualNodeJson.put("posY", posY);
+        return visualNodeJson;
+    }
+
+    public void showEditorFrame() {
+        dialogNodeEditorFrame.setVisible(true);
+    }
+
+    public void moveEditorFrameToFront() {
+        showEditorFrame();
+        dialogNodeEditorFrame.moveFrameToTop();
+    }
+
+    public void updateEditorOptionValues() {
+        dialogNodeEditorFrame.updateOptionValues();
+    }
+
     /**
      * Sets the offset X and Y variables.
      * @param offsetX
@@ -176,6 +209,13 @@ public class VisualNodeShell {
         return this.posY;
     }
 
+    public int getOffsetX() {
+        return this.offsetX;
+    }
+    public int getOffsetY() {
+        return this.offsetY;
+    }
+
     public boolean getIsBeingDragged() {
         return this.isBeingDragged;
     }
@@ -199,13 +239,20 @@ public class VisualNodeShell {
 
     public void setDialogNode(DialogNode dialogNode) {
         this.dialogNode = dialogNode;
+        this.dialogNodeEditorFrame = new DialogNodeEditorFrame(dialogNode, this);
     }
 
-    public JSONObject buildJson() {
-        JSONObject visulNodeJson = new JSONObject();
-        visulNodeJson.put("nodeId", dialogNode.getDialogId());
-        visulNodeJson.put("posX", posX);
-        visulNodeJson.put("posY", posY);
-        return visulNodeJson;
+    public boolean isEditorFrameVisible() {
+        return dialogNodeEditorFrame.isVisible();
     }
+
+    public void setProjectUnsaved() {
+        group.setProjectUnsaved();
+    }
+
+    public NodeGroup getGroup() {
+        return group;
+    }
+
+
 }

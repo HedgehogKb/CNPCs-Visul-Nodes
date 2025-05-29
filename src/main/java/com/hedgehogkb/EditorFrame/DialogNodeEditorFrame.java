@@ -7,6 +7,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.WindowAdapter;
@@ -24,12 +27,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
+import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 
 //import com.hedgehogkb.OptionsPanels.DialogOptionsPanel;
 
 
 public class DialogNodeEditorFrame {
     private DialogNode dialogNode;
+    private VisualNodeShell visualNodeShell;
     private JFrame frame;
     private JPanel mainPanel;
 
@@ -62,8 +67,9 @@ public class DialogNodeEditorFrame {
 
     
 
-    public DialogNodeEditorFrame(DialogNode dialogNode) {
+    public DialogNodeEditorFrame(DialogNode dialogNode, VisualNodeShell visualNodeShell) {
         this.dialogNode = dialogNode;
+        this.visualNodeShell = visualNodeShell;
         this.titleSaved = true;
         this.dialogSaved = true;
         initializeComponents();
@@ -96,7 +102,7 @@ public class DialogNodeEditorFrame {
         blankRightPanel.setLayout(new GridLayout(4, 2));
         blankRightPanel.setBorder(BorderFactory.createEtchedBorder());
 
-        dialogOptionsPanel = new DialogOptionsPanel(dialogNode);
+        dialogOptionsPanel = new DialogOptionsPanel(dialogNode, this);
     }
 
     private void initializeTopPanel() {
@@ -235,13 +241,11 @@ public class DialogNodeEditorFrame {
 
         this.frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
         this.frame.getContentPane().add(topPanel, BorderLayout.NORTH);
-        //this.frame.pack();
-
-        this.frame.setVisible(true);
     }
 
     public void handleInputs() {
         confirmTextButton.addActionListener(e -> {
+            setProjectUnsaved();
             String text = dialogTextBox.getText();
             dialogNode.setDialogText(text);
             dialogSaved = true;
@@ -254,11 +258,12 @@ public class DialogNodeEditorFrame {
         });
 
         confirmTitleButton.addActionListener(e -> {
+            setProjectUnsaved();
             String title = titleTextBox.getText();
             dialogNode.setDialogTitle(title);
             frame.setTitle("Dialog Id: "+dialogNode.getDialogId() + " - " + dialogNode.getDialogTitle());
             titleSaved = true;
-
+            visualNodeShell.getGroup().getProjectInfo().refreshProjectNodes();
         });
 
         cancelTitleButton.addActionListener(e -> {
@@ -349,6 +354,10 @@ public class DialogNodeEditorFrame {
         this.frame.setAlwaysOnTop(false);
     }
 
+    public void updateOptionValues() {
+        this.dialogOptionsPanel.updateOptionValue();
+    }
+
     /**
      * Does not actually update the dialogNode, but sets the panel as saved.
      */
@@ -360,6 +369,10 @@ public class DialogNodeEditorFrame {
     public boolean isPanelSaved() {
         boolean saved = titleSaved && dialogSaved && dialogOptionsPanel.isSaved();
         return saved;
+    }
+
+    public void setProjectUnsaved() {
+        visualNodeShell.setProjectUnsaved();
     }
 
     public DialogOptionsPanel getDialogOptionsPanel() {

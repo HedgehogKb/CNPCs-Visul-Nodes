@@ -4,7 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.ImportingAndExporting.ProjectExporter;
+import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayMenuBar;
+import com.hedgehogkb.ProjectEditorFrame.ProjectEditorFrame;
 
 public class ProjectInfo {
     ArrayList<NodeGroup> groups;
@@ -71,5 +74,24 @@ public class ProjectInfo {
     }
     public void setProjectSaved(boolean projectSaved) {
         this.projectSaved = projectSaved;
+    }
+
+    public VisualNodeShell getNodeById(int dialogId) {
+        for (NodeGroup group : groups) {
+            VisualNodeShell node = group.getNodeHandler().get(dialogId);
+            if (node != null) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    public void refreshProjectNodes() {
+        for (int i = 0; i < groups.size(); i++) {
+            VisualNodeDisplayMenuBar curMenuBar = groups.get(i).getVisualNodeDisplayFrame().getMenuBar();
+            if (curMenuBar != null) {
+                curMenuBar.refreshProjectNodes();
+            }
+        }
     }
 }

@@ -54,8 +54,9 @@ public class KeyboardInputDetector implements KeyListener {
         if (e.getKeyCode() == e.VK_SHIFT) {
             if (this.timerRunning) {
                 cancelTimer();
-                System.err.println("Shift and A pressed");
+                visualNodeDisplay.setProjectUnsaved();
                 visualNodeDisplay.addVisualNode();
+                visualNodeDisplay.getGroup().getProjectInfo().refreshProjectNodes();
             } else {
                 this.timerRunning = true;
                 this.keyPressTimer.start();
@@ -63,9 +64,9 @@ public class KeyboardInputDetector implements KeyListener {
         } else if  (e.getKeyCode() == e.VK_A) {
             if (this.timerRunning) {
                 cancelTimer();
-                System.err.println("Shift and A pressed");
+                visualNodeDisplay.setProjectUnsaved();
                 visualNodeDisplay.addVisualNode();
-
+                visualNodeDisplay.getGroup().getProjectInfo().refreshProjectNodes();
             } else {
                 this.timerRunning = true;
                 this.keyPressTimer.start();

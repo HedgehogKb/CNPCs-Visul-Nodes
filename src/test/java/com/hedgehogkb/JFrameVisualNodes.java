@@ -40,7 +40,7 @@ public class JFrameVisualNodes {
                 g.setColor(color);
                 g.fillRect(0, 0, 800, 500 );
 
-                VisualNodeShell node = new VisualNodeShell();
+                VisualNodeShell node = new VisualNodeShell(new NodeGroup("test", new ProjectInfo(null)));
                 node.draw(g);
             }
         };

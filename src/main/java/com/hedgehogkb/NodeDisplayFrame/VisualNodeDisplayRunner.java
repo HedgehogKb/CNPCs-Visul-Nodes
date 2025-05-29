@@ -14,11 +14,8 @@ public class VisualNodeDisplayRunner {
     }
 
     public void start() {
-        System.out.println("VisualNodeDisplayRunner starting");
         if (timer != null) {
             timer.start();
-            System.out.println("Started VisualNodeDisplayRunner timer");
-
         }
     }
 

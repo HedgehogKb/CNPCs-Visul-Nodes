@@ -21,6 +21,7 @@ import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.DialogOption;
 
 public class DialogOptionsPanel {
+    private DialogNodeEditorFrame dialogNodeEditorFrame;
     private DialogNode dialogNode;
     private DialogOption dialogOption;
     private JPanel panel;
@@ -41,7 +42,8 @@ public class DialogOptionsPanel {
     private JLabel specificOptionTypeLabel;
     private JTextArea specificOptionTypeTextArea;
     
-    public DialogOptionsPanel(DialogNode dialogNode) {
+    public DialogOptionsPanel(DialogNode dialogNode, DialogNodeEditorFrame dialogNodeEditorFrame) {
+        this.dialogNodeEditorFrame = dialogNodeEditorFrame;
         this.dialogNode = dialogNode;
 
         this.optionTitleSaved = new boolean[6];
@@ -224,7 +226,7 @@ public class DialogOptionsPanel {
     public void initializeOptionPanelValues(DialogOption option) {
         optionTitleTextArea.setText(option.getTitle());
         colorTextArea.setText(String.valueOf(option.getDialogColor()));
-        setOptoinTypeBoxValue(option);
+        setOptionTypeBoxValue(option);
 
         revealOptionTypeComponents();
         if (optionTypeBox.getSelectedItem().equals("Dialog")) {
@@ -236,6 +238,9 @@ public class DialogOptionsPanel {
 
     public void handleOptionPanelInputs() {
         specificOptionBox.addActionListener(e -> {
+            if (dialogOption.getOptionSlot() == specificOptionBox.getSelectedIndex()) {
+                return; //no need to change anything if the same option is selected
+            }
             if (!isSaved()) {
                 int saveChoice = JOptionPane.showConfirmDialog(panel, "Do you want to save the edited Dialog Title?", "Save Changes", JOptionPane.YES_NO_OPTION);
                     switch(saveChoice) {
@@ -274,6 +279,7 @@ public class DialogOptionsPanel {
         });
 
         confirmOptionTitleButton.addActionListener(e -> {
+            setProjectUnsaved();
             dialogOption.setTitle(optionTitleTextArea.getText());
             int selectedIndex = specificOptionBox.getSelectedIndex();
             specificOptionBox.insertItemAt(dialogOption.getOptionSlot() + " - " + cutString(15, dialogOption.getTitle()), selectedIndex);
@@ -290,6 +296,7 @@ public class DialogOptionsPanel {
         colorTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
+                setProjectUnsaved();
                 try {
                     int dialogColor = Integer.valueOf(colorTextArea.getText());
                     dialogOption.setDialogColor(dialogColor);
@@ -301,6 +308,7 @@ public class DialogOptionsPanel {
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
+                setProjectUnsaved();
                 String colorString = colorTextArea.getText();
                 if (colorString.equals("")) {
                     return;
@@ -313,6 +321,7 @@ public class DialogOptionsPanel {
         });
 
         optionTypeBox.addActionListener(e -> {
+            setProjectUnsaved();
            revealOptionTypeComponents();
            int optionTypeValue = optionTypeBox.getSelectedIndex();
            dialogOption.setOptionType(optionTypeValue);
@@ -321,6 +330,7 @@ public class DialogOptionsPanel {
         specificOptionTypeTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
+                setProjectUnsaved();
                 if (optionTypeBox.getSelectedItem().equals("Dialog")) {
                     try {
                         int dialogId = Integer.valueOf(specificOptionTypeTextArea.getText());
@@ -340,6 +350,7 @@ public class DialogOptionsPanel {
             @Override
             public void removeUpdate(DocumentEvent e) {
                 if (optionTypeBox.getSelectedItem().equals("Dialog")) {
+                    setProjectUnsaved();
                      try {
                         int dialogId = Integer.valueOf(specificOptionTypeTextArea.getText());
                         dialogOption.setDialog(dialogId);
@@ -358,7 +369,7 @@ public class DialogOptionsPanel {
         });
     }
 
-    public void setOptoinTypeBoxValue(DialogOption option) {
+    public void setOptionTypeBoxValue(DialogOption option) {
         optionTypeBox.setSelectedIndex(option.getOptionType());
     }
 
@@ -380,8 +391,8 @@ public class DialogOptionsPanel {
         }
     }
 
-    public void updateDialogValue() {
-        setOptoinTypeBoxValue(this.dialogOption);
+    public void updateOptionValue() {
+        setOptionTypeBoxValue(this.dialogOption);
         revealOptionTypeComponents();
     }
 
@@ -417,6 +428,10 @@ public class DialogOptionsPanel {
             }
         }
         return true;
+    }
+
+    public void setProjectUnsaved() {
+        
     }
 
 }

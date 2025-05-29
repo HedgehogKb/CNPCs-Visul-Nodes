@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
+import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 
 public class ProjectExporter {
@@ -68,6 +69,13 @@ public class ProjectExporter {
 
             for (int v = 0; v < group.getNodeHandler().size(); v++) {
                 VisualNodeShell curShell = group.getNodeHandler().getIndex(v);
+
+                //group nodes are simply nodes loaded from other groups meaning the dialog node will be exported some other time.
+                if (curShell instanceof GroupNodeShell) {
+                    System.out.println("Skipping GroupNodeShell: " + curShell.getDialogId());
+                    continue;
+                }
+                
                 DialogNode curNode = curShell.getDialogNode();
                 JSONObject nodeJson = curNode.buildJson();
                 File nodeFile = new File(groupDirectory, curNode.getDialogId() + ".json");

@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
+import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 
 public class ProjectImporter {
@@ -38,12 +39,17 @@ public class ProjectImporter {
             int offsetY = nodeGroupsJson.getJSONObject(i).getInt("offsetY");
             NodeGroup group = new NodeGroup(groupName, projectInfo, offsetX, offsetY);
             //TODO: change Nodes to be lowercase in the exporter
-            JSONArray visualNodesJson = nodeGroupsJson.getJSONObject(i).getJSONArray("Nodes");
+            JSONArray visualNodesJson = nodeGroupsJson.getJSONObject(i).getJSONArray("nodes");
             for (int v = 0; v < visualNodesJson.length(); v++) {
                 int posX = visualNodesJson.getJSONObject(v).getInt("posX");
                 int posY = visualNodesJson.getJSONObject(v).getInt("posY");
 
-                VisualNodeShell visualNodeShell = new VisualNodeShell(posX, posY);
+                VisualNodeShell visualNodeShell;
+                if (visualNodesJson.getJSONObject(v).getString("type").equals("groupNode")) {
+                    visualNodeShell = new GroupNodeShell(posX, posY, group);
+                } else {
+                    visualNodeShell = new VisualNodeShell(posX, posY, group);
+                }
                 visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, nodeGroupsJson.getJSONObject(i).getString("name"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
                 group.getNodeHandler().add(visualNodeShell);
             }

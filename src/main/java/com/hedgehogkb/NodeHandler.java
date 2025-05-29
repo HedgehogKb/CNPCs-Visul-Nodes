@@ -45,7 +45,7 @@ public class NodeHandler {
      * @param offsetY
      */
     public void add(DialogNode node, int mouseX, int mouseY, int offsetX, int offsetY) {
-        visualNodeShells.add(new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX, offsetY, node));
+        visualNodeShells.add(new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX, offsetY, node, group));
         visualNodeShellsByID.put(node.getDialogId(),visualNodeShells.get(visualNodeShells.size() - 1));
     }
 
@@ -60,10 +60,18 @@ public class NodeHandler {
     public void add(int mouseX, int mouseY, int offsetX, int offsetY) {
         DialogNode curNode = new DialogNode(getNextAvailableNodeId());
 
-        VisualNodeShell curVisualNode = new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX , offsetY, curNode);
+        VisualNodeShell curVisualNode = new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX , offsetY, curNode, group);
         visualNodeShells.add(curVisualNode);
         visualNodeShellsByID.put(curVisualNode.getDialogId(), curVisualNode);
     }
+
+    public void add(int mouseX, int mouseY, int offsetX, int offsetY, DialogNode node) {
+        VisualNodeShell curVisualNode = new VisualNodeShell(mouseX - offsetX, mouseY - offsetY, offsetX , offsetY, node, group);
+        visualNodeShells.add(curVisualNode);
+        visualNodeShellsByID.put(curVisualNode.getDialogId(), curVisualNode);
+    }
+
+
 
     public VisualNodeShell removeVisualNode(VisualNodeShell node) {
         visualNodeShells.remove(node);
@@ -101,6 +109,10 @@ public class NodeHandler {
         }
         projectInfo.setLowestNodeNumber(nextId + 1);
         return nextId;
+    }
+
+    public boolean contains(VisualNodeShell node) {
+        return visualNodeShellsByID.containsKey(node.getDialogId());
     }
 
     public void moveToFront(VisualNodeShell node) {

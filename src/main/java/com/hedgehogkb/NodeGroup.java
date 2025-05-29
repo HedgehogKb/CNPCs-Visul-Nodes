@@ -68,11 +68,19 @@ public class NodeGroup {
         nodeGroupJson.put("name", name);
         nodeGroupJson.put("offsetX", visualNodeDisplayFrame.getOffsetX());
         nodeGroupJson.put("offsetY", visualNodeDisplayFrame.getOffsetY());
-        nodeGroupJson.put("Nodes", nodeHandler.buildJson());
+        nodeGroupJson.put("nodes", nodeHandler.buildJson());
         return nodeGroupJson;
     }
 
     public void saveProject() {
         projectInfo.getProjectExporter().export();
+    }
+
+    public void setProjectUnsaved() {
+        projectInfo.setProjectSaved(false);
+    }
+
+    public ProjectInfo getProjectInfo() {
+        return projectInfo;
     }
 }
