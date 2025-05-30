@@ -43,6 +43,8 @@ public class DialogNodeBuilder {
         dialogNode.setDisableEsc(jsonToBoolean(dialogNodeJson,"DialogDisableEsc"));
         ArrayList<DialogOption> dialogOptions = buildDialogOption(dialogNodeJson);
         dialogNode.setOptions(dialogOptions);
+        
+        addAvailablilityVars(dialogNodeJson, dialogNode);
     }
 
     public ArrayList<DialogOption> buildDialogOption(JSONObject dialogOptionJson) throws JSONException {
@@ -61,8 +63,85 @@ public class DialogNodeBuilder {
         return dialogOptions;
     }
 
+    public void addAvailablilityVars(JSONObject dialogNodeJson, DialogNode dialogNode) {
+        for(int i = 1; i <= 4; i++) {
+            String dialogKey = "AvailabilityDialog";
+            String dialogIdKey = "AvailabilityDialog";
+            if (i != 1) {
+                dialogKey += i;
+                dialogIdKey += i;
+            }
+            dialogIdKey += "Id";
+
+            dialogNode.setAvailabilityDialog(dialogNodeJson.getInt(dialogKey), dialogNodeJson.getInt(dialogIdKey), i-1);
+        }
+
+        for(int i = 1; i <= 4; i++) {
+            String questKey = "AvailabilityQuest";
+            String questIdKey = "AvailabilityQuest";
+            if (i != 1) {
+                questKey += i;
+                questIdKey += i;
+            }
+            questIdKey += "Id";
+            //System.out.println(dialogNodeJson.getInt(questIdKey));
+            dialogNode.setAvailabilityQuest(dialogNodeJson.getInt(questKey), dialogNodeJson.getInt(questIdKey), i-1);
+        }
+
+        for(int i = 1; i <= 2; i++) {
+            String scoreboardTypeKey = "AvailabilityScoreboard";
+            String scoreboardValueKey = "AvailabilityScoreboard";
+            String scoreboardObjectiveKey = "AvailabilityScoreboard";
+            if (i != 1) {
+                scoreboardTypeKey += i;
+                scoreboardValueKey += i;
+                scoreboardObjectiveKey += i;
+            }
+            scoreboardTypeKey += "Type";
+            scoreboardValueKey += "Value";
+            scoreboardObjectiveKey += "Objective";
+
+            dialogNode.setAvailabilityScoreboard(dialogNodeJson.getInt(scoreboardTypeKey), dialogNodeJson.getInt(scoreboardValueKey), dialogNodeJson.getString(scoreboardObjectiveKey), i-1);
+        }
+
+        for(int i = 1; i <= 2; i++) {
+            String factionKey = "AvailabilityFaction";
+            String factionIdKey = "AvailabilityFaction";
+            String factionStanceKey = "AvailabilityFaction";
+            if (i != 1) {
+                factionKey += i;
+                factionIdKey += i;
+                factionStanceKey += i;
+            }
+            factionIdKey += "Id";
+            factionStanceKey += "Stance";
+
+            dialogNode.setAvailabilityFaction(dialogNodeJson.getInt(factionKey), dialogNodeJson.getInt(factionIdKey), dialogNodeJson.getInt(factionStanceKey), i-1);
+        }
+
+        for(int i = 1; i <= 2; i++) {
+            String factionKey = "OptionFactions" + i;
+            String factionPointsKey = "OptionFaction" + i + "Points";
+            String decreaseFactionKey = "DecreaseFaction" + i + "Points";
+
+            dialogNode.setOptionFaction(dialogNodeJson.getInt(factionKey), dialogNodeJson.getInt(factionPointsKey), stringToBoolean(dialogNodeJson.getString(decreaseFactionKey)), i-1);
+        }
+    }
+
     public boolean intToBoolean(int num) {
         return num != 0;
+    }
+
+    public boolean stringToBoolean(String string) {
+        try{
+            if (Integer.parseInt(string.substring(0, 1)) == 1) {
+                return true;
+            }
+        } catch(NumberFormatException e) {
+            System.out.println("there was an error with the string to boolean :(");
+            return false;
+        }
+        return false;
     }
 
     public DialogNode getDialogNode() {
@@ -78,6 +157,8 @@ public class DialogNodeBuilder {
             return json.getBoolean(key);
         } else if (json.get(key) instanceof Integer) {
             return intToBoolean(json.getInt(key));
+        } else if (json.get(key) instanceof String) {
+            return stringToBoolean(json.getString(key));
         } else {
             return false; // Default case if the type is unexpected
         }

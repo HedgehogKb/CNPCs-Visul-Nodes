@@ -1,7 +1,6 @@
 com\hedgehogkb\Test$MyPanel.class
 com\hedgehogkb\JFrameVisualNodes.class
 com\hedgehogkb\GridBagLayoutDemo$1.class
-com\hedgehogkb\VisualNodesTester.class
 com\hedgehogkb\ProjectEditorTest.class
 com\hedgehogkb\JsonTesting.class
 com\hedgehogkb\VisualNodeManager.class

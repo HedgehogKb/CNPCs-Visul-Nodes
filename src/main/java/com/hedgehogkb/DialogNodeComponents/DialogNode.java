@@ -27,7 +27,7 @@ public class DialogNode {
         //scoreboard options:
     private int[] availabilityScoreboardTypes;
     private int[] availabilityScoreboardValues;
-    private int[] availabilityScoreboardObjectives;
+    private String[] availabilityScoreboardObjectives;
 
         //faction options:
     private int[] availabilityFactions;
@@ -78,7 +78,10 @@ public class DialogNode {
 
         this.availabilityScoreboardTypes = new int[2];
         this.availabilityScoreboardValues = new int[2];
-        this.availabilityScoreboardObjectives = new int[2];
+        this.availabilityScoreboardObjectives = new String[2];
+        for (int i = 0; i < availabilityScoreboardObjectives.length; i++) {
+            availabilityScoreboardObjectives[i] = "";
+        }
 
         this.availabilityFactions = new int[2];
         this.availabilityFactionsId = new int[2];
@@ -301,6 +304,33 @@ public class DialogNode {
         this.disableEsc = disableEsc;
     }
 
+    public void setAvailabilityDialog(int availabilityDialog, int availabilityDialogId, int index) {
+        this.availabilityDialogs[index] = availabilityDialog;
+        this.availabilityDialogIds[index] = availabilityDialogId;
+    }
+
+    public void setAvailabilityQuest(int availabilityQuest, int availabilityQuestId, int index) {
+        this.availabilityQuests[index] = availabilityQuest;
+        this.availabilityQuestIds[index] = availabilityQuestId;
+    }
+
+    public void setAvailabilityScoreboard(int availabilityScoreboardType, int availabilityScoreboardValue, String availabilityScoreboardObjective, int index) {
+        this.availabilityScoreboardTypes[index] = availabilityScoreboardType;
+        this.availabilityScoreboardObjectives[index] = availabilityScoreboardObjective;
+        this.availabilityScoreboardValues[index] = availabilityScoreboardValue;
+    }
+
+    public void setAvailabilityFaction(int availabilityFaction, int availabilityFactionId, int availabilityFactionStance, int index) {
+        this.availabilityFactions[index] = availabilityFaction;
+        this.availabilityFactionsId[index] = availabilityFactionId;
+        this.availabilityFactionStance[index] = availabilityFactionStance;
+    }
+
+    public void setOptionFaction(int optionFaction, int optionFactionPoints, boolean decreaseOptionFactionPoints, int index) {
+        this.optionFactions[index] = optionFaction;
+        this.optionFactionPoints[index] = optionFactionPoints;
+        this.decreaseOptionFactionPoints[index] = decreaseOptionFactionPoints;
+    }
     
 
 }
