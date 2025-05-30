@@ -2,15 +2,21 @@ package com.hedgehogkb.NodeDisplayFrame;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import org.json.JSONException;
 
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.NodeHandler;
@@ -18,6 +24,7 @@ import com.hedgehogkb.ProjectInfo;
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
+import com.hedgehogkb.ImportingAndExporting.DialogNodeBuilder;
 
 public class VisualNodeDisplayMenuBar {
     private VisualNodeDisplayFrame visualNodeDisplay;
@@ -33,10 +40,15 @@ public class VisualNodeDisplayMenuBar {
     private JList<GroupNodeShell> projectNodesList;
     private DefaultListModel<GroupNodeShell> projectNodesListModel;
     private JScrollPane projectNodesScrollPane;
+
     private JMenuItem impotCNPCsNode;
+    private JFileChooser fileChooser;
 
     public VisualNodeDisplayMenuBar() {
         this.menuBar = new JMenuBar();
+        this.fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setCurrentDirectory(visualNodeDisplay.getGroup().getProjectInfo().getProjectDirectory());
         
         initializeMenuBar();
         addMenuItems();
@@ -45,6 +57,9 @@ public class VisualNodeDisplayMenuBar {
 
     public VisualNodeDisplayMenuBar(VisualNodeDisplayFrame visualNodeDisplay) {
         this.visualNodeDisplay = visualNodeDisplay;
+        this.fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setCurrentDirectory(visualNodeDisplay.getGroup().getProjectInfo().getProjectDirectory());
         this.menuBar = new JMenuBar();
         
         initializeMenuBar();
@@ -98,11 +113,39 @@ public class VisualNodeDisplayMenuBar {
         });
 
         impotCNPCsNode.addActionListener(e -> {
+            fileChooser.showOpenDialog(visualNodeDisplay.getFrame());
+            File selectedNode = fileChooser.getSelectedFile();
+            if (selectedNode.equals(null) && selectedNode.length() < 1) {
+                JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "No node created. selected file was null", "Null file selected", 0);
+                return;
+            }
+            int selectedNodeId = -1;
+            try {
+                selectedNodeId = Integer.parseInt(selectedNode.getName().substring(0, 1));
+            } catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "No node created. Selected file wasn't a CNPCs dialog node file.", "Wrong file selected", 0);
+                return;
+            }
 
+            if (visualNodeDisplay.getGroup().getProjectInfo().getNodeById(selectedNodeId) != null) {
+                JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "No node created. Selected node already exists.", "Node already exists", 0);
+                return;
+            }
+
+            DialogNode node = null;
+            try {
+                node = new DialogNodeBuilder(visualNodeDisplay.getGroup().getProjectInfo().getProjectDirectory(), selectedNode.getParentFile().getName(), selectedNodeId).getDialogNode();
+            } catch (JSONException | IOException e1) {
+                JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "No node created. Couldn't build ndoe.", "Couldn't build node", 0);
+            }
+            VisualNodeShell shell = new VisualNodeShell(visualNodeDisplay.getGroup());
+            shell.setDialogNode(node);
+            shell.setPosition(visualNodeDisplay.getMouseX()-visualNodeDisplay.getOffsetX(), visualNodeDisplay.getMouseY()-visualNodeDisplay.getOffsetY());
+            visualNodeDisplay.getGroup().getNodeHandler().add(shell);
         });
 
         importProjectNode.addActionListener(e -> {
-        
+            //Everything is done in the mouse listener for the project nodes list.
         });
 
         projectNodesList.addMouseListener(new MouseAdapter() {

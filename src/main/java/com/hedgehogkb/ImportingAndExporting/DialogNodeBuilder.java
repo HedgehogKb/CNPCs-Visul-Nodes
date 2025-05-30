@@ -60,6 +60,10 @@ public class DialogNodeBuilder {
             dialogOption.setDialogColor(optionJson.getInt("DialogColor"));
             dialogOptions.add(dialogOption);
         }
+        
+        for (int i = dialogOptions.size(); i < 6; i++) {
+            dialogOptions.add(new DialogOption(i));
+        }
         return dialogOptions;
     }
 
@@ -124,7 +128,7 @@ public class DialogNodeBuilder {
             String factionPointsKey = "OptionFaction" + i + "Points";
             String decreaseFactionKey = "DecreaseFaction" + i + "Points";
 
-            dialogNode.setOptionFaction(dialogNodeJson.getInt(factionKey), dialogNodeJson.getInt(factionPointsKey), stringToBoolean(dialogNodeJson.getString(decreaseFactionKey)), i-1);
+            dialogNode.setOptionFaction(dialogNodeJson.getInt(factionKey), dialogNodeJson.getInt(factionPointsKey), jsonToBoolean(dialogNodeJson, decreaseFactionKey), i-1);
         }
     }
 
