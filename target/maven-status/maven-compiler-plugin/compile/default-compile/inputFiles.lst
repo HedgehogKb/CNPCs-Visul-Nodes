@@ -5,6 +5,7 @@ C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\he
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\ProjectInfo.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\InputDetectors\KeyboardInputDetector.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\EditorFrame\DialogOptionsPanel.java
+C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\Exceptions\ProjectExistsException.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\NodeDisplayFrame\VisualNodeDisplayRunner.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\ProjectEditorFrame\ProjectEditorFrame.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\NodeDisplayFrame\VisualNodeDisplayFrame.java
@@ -13,6 +14,7 @@ C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\he
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\NodeGroup.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\PopUpMenus\VisualNodePopUp.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\InputDetectors\MouseInputDetector.java
+C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\ImportingAndExporting\CnpcNodesConverter.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\App.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\DialogNodeComponents\GroupNodeShell.java
 C:\Users\kereb\OneDrive\Documents\Java Projects\npcdialogue\src\main\java\com\hedgehogkb\ImportingAndExporting\ProjectExporter.java

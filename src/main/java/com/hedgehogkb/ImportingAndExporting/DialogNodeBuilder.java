@@ -30,7 +30,8 @@ public class DialogNodeBuilder {
         this.dialogNodeFile = new File(projectDirectory.getAbsolutePath() + File.separator + groupName + File.separator + nodeId + ".json");
 
         JSONObject dialogNodeJson = new JSONObject();
-        dialogNodeJson = new JSONObject(Files.readString(Path.of(dialogNodeFile.getAbsolutePath())));
+        String test = removeIllegalCharacters(Files.readString(Path.of(dialogNodeFile.getAbsolutePath())));
+        dialogNodeJson = new JSONObject(test);
 
 
         this.dialogNode = new DialogNode();
@@ -130,6 +131,24 @@ public class DialogNodeBuilder {
 
             dialogNode.setOptionFaction(dialogNodeJson.getInt(factionKey), dialogNodeJson.getInt(factionPointsKey), jsonToBoolean(dialogNodeJson, decreaseFactionKey), i-1);
         }
+    }
+
+    public String removeIllegalCharacters(String illegalString) {
+        int closeQuote = 0;
+        boolean openQuote = false;
+        int location = 0;
+        String fixedString = "";
+        while (location < illegalString.length()) {
+            if (openQuote && illegalString.substring(location, location+1).equals("\n")) {
+                fixedString += illegalString.substring(closeQuote, location) + "\\n";
+                closeQuote = location + 1;
+            } else if (illegalString.substring(location, location+1).equals("\"")) {
+                openQuote = !openQuote;
+            }
+            location++;
+        }
+        fixedString += illegalString.substring(closeQuote, illegalString.length());
+        return fixedString;
     }
 
     public boolean intToBoolean(int num) {

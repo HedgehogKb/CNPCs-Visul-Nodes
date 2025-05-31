@@ -27,6 +27,8 @@ import org.json.JSONException;
 
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
+import com.hedgehogkb.Exceptions.ProjectExistsException;
+import com.hedgehogkb.ImportingAndExporting.CnpcNodesConverter;
 import com.hedgehogkb.ImportingAndExporting.ProjectImporter;
 import com.hedgehogkb.ProjectEditorFrame.ProjectEditorFrame;
 
@@ -67,14 +69,19 @@ public class LauncherFrame {
 
     //existing project components
     private JPanel existingProjectPanel;
-    private JLabel existingProjectExplinationlabel;
+    private JLabel existingProjectExplinationLabel;
     private JLabel existingProjectFileLocationLabel;
     private JButton existingProjectFolderSelectionButton;
     private JLabel existingProjectSelectedFolderLabel;
     private JButton existingProjectCreateProjectButton;
-    //private JLabel existingProjectSelectedFolderLabel;
+
     //existing nodes components
     private JPanel existingNodesPanel;
+    private JLabel existingNodesExplinationLabel;
+    private JLabel existingNodesFileLocationLabel;
+    private JButton existingNodesFolderSelectionButton;
+    private JLabel existingNodesSelectedFolderLabel;
+    private JButton existingNodesCreateProjectButton;
 
     public LauncherFrame() {
         this.frame = new JFrame("Dialog Node Editor");
@@ -108,6 +115,7 @@ public class LauncherFrame {
         handleLeftPanelInputs();
         handleBlankProjectInputs();
         handleExistingProjectInputs();
+        handleExistingNodesInputs();
     }
 
     private void initializeLeftPanel() {
@@ -239,7 +247,7 @@ public class LauncherFrame {
         existingProjectPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        existingProjectExplinationlabel = new JLabel("<html>" + "Opens an exising project from the selected folder. Make sure the folder contains a Project Settings Json file." + "</html>");
+        existingProjectExplinationLabel = new JLabel("<html>" + "Opens an exising project from the selected folder. Make sure the folder contains a Project Settings Json file." + "</html>");
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 3;
@@ -247,7 +255,7 @@ public class LauncherFrame {
         c.anchor = GridBagConstraints.NORTHWEST;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(0, 0, 10, 0);
-        existingProjectPanel.add(existingProjectExplinationlabel, c); 
+        existingProjectPanel.add(existingProjectExplinationLabel, c); 
 
         existingProjectFileLocationLabel = new JLabel("Select Project Folder:");
         c.gridx = 0;
@@ -293,7 +301,60 @@ public class LauncherFrame {
     }
 
     private void initializeExistingNodesPanel() {
+        existingNodesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Existing Nodes"));
+        existingNodesPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
+        existingNodesExplinationLabel = new JLabel("<html>" + "Used to import existing CNPCs nodes that were created with the official Minecraft mod." + "</html>");
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 10, 0);
+        existingNodesPanel.add(existingNodesExplinationLabel, c);
+
+        existingNodesFileLocationLabel = new JLabel("Select Nodes Folder:");
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 0.1;
+        c.gridwidth = 1;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(2, 0, 5, 0);
+        existingNodesPanel.add(existingNodesFileLocationLabel, c);
+
+        existingNodesFolderSelectionButton = new JButton("Select Folder");
+        c.gridx = 1;
+        c.gridy = 1;
+        c.weightx = 0.9;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 0);
+        existingNodesPanel.add(existingNodesFolderSelectionButton, c);
+
+        existingNodesSelectedFolderLabel = new JLabel("<html>" + "Selected Folder: Null" + "</html>");
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0,0,8,0);
+        existingNodesPanel.add(existingNodesSelectedFolderLabel, c);
+
+        existingNodesCreateProjectButton = new JButton("Open Nodes");
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 3;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.anchor = GridBagConstraints.NORTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 0);
+        existingNodesPanel.add(existingNodesCreateProjectButton, c);
     }
 
     private void buildFrame() {
@@ -331,6 +392,14 @@ public class LauncherFrame {
 
             this.selectedProjectType = EXISTING_PROJECT;
 
+        });
+
+        existingNodesButton.addActionListener(e -> {
+            this.frame.getContentPane().remove(1);
+            this.frame.add(this.existingNodesPanel);
+            SwingUtilities.updateComponentTreeUI(frame);
+
+            this.selectedProjectType = EXISTING_NODES;
         });
     }
     
@@ -397,6 +466,31 @@ public class LauncherFrame {
                 return;
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(frame, "Error finding files. Ensure that the selected folder contains a project settings file and the specified group directories.");
+                return;
+            }
+
+            if (importer != null) {
+                ProjectEditorFrame editorFrame = new ProjectEditorFrame(importer.getProjectInfo());
+                this.frame.dispose();
+            }
+        });
+    }
+
+    private void handleExistingNodesInputs() {
+        existingNodesFolderSelectionButton.addActionListener(e -> {
+            int returnValue = fileChooser.showOpenDialog(this.frame);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                this.selectedDirectory = fileChooser.getSelectedFile();
+                existingProjectSelectedFolderLabel.setText("<html>"+"Selected Folder: " + selectedDirectory.getAbsolutePath() + "</html>");
+            }
+        });
+
+        existingNodesCreateProjectButton.addActionListener(e -> {
+            CnpcNodesConverter importer = null;
+            try {
+                importer = new CnpcNodesConverter(selectedDirectory);
+            } catch (ProjectExistsException ex) {
+                JOptionPane.showMessageDialog(frame, "<html>You opened a file that is already a visual project. Either remove the cnpcsProjectSettings.json file or use Open Existing Project.</html>", "Existing Project", 0);
                 return;
             }
 

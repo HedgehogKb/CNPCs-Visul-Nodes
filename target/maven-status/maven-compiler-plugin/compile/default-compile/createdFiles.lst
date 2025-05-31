@@ -1,8 +1,10 @@
 com\hedgehogkb\EditorFrame\DialogNodeEditorFrame$3.class
 com\hedgehogkb\ImportingAndExporting\ProjectImporter.class
+com\hedgehogkb\ImportingAndExporting\CnpcNodesConverter.class
 com\hedgehogkb\ImportingAndExporting\DialogNodeBuilder.class
 com\hedgehogkb\LauncherFrame\LauncherFrame$1.class
 com\hedgehogkb\NodeDisplayFrame\VisualNodeDisplayFrame.class
+com\hedgehogkb\Exceptions\ProjectExistsException.class
 com\hedgehogkb\NodeDisplayFrame\VisualNodeDisplayFrame$1.class
 com\hedgehogkb\DialogNodeComponents\DialogNode$availabilityDayTimeTypes.class
 com\hedgehogkb\DialogNodeComponents\DialogNode$availabilityQuestTypes.class
@@ -34,3 +36,4 @@ com\hedgehogkb\InputDetectors\KeyboardInputDetector.class
 com\hedgehogkb\EditorFrame\DialogNodeEditorFrame$1.class
 com\hedgehogkb\NodeDisplayFrame\VisualNodeDisplayMenuBar.class
 com\hedgehogkb\LauncherFrame\LauncherFrame.class
+com\hedgehogkb\ImportingAndExporting\CnpcNodesConverter$1.class

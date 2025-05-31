@@ -121,7 +121,7 @@ public class VisualNodeDisplayMenuBar {
             }
             int selectedNodeId = -1;
             try {
-                selectedNodeId = Integer.parseInt(selectedNode.getName().substring(0, 1));
+                selectedNodeId = Integer.parseInt(selectedNode.getName().split("\\.")[0]);
             } catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "No node created. Selected file wasn't a CNPCs dialog node file.", "Wrong file selected", 0);
                 return;
