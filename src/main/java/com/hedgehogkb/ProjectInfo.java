@@ -3,10 +3,14 @@ package com.hedgehogkb;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
+
 import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.ImportingAndExporting.ProjectExporter;
 import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayMenuBar;
+import com.hedgehogkb.NodeHandlers.NodeHandler;
 import com.hedgehogkb.ProjectEditorFrame.ProjectEditorFrame;
 
 public class ProjectInfo {
@@ -15,6 +19,7 @@ public class ProjectInfo {
     int lowestNodeNumber;
     ProjectExporter projectExporter;
     boolean projectSaved;
+    DefaultListModel<GroupNodeShell> groupNodes;
 
     public ProjectInfo(File projectDirectory) {
         this.projectDirectory = projectDirectory;
@@ -87,11 +92,16 @@ public class ProjectInfo {
     }
 
     public void refreshProjectNodes() {
+        groupNodes = new DefaultListModel<>();
         for (int i = 0; i < groups.size(); i++) {
-            VisualNodeDisplayMenuBar curMenuBar = groups.get(i).getVisualNodeDisplayFrame().getMenuBar();
-            if (curMenuBar != null) {
-                curMenuBar.refreshProjectNodes();
+            NodeHandler curHandler = groups.get(i).getNodeHandler();
+            for (int v = 0; v < curHandler.size(); v++) {
+                groupNodes.addElement(new GroupNodeShell(0, 0, groups.get(i), curHandler.getIndex(v).getDialogNode()));
             }
         }
+    }
+
+    public DefaultListModel<GroupNodeShell> getListModel() {
+        return this.groupNodes;
     }
 }

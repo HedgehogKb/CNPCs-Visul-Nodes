@@ -19,12 +19,12 @@ import javax.swing.event.ListSelectionListener;
 import org.json.JSONException;
 
 import com.hedgehogkb.NodeGroup;
-import com.hedgehogkb.NodeHandler;
 import com.hedgehogkb.ProjectInfo;
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.ImportingAndExporting.DialogNodeBuilder;
+import com.hedgehogkb.NodeHandlers.NodeHandler;
 
 public class VisualNodeDisplayMenuBar {
     private VisualNodeDisplayFrame visualNodeDisplay;
@@ -38,7 +38,6 @@ public class VisualNodeDisplayMenuBar {
     private JMenuItem importProjectNode;
     private JMenu projectNodesMenu;
     private JList<GroupNodeShell> projectNodesList;
-    private DefaultListModel<GroupNodeShell> projectNodesListModel;
     private JScrollPane projectNodesScrollPane;
 
     private JMenuItem impotCNPCsNode;
@@ -81,8 +80,7 @@ public class VisualNodeDisplayMenuBar {
 
         impotCNPCsNode = new JMenuItem("Import CNPCs Node");
 
-        projectNodesListModel = new DefaultListModel<>();
-        projectNodesList = new JList<>(projectNodesListModel);
+        projectNodesList = new JList<>(visualNodeDisplay.getGroupnodeHandler().getList());
         projectNodesScrollPane = new JScrollPane(projectNodesList);
         projectNodesMenu = new JMenu("Project Nodes");
         projectNodesMenu.add(projectNodesScrollPane);
@@ -170,20 +168,8 @@ public class VisualNodeDisplayMenuBar {
         });
     }
 
-    public void refreshProjectNodes() {
-        projectNodesListModel.clear();
-        ProjectInfo projectInfo = visualNodeDisplay.getGroup().getProjectInfo();
-        for (NodeGroup nodeGroup : projectInfo.getGroups()) {
-            if (nodeGroup.equals(visualNodeDisplay.getGroup())) {
-                continue;
-            }
-            NodeHandler curhandler = nodeGroup.getNodeHandler();
-            for (int i = 0; i < curhandler.size(); i++) {
-                VisualNodeShell node = nodeGroup.getNodeHandler().getIndex(i);
-                if (!projectNodesListModel.contains(node.getDialogId())) {
-                    projectNodesListModel.addElement(new GroupNodeShell(visualNodeDisplay.getOffsetX(), visualNodeDisplay.getOffsetY(), nodeGroup, node.getDialogNode()));
-                }
-            }
-        }
+    public void refreshGroupNodes() {
+        projectNodesList = new JList<>(visualNodeDisplay.getGroup().getGroupnodeHandler().getList());
+        
     }
 }

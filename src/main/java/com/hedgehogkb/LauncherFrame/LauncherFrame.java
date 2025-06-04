@@ -470,7 +470,9 @@ public class LauncherFrame {
             }
 
             if (importer != null) {
+                System.out.println("don't with importing nodes. Making editor frame.");
                 ProjectEditorFrame editorFrame = new ProjectEditorFrame(importer.getProjectInfo());
+                System.out.println("done with editor frame.");
                 this.frame.dispose();
             }
         });

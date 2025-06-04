@@ -60,15 +60,18 @@ public class ProjectEditorFrame {
         this.leftPanel = new JPanel();
         this.rightPanel = new JPanel();
 
+        System.out.println("starting initialize group list");
         initializeGroupList();
+        System.out.println("done initialize group list. Starting initialize left and right panels.");
 
         initializeLeftPanelComponents();
         initializeRightPanelComponents();
+        System.out.println("done with left and right panels. Starting build frame and handle inputs.");
 
         buildFrame();
 
         handleInputs();
-
+        System.out.println("all done");
     }
 
     public void initializeLeftPanelComponents() {
@@ -173,7 +176,7 @@ public class ProjectEditorFrame {
     }
 
     public void initializeGroupList() {
-        projectInfo.refreshProjectNodes();
+        //projectInfo.refreshProjectNodes();
     }
 
     public void handleInputs() {

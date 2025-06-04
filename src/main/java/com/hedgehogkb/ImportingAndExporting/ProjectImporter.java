@@ -14,10 +14,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hedgehogkb.NodeGroup;
-import com.hedgehogkb.NodeHandler;
 import com.hedgehogkb.ProjectInfo;
 import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
+import com.hedgehogkb.NodeHandlers.NodeHandler;
 
 public class ProjectImporter {
     private File inputDirectory;
@@ -32,6 +32,7 @@ public class ProjectImporter {
         projectInfo.setProjectSaved(true);
         importGroups(projectSettings);
         importNodes(projectSettings);
+        projectInfo.refreshProjectNodes();
     }
 
     public void importGroups(JSONObject projectSettings) throws JSONException, IOException {

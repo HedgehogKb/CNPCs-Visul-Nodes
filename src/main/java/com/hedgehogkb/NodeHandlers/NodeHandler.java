@@ -1,10 +1,12 @@
-package com.hedgehogkb;
+package com.hedgehogkb.NodeHandlers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONObject;
 
+import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.ProjectInfo;
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
@@ -76,8 +78,8 @@ public class NodeHandler {
 
     public VisualNodeShell removeVisualNode(VisualNodeShell node) {
         visualNodeShells.remove(node);
-        if (projectInfo.lowestNodeNumber == node.getDialogId()+1 && !(node instanceof GroupNodeShell)) {
-            projectInfo.lowestNodeNumber -= 1;
+        if (projectInfo.getLowestNodeNumber() == node.getDialogId()+1 && !(node instanceof GroupNodeShell)) {
+            projectInfo.setLowestNodeNumber(projectInfo.getLowestNodeNumber() -1);
         }
         return visualNodeShellsByID.remove(node.getDialogId());
     }
