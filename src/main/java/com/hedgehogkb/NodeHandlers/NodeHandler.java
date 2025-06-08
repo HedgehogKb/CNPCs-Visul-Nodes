@@ -126,6 +126,14 @@ public class NodeHandler {
         visualNodeShells.add(0, node);
     }
 
+    public VisualNodeShell[] getArray() {
+        VisualNodeShell[] array = new VisualNodeShell[size()];
+        for (int i = 0; i < size(); i++) {
+            array[i] = visualNodeShells.get(i);
+        }
+        return array;
+    }
+
     public int size() {
         return visualNodeShells.size();
     }

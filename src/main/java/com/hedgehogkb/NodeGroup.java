@@ -4,14 +4,12 @@ import org.json.JSONObject;
 
 import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayFrame;
 import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayRunner;
-import com.hedgehogkb.NodeHandlers.GroupnodeHandler;
 import com.hedgehogkb.NodeHandlers.NodeHandler;
 
 public class NodeGroup {
     private String name;
     private ProjectInfo projectInfo;
     private NodeHandler nodeHandler;
-    private GroupnodeHandler groupnodeHandler;
     private VisualNodeDisplayFrame visualNodeDisplayFrame;
     private VisualNodeDisplayRunner visualNodeDisplayRunner;
 
@@ -19,7 +17,6 @@ public class NodeGroup {
         this.name = name;
         this.projectInfo = projectInfo;
         this.nodeHandler = new NodeHandler(this, projectInfo);
-        this.groupnodeHandler = new GroupnodeHandler(this);
         this.visualNodeDisplayFrame = new VisualNodeDisplayFrame(this);
         this.visualNodeDisplayRunner = new VisualNodeDisplayRunner(visualNodeDisplayFrame);
     }
@@ -28,7 +25,6 @@ public class NodeGroup {
         this.name = name;
         this.projectInfo = projectInfo;
         this.nodeHandler = nodeHandler;
-        this.groupnodeHandler = new GroupnodeHandler(this);
         this.visualNodeDisplayFrame = new VisualNodeDisplayFrame(this);
     }
 
@@ -36,7 +32,6 @@ public class NodeGroup {
         this.name = name;
         this.projectInfo = projectInfo;
         this.nodeHandler = new NodeHandler(this, projectInfo);
-        this.groupnodeHandler = new GroupnodeHandler(this);
         this.visualNodeDisplayFrame = new VisualNodeDisplayFrame(this, offsetX, offsetY);
         this.visualNodeDisplayRunner = new VisualNodeDisplayRunner(visualNodeDisplayFrame);
 
@@ -46,9 +41,6 @@ public class NodeGroup {
         return nodeHandler;
     }
 
-    public GroupnodeHandler getGroupnodeHandler() {
-        return this.groupnodeHandler;
-    }
 
     public VisualNodeDisplayFrame getVisualNodeDisplayFrame() {
         return visualNodeDisplayFrame;

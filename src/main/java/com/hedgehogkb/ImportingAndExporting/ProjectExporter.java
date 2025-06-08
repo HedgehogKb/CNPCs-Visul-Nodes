@@ -89,7 +89,7 @@ public class ProjectExporter {
 
                 try {
                     FileWriter writer = new FileWriter(nodeFile);
-                    String jsonString = nodeJson.toString(4);
+                    String jsonString = nodeJson.toString(4).replace("\\n", "\n").replace("\\u2019", "'").replace("\\u2014", "—");
                     writer.write(jsonString);
                     writer.close();
                 } catch (IOException e) {

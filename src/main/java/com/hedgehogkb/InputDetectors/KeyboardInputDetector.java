@@ -56,7 +56,6 @@ public class KeyboardInputDetector implements KeyListener {
                 cancelTimer();
                 visualNodeDisplay.setProjectUnsaved();
                 visualNodeDisplay.addVisualNode();
-                visualNodeDisplay.getGroup().getProjectInfo().refreshProjectNodes();
             } else {
                 this.timerRunning = true;
                 this.keyPressTimer.start();
@@ -66,7 +65,6 @@ public class KeyboardInputDetector implements KeyListener {
                 cancelTimer();
                 visualNodeDisplay.setProjectUnsaved();
                 visualNodeDisplay.addVisualNode();
-                visualNodeDisplay.getGroup().getProjectInfo().refreshProjectNodes();
             } else {
                 this.timerRunning = true;
                 this.keyPressTimer.start();

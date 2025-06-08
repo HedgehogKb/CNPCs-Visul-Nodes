@@ -263,7 +263,6 @@ public class DialogNodeEditorFrame {
             dialogNode.setDialogTitle(title);
             frame.setTitle("Dialog Id: "+dialogNode.getDialogId() + " - " + dialogNode.getDialogTitle());
             titleSaved = true;
-            visualNodeShell.getGroup().getProjectInfo().refreshProjectNodes();
         });
 
         cancelTitleButton.addActionListener(e -> {
@@ -305,6 +304,10 @@ public class DialogNodeEditorFrame {
 
                             if (!dialogOptionsPanel.isSaved()) {
                                 dialogOptionsPanel.saveDialogOption();
+                            }
+
+                            if (!otherOptionsPanel.isSaved()) {
+                                otherOptionsPanel.save();
                             }
 
                             setPanelSaved();
@@ -367,7 +370,7 @@ public class DialogNodeEditorFrame {
     }
 
     public boolean isPanelSaved() {
-        boolean saved = titleSaved && dialogSaved && dialogOptionsPanel.isSaved();
+        boolean saved = titleSaved && dialogSaved && dialogOptionsPanel.isSaved() && otherOptionsPanel.isSaved();
         return saved;
     }
 

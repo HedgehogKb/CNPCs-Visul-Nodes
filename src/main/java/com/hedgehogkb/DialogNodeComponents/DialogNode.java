@@ -14,6 +14,7 @@ public class DialogNode {
     private boolean showDialogWheel;
     private boolean hideNPC;
     private boolean disableEsc;
+    private int dialogQuest;
 
     //availability options:
         //dialog Options:
@@ -117,6 +118,7 @@ public class DialogNode {
         dialogJsonWrapper.put("DialogShowWheel", booleanToInt(showDialogWheel));
         dialogJsonWrapper.put("DialogHideNPC", booleanToInt(hideNPC));
         dialogJsonWrapper.put("DialogDisableEsc", booleanToInt(disableEsc));
+        dialogJsonWrapper.put("DialogQuest", dialogQuest);
 
         //dialog options array
         dialogJsonWrapper.put("Options", buildOptionsJson());
@@ -267,8 +269,6 @@ public class DialogNode {
         this.dialogTitle = dialogTitle;
     }
 
-
-
     public String getDialogText() {
         return this.dialogText;
     }
@@ -302,6 +302,13 @@ public class DialogNode {
     }
     public void setDisableEsc(boolean disableEsc) {
         this.disableEsc = disableEsc;
+    }
+
+    public int getDialogQuest() {
+        return this.dialogQuest;
+    }
+    public void setDialogQuest(int questId) {
+        this.dialogQuest = questId;
     }
 
     public void setAvailabilityDialog(int availabilityDialog, int availabilityDialogId, int index) {

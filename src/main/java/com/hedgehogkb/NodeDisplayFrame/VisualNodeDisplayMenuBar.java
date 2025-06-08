@@ -1,20 +1,28 @@
 package com.hedgehogkb.NodeDisplayFrame;
 
+import java.awt.Dialog;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import org.json.JSONException;
 
@@ -37,7 +45,8 @@ public class VisualNodeDisplayMenuBar {
     private JMenuItem addNodeButton;
     private JMenuItem importProjectNode;
     private JMenu projectNodesMenu;
-    private JList<GroupNodeShell> projectNodesList;
+    private DefaultListModel<String> groupListModel;
+    private JList<String> groupList;
     private JScrollPane projectNodesScrollPane;
 
     private JMenuItem impotCNPCsNode;
@@ -80,12 +89,14 @@ public class VisualNodeDisplayMenuBar {
 
         impotCNPCsNode = new JMenuItem("Import CNPCs Node");
 
-        projectNodesList = new JList<>(visualNodeDisplay.getGroupnodeHandler().getList());
-        projectNodesScrollPane = new JScrollPane(projectNodesList);
         projectNodesMenu = new JMenu("Project Nodes");
+  
+        groupListModel = new DefaultListModel<>();
+        groupList = new JList<>(groupListModel);
+        projectNodesScrollPane = new JScrollPane(groupList);
         projectNodesMenu.add(projectNodesScrollPane);
         addNodeMenu.add(projectNodesMenu);
-        addNodeMenu.add(impotCNPCsNode);
+
 
         importProjectNode = new JMenuItem("Import Other Group Node");
         addNodeMenu.add(importProjectNode);
@@ -107,7 +118,6 @@ public class VisualNodeDisplayMenuBar {
         addNodeButton.addActionListener(e -> {
             visualNodeDisplay.addVisualNode();
             visualNodeDisplay.setProjectUnsaved();
-            visualNodeDisplay.getGroup().getProjectInfo().refreshProjectNodes();
         });
 
         impotCNPCsNode.addActionListener(e -> {
@@ -146,30 +156,54 @@ public class VisualNodeDisplayMenuBar {
             //Everything is done in the mouse listener for the project nodes list.
         });
 
-        projectNodesList.addMouseListener(new MouseAdapter() {
+        projectNodesMenu.addMenuListener(new MenuListener() {
+
+            @Override
+            public void menuSelected(MenuEvent e) {
+                groupListModel.clear();
+                ArrayList<NodeGroup> groups = visualNodeDisplay.getGroup().getProjectInfo().getGroups();
+                for (NodeGroup nodeGroup : groups) {
+                    if (nodeGroup != visualNodeDisplay.getGroup()) {
+                        groupListModel.addElement(nodeGroup.getName());
+                    }
+                }
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {/*do nothing*/}
+
+            @Override
+            public void menuCanceled(MenuEvent e) {/*do nothing*/}
+            
+        });
+
+        groupList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                GroupNodeShell selectedValue = projectNodesList.getSelectedValue();
-                if (selectedValue.equals(null)) {
+                String selectedName = groupList.getSelectedValue();
+                NodeGroup selectedGroup = visualNodeDisplay.getGroup().getProjectInfo().getGroup(selectedName);
+                Object[] possibilities = selectedGroup.getNodeHandler().getArray();
+                if (possibilities.length <= 0) {
+                    JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "This group has no nodes.", "No nodes", JOptionPane.WARNING_MESSAGE);
+
+                }
+                VisualNodeShell selectedNode = (VisualNodeShell) JOptionPane.showInputDialog(visualNodeDisplay.getFrame(), "Which node would you like to choose?", "Select Project Node", JOptionPane.PLAIN_MESSAGE, null, possibilities, possibilities[0]);
+
+                if (selectedNode == null) {
+                    JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "No node selected.", "None selected", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                VisualNodeShell projectNode = selectedValue;
-                if (visualNodeDisplay.getGroup().getNodeHandler().contains(projectNode)) {
+                if (visualNodeDisplay.getGroup().getNodeHandler().contains(selectedNode)) {
+                    JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "Node already exists in project.", "Node already exists", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                visualNodeDisplay.setProjectUnsaved();
-                projectNode.setPosition(visualNodeDisplay.getMouseX() - visualNodeDisplay.getOffsetX(), visualNodeDisplay.getMouseY() - visualNodeDisplay.getOffsetY());
-                visualNodeDisplay.getGroup().getNodeHandler().add(projectNode);
+                visualNodeDisplay.getGroup().getNodeHandler().add(new GroupNodeShell(visualNodeDisplay.getOffsetX(), visualNodeDisplay.getOffsetY(), visualNodeDisplay.getGroup(), selectedNode.getDialogNode()));
+               
             }
         });
 
         saveButton.addActionListener(e -> {
             visualNodeDisplay.saveProject();
         });
-    }
-
-    public void refreshGroupNodes() {
-        projectNodesList = new JList<>(visualNodeDisplay.getGroup().getGroupnodeHandler().getList());
-        
     }
 }

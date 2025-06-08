@@ -32,7 +32,6 @@ public class ProjectImporter {
         projectInfo.setProjectSaved(true);
         importGroups(projectSettings);
         importNodes(projectSettings);
-        projectInfo.refreshProjectNodes();
     }
 
     public void importGroups(JSONObject projectSettings) throws JSONException, IOException {

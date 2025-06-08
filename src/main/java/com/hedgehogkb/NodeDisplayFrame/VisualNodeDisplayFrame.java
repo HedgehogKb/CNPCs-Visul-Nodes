@@ -17,7 +17,6 @@ import com.hedgehogkb.DialogNodeComponents.DialogOption;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.InputDetectors.KeyboardInputDetector;
 import com.hedgehogkb.InputDetectors.MouseInputDetector;
-import com.hedgehogkb.NodeHandlers.GroupnodeHandler;
 import com.hedgehogkb.NodeHandlers.NodeHandler;
 import com.hedgehogkb.NodeGroup;
 
@@ -82,7 +81,6 @@ public class VisualNodeDisplayFrame {
 
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
-        group.getGroupnodeHandler().setList(group.getProjectInfo().getListModel());
         menuBar = new VisualNodeDisplayMenuBar(this);
         this.frame.setJMenuBar(menuBar.getMenuBar());
     }
@@ -191,10 +189,6 @@ public class VisualNodeDisplayFrame {
 
     public void removeVisualNode(VisualNodeShell node) {
         nodeHandler.removeVisualNode(node);
-    }
-
-    public GroupnodeHandler getGroupnodeHandler() {
-        return group.getGroupnodeHandler();
     }
 
     public JFrame getFrame() {

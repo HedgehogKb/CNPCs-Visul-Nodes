@@ -258,5 +258,9 @@ public class VisualNodeShell {
         return group;
     }
 
+    @Override
+    public String toString() {
+        return this.dialogNode.getDialogId() + " - " + this.dialogNode.getDialogTitle();
+    }
 
 }

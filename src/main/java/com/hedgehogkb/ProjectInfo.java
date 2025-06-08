@@ -19,7 +19,6 @@ public class ProjectInfo {
     int lowestNodeNumber;
     ProjectExporter projectExporter;
     boolean projectSaved;
-    DefaultListModel<GroupNodeShell> groupNodes;
 
     public ProjectInfo(File projectDirectory) {
         this.projectDirectory = projectDirectory;
@@ -91,17 +90,4 @@ public class ProjectInfo {
         return null;
     }
 
-    public void refreshProjectNodes() {
-        groupNodes = new DefaultListModel<>();
-        for (int i = 0; i < groups.size(); i++) {
-            NodeHandler curHandler = groups.get(i).getNodeHandler();
-            for (int v = 0; v < curHandler.size(); v++) {
-                groupNodes.addElement(new GroupNodeShell(0, 0, groups.get(i), curHandler.getIndex(v).getDialogNode()));
-            }
-        }
-    }
-
-    public DefaultListModel<GroupNodeShell> getListModel() {
-        return this.groupNodes;
-    }
 }

@@ -6,12 +6,20 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.codehaus.plexus.util.cli.CommandLineException;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 
@@ -30,8 +38,10 @@ public class OtherOptionsPanel {
     private JCheckBox disableEscCheckBox;
     private JLabel questNumberLabel;
     private JTextArea questNumberTextBox;
-    private JButton confirmQuestButton;
-    private JButton cancelQuestButton;
+    //private JButton confirmQuestButton;
+    //private JButton cancelQuestButton;
+    
+    private boolean saved;
 
     private DialogNode dialogNode;
 
@@ -42,6 +52,7 @@ public class OtherOptionsPanel {
     }
 
     private void initializeOtherOptionsPanel() {
+        this.saved = true;
         this.otherOptionsPanel = new JPanel();
         otherOptionsPanel.setLayout(new GridBagLayout());
         otherOptionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Other Options"));
@@ -178,7 +189,88 @@ public class OtherOptionsPanel {
     }
 
     private void handleOptionPanelInputs() {
+        this.confirmCommandButton.addActionListener(e -> {
+            dialogNode.setDialogCommand(commandTextBox.getText());
+            saved = true;
+        });
 
+        this.cancelCommandButton.addActionListener(e -> {
+            commandTextBox.setText(dialogNode.getDialogCommand());
+            saved = true;
+        });
+
+        this.commandTextBox.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                saved = false;
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                saved = false;
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+
+        this.hideNPCCheckBox.addItemListener(e -> {
+                int state = e.getStateChange();
+                dialogNode.setHideNPC(state == 1);
+        });
+
+        this.showDialogWheelCheckBox.addItemListener(e-> {
+            int state = e.getStateChange();
+            dialogNode.setShowDialogWheel(state == 1);
+        });
+
+        this.disableEscCheckBox.addItemListener(e -> {
+            int state = e.getStateChange();
+            dialogNode.setDisableEsc(state == 1);
+        });
+
+        this.questNumberTextBox.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    int dialogId = Integer.valueOf(questNumberTextBox.getText());
+                    dialogNode.setDialogQuest(dialogId);
+                } catch (Exception ex) {
+                    if (!questNumberTextBox.getText().equals("-")) {
+                        SwingUtilities.invokeLater(() -> {
+                            questNumberTextBox.setText(String.valueOf(dialogNode.getDialogQuest()));
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    int questId = Integer.valueOf(questNumberTextBox.getText());
+                    dialogNode.setDialogQuest(questId);
+                } catch (Exception ex) {
+                    dialogNode.setDialogQuest(-1);
+                    //I want the person to be able to remove more (ex. removing the 1 from -1 results in just -, but the person still
+                    //needs to delete mroe stuff to get a regular number.) also, since this isn't a number I set it to -1 to not cause  confusion.
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+            
+        });
+
+    }
+
+    public void save() {
+        dialogNode.setDialogCommand(commandTextBox.getText());
+        saved = true;
+    }
+
+    public boolean isSaved() {
+        return this.saved;
     }
 
     public JPanel getPanel() {
