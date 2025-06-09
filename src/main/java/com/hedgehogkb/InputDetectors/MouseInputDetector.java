@@ -1,11 +1,14 @@
 package com.hedgehogkb.InputDetectors;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
@@ -13,6 +16,7 @@ import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.EditorFrame.DialogNodeEditorFrame;
 import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayFrame;
 import com.hedgehogkb.NodeHandlers.NodeHandler;
+import com.hedgehogkb.PopUpMenus.OptionHoverPopUp;
 import com.hedgehogkb.PopUpMenus.VisualNodePopUp;
 
 
@@ -32,7 +36,11 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
     private boolean isDraggingOption;
     private int draggedOptionSlot;
     private VisualNodeShell draggedOptionNode;
-    private ArrayList<DialogNodeEditorFrame> dialogNodeEditorFrames;
+
+    private OptionHoverPopUp optionHoverPopUp;
+    private Timer optionHoverTimer;
+    private int hoveredDialog;
+    private int hoveredOption;
 
     public MouseInputDetector(NodeHandler nodeHandler) {
         this.mouseX = 0;
@@ -40,21 +48,63 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
         this.nodeHandler = nodeHandler;
         this.isDraggingBackground = false;
         this.mouseDown = false;
-        this.dialogNodeEditorFrames = new ArrayList<>();
         this.visualNodePopUp = new VisualNodePopUp();
+        
+        optionHoverPopUp = new OptionHoverPopUp(null);
+        optionHoverTimer = new Timer(750, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("showing popup");
+                optionHoverPopUp.setDialogOption(nodeHandler.get(hoveredDialog).getDialogNode(), hoveredOption);
+                optionHoverPopUp.show(mouseX, mouseY);
+            }
+        });
+        optionHoverTimer.setRepeats(false);
+        this.hoveredOption = -1;
+        this.hoveredDialog = -1;
     }
 
     public MouseInputDetector(VisualNodeDisplayFrame visualNodeDisplay, NodeHandler nodeHandler) {
         this(nodeHandler);
         this.visualNodeDisplay = visualNodeDisplay;
         this.visualNodePopUp = new VisualNodePopUp(visualNodeDisplay);
+        this.optionHoverPopUp = new OptionHoverPopUp(visualNodeDisplay.getFrame());
+
     }
 
     @Override
     public void mouseMoved(java.awt.event.MouseEvent e) {
-        if (!mouseDown) {
-            this.mouseX = e.getX();
-            this.mouseY = e.getY();
+        if (mouseDown) {
+            return;
+        }
+        
+        this.mouseX = e.getX();
+        this.mouseY = e.getY();
+        for (int i = 0; i < nodeHandler.size(); i++) {
+            VisualNodeShell curDialog = nodeHandler.getIndex(i);
+            int optionId = curDialog.isOptionTouchingMouse(mouseX, mouseY);
+            if (optionId != -1) {
+                if (optionHoverTimer.isRunning()) {
+                    if (optionId != this.hoveredOption || curDialog.getDialogId() != this.hoveredDialog ) {
+                        optionHoverTimer.stop();
+                        if (optionHoverPopUp.isVisible()) {
+                            optionHoverPopUp.hide();
+                        }
+                    } else {
+                        return;
+                    }
+                }
+                this.hoveredDialog = nodeHandler.getIndex(i).getDialogId();
+                this.hoveredOption = optionId;
+                optionHoverTimer.start();
+            } else {
+                if (optionHoverTimer.isRunning()) {
+                    optionHoverTimer.stop();
+                }
+                if (optionHoverPopUp.isVisible()) {
+                    optionHoverPopUp.hide();
+                }
+            }
         }
     }
 

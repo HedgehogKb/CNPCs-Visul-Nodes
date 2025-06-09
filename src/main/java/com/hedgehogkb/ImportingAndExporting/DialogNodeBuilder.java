@@ -42,7 +42,11 @@ public class DialogNodeBuilder {
         dialogNode.setShowDialogWheel(jsonToBoolean(dialogNodeJson, "DialogShowWheel"));
         dialogNode.setHideNPC(jsonToBoolean(dialogNodeJson,"DialogHideNPC"));
         dialogNode.setDisableEsc(jsonToBoolean(dialogNodeJson,"DialogDisableEsc"));
-        dialogNode.setDialogQuest(dialogNodeJson.getInt("DialogQuest"));
+        try {
+            dialogNode.setDialogQuest(dialogNodeJson.getInt("DialogQuest"));
+        } catch(JSONException ex) {
+            dialogNode.setDialogQuest(-1);
+        }
         ArrayList<DialogOption> dialogOptions = buildDialogOption(dialogNodeJson);
         dialogNode.setOptions(dialogOptions);
         

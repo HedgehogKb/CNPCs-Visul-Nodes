@@ -261,6 +261,10 @@ public class DialogNode {
         this.options = options;
     }
 
+    public DialogOption getOption(int optionId) {
+        return options.get(optionId);
+    }
+
 
     public String getDialogTitle() {
         return this.dialogTitle;
