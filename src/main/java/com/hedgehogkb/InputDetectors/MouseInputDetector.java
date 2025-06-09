@@ -78,10 +78,14 @@ public class MouseInputDetector implements MouseMotionListener, MouseListener {
             return;
         }
         
+        //this is the code for the hovering option popup
         this.mouseX = e.getX();
         this.mouseY = e.getY();
         for (int i = 0; i < nodeHandler.size(); i++) {
             VisualNodeShell curDialog = nodeHandler.getIndex(i);
+            if (!curDialog.isTouchingMouse(mouseX, mouseY)) {
+                continue;
+            }
             int optionId = curDialog.isOptionTouchingMouse(mouseX, mouseY);
             if (optionId != -1) {
                 if (optionHoverTimer.isRunning()) {
