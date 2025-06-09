@@ -88,6 +88,7 @@ public class VisualNodeDisplayMenuBar {
         addNodeMenu.add(addNodeButton);
 
         impotCNPCsNode = new JMenuItem("Import CNPCs Node");
+        addNodeMenu.add(impotCNPCsNode);
 
         projectNodesMenu = new JMenu("Project Nodes");
   

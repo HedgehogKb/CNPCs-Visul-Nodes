@@ -14,6 +14,7 @@ com\hedgehogkb\NodeDisplayFrame\VisualNodeDisplayRunner.class
 com\hedgehogkb\EditorFrame\DialogOptionsPanel$3.class
 com\hedgehogkb\EditorFrame\DialogOptionsPanel.class
 com\hedgehogkb\NodeGroup.class
+com\hedgehogkb\InputDetectors\MouseInputDetector$1.class
 com\hedgehogkb\DialogNodeComponents\GroupNodeShell.class
 com\hedgehogkb\EditorFrame\OtherOptionsPanel.class
 com\hedgehogkb\ProjectEditorFrame\ProjectEditorFrame$1.class
@@ -30,6 +31,7 @@ com\hedgehogkb\ImportingAndExporting\ProjectExporter.class
 com\hedgehogkb\EditorFrame\DialogNodeEditorFrame.class
 com\hedgehogkb\EditorFrame\DialogOptionsPanel$1.class
 com\hedgehogkb\NodeDisplayFrame\VisualNodeDisplayMenuBar$1.class
+com\hedgehogkb\PopUpMenus\OptionHoverPopUp.class
 com\hedgehogkb\DialogNodeComponents\VisualNodeShell.class
 com\hedgehogkb\ProjectInfo.class
 com\hedgehogkb\EditorFrame\DialogOptionsPanel$2.class
