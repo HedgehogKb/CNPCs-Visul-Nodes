@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,10 +66,20 @@ public class ProjectImporter {
                 VisualNodeShell visualNodeShell;
                 if (visualNodesJson.getJSONObject(v).getString("type").equals("groupNode")) {
                     visualNodeShell = new GroupNodeShell(posX, posY, projectInfo.getGroup(visualNodesJson.getJSONObject(v).getString("groupName")));
-                    visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, visualNodesJson.getJSONObject(v).getString("groupName"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
+                    try {
+                        visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, visualNodesJson.getJSONObject(v).getString("groupName"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
+                    } catch(IOException ex) {
+                        JOptionPane.showMessageDialog(null, "The file for node: " + visualNodesJson.getJSONObject(v).getInt("nodeId") + " couldn't be found.", "Node file missing", JOptionPane.WARNING_MESSAGE);
+                        continue;
+                    }
                 } else {
                     visualNodeShell = new VisualNodeShell(posX, posY, group);
-                    visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, nodeGroupsJson.getJSONObject(i).getString("name"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
+                    try {
+                        visualNodeShell.setDialogNode(new DialogNodeBuilder(inputDirectory, nodeGroupsJson.getJSONObject(i).getString("name"), visualNodesJson.getJSONObject(v).getInt("nodeId")).getDialogNode());
+                    } catch(IOException ex) {
+                        JOptionPane.showMessageDialog(null, "The file for node " + visualNodesJson.getJSONObject(v).getInt("nodeId") + " couldn't be found.", "Node file missing", JOptionPane.WARNING_MESSAGE);
+                        continue;
+                    }
                 }
                     group.getNodeHandler().add(visualNodeShell);
             }

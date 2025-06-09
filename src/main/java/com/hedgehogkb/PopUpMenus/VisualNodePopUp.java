@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayFrame;
 
@@ -36,7 +37,11 @@ public class VisualNodePopUp {
     public void handleMenuInputs() {
         deleteNodeButton.addActionListener(e -> {
             visualNodeDisplay.setProjectUnsaved();
-            visualNodeDisplay.removeVisualNode(this.visualNodeShell);
+            if (visualNodeShell instanceof GroupNodeShell) {
+                visualNodeDisplay.removeVisualNode(visualNodeShell);
+            } else {
+                visualNodeDisplay.getGroup().getProjectInfo().removeVisualNode(this.visualNodeShell.getDialogId());
+            }
         });
     }
 

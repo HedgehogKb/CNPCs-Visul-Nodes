@@ -197,7 +197,7 @@ public class VisualNodeDisplayMenuBar {
                     JOptionPane.showMessageDialog(visualNodeDisplay.getFrame(), "Node already exists in project.", "Node already exists", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                visualNodeDisplay.getGroup().getNodeHandler().add(new GroupNodeShell(visualNodeDisplay.getOffsetX(), visualNodeDisplay.getOffsetY(), visualNodeDisplay.getGroup(), selectedNode.getDialogNode()));
+                visualNodeDisplay.getGroup().getNodeHandler().add(new GroupNodeShell(visualNodeDisplay.getOffsetX(), visualNodeDisplay.getOffsetY(), selectedGroup, selectedNode.getDialogNode()));
                
             }
         });

@@ -57,6 +57,17 @@ public class ProjectInfo {
         return null;
     }
 
+    /**
+     * Removes all visual nodes that have a matching id.
+     * This means that any project nodes will be deleted when the main node is deleted.
+     * @param nodeId
+     */
+    public void removeVisualNode(int nodeId) {
+        for (int i = 0; i < groups.size(); i++) {
+            groups.get(i).getNodeHandler().removeVisualNode(nodeId);
+        }
+    }
+
     public int getLowestNodeNumber() {
         return lowestNodeNumber;
     }

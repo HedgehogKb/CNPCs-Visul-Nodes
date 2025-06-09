@@ -469,6 +469,7 @@ public class LauncherFrame {
                 return;
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(frame, "Error finding files. Ensure that the selected folder contains a project settings file and the specified group directories.");
+                ex.printStackTrace();
                 return;
             }
 
