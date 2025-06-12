@@ -44,6 +44,10 @@ public class ProjectInfo {
         groups.add(group);
     }
 
+    public Boolean removeGroup(NodeGroup group) {
+        return groups.remove(group);
+    }
+
     public ArrayList<NodeGroup> getGroups() {
         return groups;
     }

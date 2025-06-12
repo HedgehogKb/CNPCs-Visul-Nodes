@@ -36,6 +36,7 @@ public class ProjectEditorFrame {
     private JPanel leftPanel;
     private JLabel selectedGroupLabel;
     private JButton openGroupButton;
+    private JButton deleteGroupButton;
     private JSeparator horizontalSeperator;
     private JLabel groupNameLabel;
     private JTextArea groupNameTextArea;
@@ -99,10 +100,19 @@ public class ProjectEditorFrame {
         c.insets = new Insets(0, 5, 5, 5);
         leftPanel.add(openGroupButton, c);
 
+        deleteGroupButton = new JButton("Delete Group");
+        c.gridx = 0;
+        c.gridy = 2;
+        c.weightx = 0.5;
+        c.gridwidth = 3;
+        c.anchor = GridBagConstraints.NORTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        leftPanel.add(deleteGroupButton, c);
+
         horizontalSeperator = new JSeparator(SwingConstants.HORIZONTAL);
         horizontalSeperator.setBackground(Color.black);
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         c.weightx = 0.5;
         c.gridwidth = 3;
         c.anchor = GridBagConstraints.NORTH;
@@ -110,9 +120,10 @@ public class ProjectEditorFrame {
         c.insets = new Insets(10, 0, 10, 0);
         leftPanel.add(horizontalSeperator, c);
 
+
         groupNameLabel = new JLabel("Group Name:");
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 4;
         c.weightx = 0.1;
         c.gridwidth = 1;
         c.anchor = GridBagConstraints.NORTHWEST;
@@ -123,7 +134,7 @@ public class ProjectEditorFrame {
         groupNameTextArea = new JTextArea("");
         groupNameTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         c.gridx = 1;
-        c.gridy = 3;
+        c.gridy = 4;
         c.weightx = 0.8;
         c.gridwidth = 2;
         c.anchor = GridBagConstraints.NORTHWEST;
@@ -133,7 +144,7 @@ public class ProjectEditorFrame {
 
         addGroupButton = new JButton("Add Group");
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
         c.weightx = 0.5;
         c.weighty = 0.5;
         c.gridwidth = 3;
@@ -192,6 +203,33 @@ public class ProjectEditorFrame {
                 selectedGroup.startDisplay();
             } else {
                 JOptionPane.showMessageDialog(frame, "No group selected.");
+            }
+        });
+
+        deleteGroupButton.addActionListener(e -> {
+            String selectedGroupName = groupList.getSelectedValue();
+            if (selectedGroupName == null) {
+                JOptionPane.showMessageDialog(frame, "No group selected.");
+                return;
+            }
+
+            NodeGroup selectedGroup = projectInfo.getGroup(selectedGroupName);
+            
+            if (selectedGroup == null) {
+                JOptionPane.showMessageDialog(frame, "Somehow this group doesn't exist.");
+                return;   
+            }
+
+            int confirmDecision = JOptionPane.showConfirmDialog(frame, "Are you sure that you want to delete "+selectedGroupName +"?", "Delete Group", JOptionPane.YES_NO_OPTION);
+            
+            if (confirmDecision == JOptionPane.YES_OPTION) {
+                if (!projectInfo.removeGroup(selectedGroup)) {
+                    JOptionPane.showMessageDialog(frame, "Group wasn't successfully deleted.");
+                    return;
+                }
+
+                listModel.removeElement(selectedGroupName);
+
             }
         });
 
