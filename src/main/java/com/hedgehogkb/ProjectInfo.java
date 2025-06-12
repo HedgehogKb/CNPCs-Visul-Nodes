@@ -45,7 +45,31 @@ public class ProjectInfo {
     }
 
     public Boolean removeGroup(NodeGroup group) {
-        return groups.remove(group);
+        File groupDirectory = new File(projectDirectory, group.getName());
+        boolean deleted = recurseiveDelete(groupDirectory) && groups.remove(group);
+        projectExporter.export();
+        this.projectSaved = true;
+        return deleted;
+    }
+
+    //this is defenitly not the best method.
+    public Boolean recurseiveDelete(File file) {
+        if (!file.exists()) {
+            return false;
+        }
+
+        if (file.listFiles() == null || file.listFiles().length == 0) {
+            return file.delete();
+        }
+
+        File[] children = file.listFiles();
+        for (File child : children) {
+            if (!recurseiveDelete(child)) {
+                return false;
+            }
+        }
+
+        return file.delete();
     }
 
     public ArrayList<NodeGroup> getGroups() {
@@ -69,6 +93,9 @@ public class ProjectInfo {
     public void removeVisualNode(int nodeId) {
         for (int i = 0; i < groups.size(); i++) {
             groups.get(i).getNodeHandler().removeVisualNode(nodeId);
+        }
+        if (nodeId == lowestNodeNumber-1) {
+            lowestNodeNumber--;
         }
     }
 
