@@ -1,9 +1,5 @@
 package com.hedgehogkb;
 
-import java.io.File;
-
-import javax.swing.Timer;
-
 import com.hedgehogkb.LauncherFrame.LauncherFrame;
 
 /**

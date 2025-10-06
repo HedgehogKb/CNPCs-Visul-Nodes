@@ -92,9 +92,14 @@
             <version>3.7.1</version>
 
             <configuration>
-                <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
+        <archive>
+          <manifest>
+            <mainClass>com.hedgehogkb.App</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
             </configuration>
 
             <executions>

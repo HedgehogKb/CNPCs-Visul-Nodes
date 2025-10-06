@@ -94,12 +94,7 @@ public class LauncherFrame {
 
         this.fileChooser = new JFileChooser();
         this.fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        File startFile = new File(System.getProperty("user.home"), "AppData\\Roaming\\.minecraft\\saves");
-        if (!startFile.exists()) {
-            startFile = new File(System.getProperty("user.home"));
-        }
-        this.fileChooser.setSelectedFile(startFile);
-        this.fileChooser.setCurrentDirectory(startFile);
+
         this.selectedDirectory = null;
 
         this.leftPanel = new JPanel();
@@ -408,6 +403,7 @@ public class LauncherFrame {
     
     private void handleBlankProjectInputs() {
         blankProjectFolderSelectorButton.addActionListener(e -> {
+            setDefaultFiles();
             int returnValue = fileChooser.showOpenDialog(this.frame);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 this.selectedDirectory = fileChooser.getSelectedFile();
@@ -449,6 +445,7 @@ public class LauncherFrame {
 
     private void handleExistingProjectInputs() {
         existingProjectFolderSelectionButton.addActionListener(e -> {
+            setDefaultFiles();
             int returnValue = fileChooser.showOpenDialog(this.frame);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 this.selectedDirectory = fileChooser.getSelectedFile();
@@ -484,6 +481,7 @@ public class LauncherFrame {
 
     private void handleExistingNodesInputs() {
         existingNodesFolderSelectionButton.addActionListener(e -> {
+            setDefaultFiles();
             int returnValue = fileChooser.showOpenDialog(this.frame);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 this.selectedDirectory = fileChooser.getSelectedFile();
@@ -505,5 +503,19 @@ public class LauncherFrame {
                 this.frame.dispose();
             }
         });
+    }
+
+    private void setDefaultFiles() {
+        File startFile = new File(System.getProperty("user.home"), "AppData\\Roaming\\.minecraft\\saves");
+        if (!startFile.exists()) {
+            startFile = new File(System.getProperty("user.home"));
+        }
+
+        try {
+            this.fileChooser.setCurrentDirectory(startFile);
+            this.fileChooser.setSelectedFile(startFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
