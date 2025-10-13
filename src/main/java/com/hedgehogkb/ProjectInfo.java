@@ -3,15 +3,8 @@ package com.hedgehogkb;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
-
-import com.hedgehogkb.NodeGroup;
-import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
 import com.hedgehogkb.ImportingAndExporting.ProjectExporter;
-import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayMenuBar;
-import com.hedgehogkb.NodeHandlers.NodeHandler;
-import com.hedgehogkb.ProjectEditorFrame.ProjectEditorFrame;
 
 public class ProjectInfo {
     ArrayList<NodeGroup> groups;
@@ -46,8 +39,14 @@ public class ProjectInfo {
 
     public Boolean removeGroup(NodeGroup group) {
         File groupDirectory = new File(projectDirectory, group.getName());
-        boolean deleted = recurseiveDelete(groupDirectory) && groups.remove(group);
-        projectExporter.export();
+        boolean deleted;
+        if (groupDirectory.exists()) {
+            deleted = (recurseiveDelete(groupDirectory) && groups.remove(group));
+        } else {
+            deleted = groups.remove(group);
+        }
+
+        projectExporter.export(); //TODO: I'm not sure that I want to do this.
         this.projectSaved = true;
         return deleted;
     }
@@ -99,6 +98,11 @@ public class ProjectInfo {
         }
     }
 
+    public void saveProject() {
+        projectExporter.export();
+        projectSaved = true;
+    }
+
     public int getLowestNodeNumber() {
         return lowestNodeNumber;
     }
@@ -109,10 +113,6 @@ public class ProjectInfo {
 
     public File getProjectDirectory() {
         return projectDirectory;
-    }
-
-    public ProjectExporter getProjectExporter() {
-        return projectExporter;
     }
 
     public boolean isProjectSaved() {

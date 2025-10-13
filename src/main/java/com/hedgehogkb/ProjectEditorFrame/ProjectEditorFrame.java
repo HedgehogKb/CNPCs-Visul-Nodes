@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -22,16 +21,15 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 
 import com.hedgehogkb.NodeGroup;
 import com.hedgehogkb.ProjectInfo;
-import com.hedgehogkb.NodeDisplayFrame.VisualNodeDisplayMenuBar;
 
 public class ProjectEditorFrame {
     private JFrame frame;
     private ProjectInfo projectInfo;
     private JSplitPane splitPane;
+    private ProjectEditorMenuBar menuBar;
 
     private JPanel leftPanel;
     private JLabel selectedGroupLabel;
@@ -55,6 +53,9 @@ public class ProjectEditorFrame {
         this.frame.setLayout(new GridLayout(0,1));
         this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.frame.setSize(500, 250);
+
+        this.menuBar = new ProjectEditorMenuBar(this);
+        this.frame.setJMenuBar(menuBar.getMenuBar());
 
         this.splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         
@@ -260,5 +261,9 @@ public class ProjectEditorFrame {
                 }
             }
         });
+    }
+
+    public void saveProject() {
+        projectInfo.saveProject();
     }
 }

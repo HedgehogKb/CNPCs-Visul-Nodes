@@ -6,11 +6,11 @@ import java.io.IOException;
 
 import org.json.JSONObject;
 
-import com.hedgehogkb.NodeGroup;
-import com.hedgehogkb.ProjectInfo;
 import com.hedgehogkb.DialogNodeComponents.DialogNode;
 import com.hedgehogkb.DialogNodeComponents.GroupNodeShell;
 import com.hedgehogkb.DialogNodeComponents.VisualNodeShell;
+import com.hedgehogkb.NodeGroup;
+import com.hedgehogkb.ProjectInfo;
 
 public class ProjectExporter {
     private ProjectInfo projectInfo;
@@ -103,7 +103,6 @@ public class ProjectExporter {
     public void export() {
         exportProjectInfo();
         exportProjectNodes();
-        projectInfo.setProjectSaved(true);
     }
 
 }

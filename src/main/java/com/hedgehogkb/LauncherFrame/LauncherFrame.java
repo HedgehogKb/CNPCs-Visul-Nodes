@@ -19,18 +19,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.json.JSONException;
 
-import com.hedgehogkb.NodeGroup;
-import com.hedgehogkb.ProjectInfo;
 import com.hedgehogkb.Exceptions.ProjectExistsException;
 import com.hedgehogkb.ImportingAndExporting.CnpcNodesConverter;
 import com.hedgehogkb.ImportingAndExporting.ProjectImporter;
 import com.hedgehogkb.ProjectEditorFrame.ProjectEditorFrame;
+import com.hedgehogkb.ProjectInfo;
 
 
 
@@ -366,7 +364,7 @@ public class LauncherFrame {
     }
 
     private void handleGeneralInputs() {
-        createProjectButton.addActionListener(e -> {
+        createProjectButton.addActionListener(e -> {            
             ProjectInfo projectInfo = new ProjectInfo(selectedDirectory, Integer.parseInt(startingNumberTextArea.getText()));
             projectInfo.setProjectSaved(false);
             ProjectEditorFrame projectEditorFrame = new ProjectEditorFrame(projectInfo);
@@ -407,6 +405,9 @@ public class LauncherFrame {
             int returnValue = fileChooser.showOpenDialog(this.frame);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 this.selectedDirectory = fileChooser.getSelectedFile();
+
+                selectDialogDirectory();
+
                 selectedFolderLabel.setText("<html>"+"Selected Folder: " + selectedDirectory.getAbsolutePath() + "</html>");
             }
         });
@@ -449,6 +450,9 @@ public class LauncherFrame {
             int returnValue = fileChooser.showOpenDialog(this.frame);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 this.selectedDirectory = fileChooser.getSelectedFile();
+
+                selectDialogDirectory();
+
                 existingProjectSelectedFolderLabel.setText("<html>"+"Selected Folder: " + selectedDirectory.getAbsolutePath() + "</html>");
             }
         });
@@ -485,7 +489,10 @@ public class LauncherFrame {
             int returnValue = fileChooser.showOpenDialog(this.frame);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 this.selectedDirectory = fileChooser.getSelectedFile();
-                existingProjectSelectedFolderLabel.setText("<html>"+"Selected Folder: " + selectedDirectory.getAbsolutePath() + "</html>");
+
+                selectDialogDirectory();
+
+                existingNodesSelectedFolderLabel.setText("<html>"+"Selected Folder: " + selectedDirectory.getAbsolutePath() + "</html>");
             }
         });
 
@@ -505,17 +512,42 @@ public class LauncherFrame {
         });
     }
 
+    /**
+     * Sets the default or currently selected directory in the J File Chooser.
+     * This is done to prevent an error.
+     */
     private void setDefaultFiles() {
-        File startFile = new File(System.getProperty("user.home"), "AppData\\Roaming\\.minecraft\\saves");
-        if (!startFile.exists()) {
-            startFile = new File(System.getProperty("user.home"));
+        File startFile;
+        
+        if (selectedDirectory != null) {
+            startFile = selectedDirectory;
+        } else {
+            startFile = new File(System.getProperty("user.home"), "AppData\\Roaming\\.minecraft\\saves");
+            if (!startFile.exists()) {
+                startFile = new File(System.getProperty("user.home"));
+            }
         }
 
         try {
             this.fileChooser.setCurrentDirectory(startFile);
-            this.fileChooser.setSelectedFile(startFile);
+            //this.fileChooser.setSelectedFile(startFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Checks the currently selected director for the customnpcs\dialogs director.
+     * If it exists, it makes that the selectedDirectory.
+     */
+    public void selectDialogDirectory() {
+            if (selectedDirectory == null) {
+                return;
+            }
+
+            File cnpcDialogFile = new File(selectedDirectory + File.separator + "customnpcs" + File.separator + "dialogs");
+            if (cnpcDialogFile.exists()) {
+                selectedDirectory = cnpcDialogFile;
+            }
     }
 }

@@ -74,7 +74,7 @@ public class NodeGroup {
     }
 
     public void saveProject() {
-        projectInfo.getProjectExporter().export();
+        projectInfo.saveProject();
     }
 
     public void setProjectUnsaved() {
